@@ -1,0 +1,12 @@
+version: '3.1'
+
+services:
+  postgresRT:
+    restart: always
+    image: 'postgres:16.1-alpine'
+    environment:
+      POSTGRES_PASSWORD: java
+      POSTGRES_USER: java
+      POSTGRES_DB: educplatform
+    ports:
+      - '5435:5432'

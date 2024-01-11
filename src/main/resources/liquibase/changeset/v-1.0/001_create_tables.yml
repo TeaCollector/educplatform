@@ -1,0 +1,72 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-users
+      author: Alexandr
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(100)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(15)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    defaultValue: now()
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    defaultValue: now()
+  - changeSet:
+      id: insert-into-table-adminusers
+      author: Alexandr
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: 'sasha@gmail.com'
+              - column:
+                  name: password
+                  value: '123ffkjhasifuh4dfd'
+              - column:
+                  name: first_name
+                  value: 'Александр'
+              - column:
+                  name: last_name
+                  value: 'Сергеев'
+              - column:
+                  name: role
+                  value: 'ROLE_ADMIN'
