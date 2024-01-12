@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-courses
+      author: Alexandr
+      changes:
+        - createTable:
+            tableName: courses
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: duration
+                  type: smallint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: difficult_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_courses_difficult
+                    references: difficult(id)
+              - column:
+                  name: category_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_courses_categories
+                    references: categories(id)
+              - column:
+                  name: author_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_courses_users
+                    references: users(id)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    defaultValue: now()
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    defaultValue: now()

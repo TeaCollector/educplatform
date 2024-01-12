@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-table-users
+      id: create-table-lessons
       author: Alexandr
       changes:
         - createTable:
-            tableName: users
+            tableName: lessons
             columns:
               - column:
                   name: id
@@ -13,23 +13,23 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: email
-                  type: varchar(100)
+                  name: title
+                  type: varchar(255)
                   constraints:
                     unique: true
                     nullable: false
               - column:
-                  name: password
-                  type: varchar(255)
+                  name: description
+                  type: text
                   constraints:
                     nullable: false
               - column:
-                  name: first_name
-                  type: varchar(30)
+                  name: file_name
+                  type: text
                   constraints:
                     nullable: false
               - column:
-                  name: last_name
+                  name: course_id
                   type: varchar(30)
                   constraints:
                     nullable: false
@@ -48,25 +48,3 @@ databaseChangeLog:
                   type: timestamp
                   constraints:
                     defaultValue: now()
-  - changeSet:
-      id: insert-into-table-adminusers
-      author: Alexandr
-      changes:
-        - insert:
-            tableName: users
-            columns:
-              - column:
-                  name: email
-                  value: 'sasha@gmail.com'
-              - column:
-                  name: password
-                  value: '123ffkjhasifuh4dfd'
-              - column:
-                  name: first_name
-                  value: 'Александр'
-              - column:
-                  name: last_name
-                  value: 'Сергеев'
-              - column:
-                  name: role
-                  value: 'ROLE_ADMIN'

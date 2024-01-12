@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-users-courses
+      author: Alexandr
+      changes:
+        - createTable:
+            tableName: users-courses
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_users-courses_users
+                    references: users(id)
+              - column:
+                  name: course_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_users-courses_courses
+                    references: courses(id)
+              - column:
+                  name: end_course
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: mentor-course
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: begin_course
+                  type: timestamp
+                  constraints:
+                    defaultValue: now()
+              - column:
+                  name: finish_course
+                  type: timestamp
+                  constraints:
+                    defaultValue: now()

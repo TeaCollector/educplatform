@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-difficult
+      author: Alexandr
+      changes:
+        - createTable:
+            tableName: difficult
+            columns:
+              - column:
+                  name: id
+                  type: smallint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: difficult
+                  type: varchar(10)
+                  constraints:
+                    unique: true
+                    nullable: false

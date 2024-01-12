@@ -46,7 +46,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public TokenResponseDto signIn(SignInRequest request) {
-        log.info("we are here before authentication manager email: {}, password: {}", request.getEmail(), request.getPassword());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())).getPrincipal();
         User user = userRepository.findUserByEmail(request.getEmail())

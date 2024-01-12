@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-grades
+      author: Alexandr
+      changes:
+        - createTable:
+            tableName: grades
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: student_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_grades_users
+                    references: users(id)
+              - column:
+                  name: mentor_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_grades_users-mentor
+                    references: users(id)
+              - column:
+                  name: grade
+                  type: smallint
+              - column:
+                  name: rework
+                  type: boolean
+              - column:
+                  name: student-answer
+                  type: text
+              - column:
+                  name: mentor-answer
+                  type: text
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    defaultValue: now()
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    defaultValue: now()
