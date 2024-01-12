@@ -14,14 +14,14 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: user_id
-                  type: int
+                  type: bigint
                   constraints:
                     nullable: false
                     foreignKeyName: fk_users-courses_users
                     references: users(id)
               - column:
                   name: course_id
-                  type: int
+                  type: bigint
                   constraints:
                     nullable: false
                     foreignKeyName: fk_users-courses_courses
@@ -32,7 +32,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: mentor-course
+                  name: mentor_course
                   type: boolean
                   constraints:
                     nullable: false

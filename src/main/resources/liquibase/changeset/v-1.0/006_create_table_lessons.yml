@@ -30,14 +30,18 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: course_id
-                  type: varchar(30)
+                  type: bigint
                   constraints:
                     nullable: false
+                    foreignKeyName: fk_lessons_courses
+                    references: courses(id)
               - column:
-                  name: role
-                  type: varchar(15)
+                  name: task_id
+                  type: bigint
                   constraints:
                     nullable: false
+                    foreignKeyName: fk_lessons_tasks
+                    references: tasks(id)
               - column:
                   name: created_at
                   type: timestamp

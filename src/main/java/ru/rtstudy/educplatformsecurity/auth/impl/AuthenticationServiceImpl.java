@@ -12,7 +12,7 @@ import ru.rtstudy.educplatformsecurity.dto.request.SignInRequest;
 import ru.rtstudy.educplatformsecurity.dto.request.SignUpRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.TokenResponseDto;
 import ru.rtstudy.educplatformsecurity.dto.response.SignUpResponseDto;
-import ru.rtstudy.educplatformsecurity.model.Role;
+import ru.rtstudy.educplatformsecurity.model.constant.Role;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.repository.UserRepository;
 

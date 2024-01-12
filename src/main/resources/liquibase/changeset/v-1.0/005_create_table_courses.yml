@@ -30,21 +30,21 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: difficult_id
-                  type: int
+                  type: smallint
                   constraints:
                     nullable: false
                     foreignKeyName: fk_courses_difficult
                     references: difficult(id)
               - column:
                   name: category_id
-                  type: int
+                  type: bigint
                   constraints:
                     nullable: false
                     foreignKeyName: fk_courses_categories
                     references: categories(id)
               - column:
                   name: author_id
-                  type: int
+                  type: bigint
                   constraints:
                     nullable: false
                     foreignKeyName: fk_courses_users

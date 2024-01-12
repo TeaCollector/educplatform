@@ -14,18 +14,25 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: student_id
-                  type: int
+                  type: bigint
                   constraints:
                     nullable: false
                     foreignKeyName: fk_grades_users
                     references: users(id)
               - column:
                   name: mentor_id
-                  type: int
+                  type: bigint
                   constraints:
                     nullable: false
                     foreignKeyName: fk_grades_users-mentor
                     references: users(id)
+              - column:
+                  name: lesson_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_grades_lessons
+                    references: lessons(id)
               - column:
                   name: grade
                   type: smallint
@@ -33,10 +40,10 @@ databaseChangeLog:
                   name: rework
                   type: boolean
               - column:
-                  name: student-answer
+                  name: student_answer
                   type: text
               - column:
-                  name: mentor-answer
+                  name: mentor_answer
                   type: text
               - column:
                   name: created_at
