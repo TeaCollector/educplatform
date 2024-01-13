@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
 
 import java.time.LocalDateTime;
@@ -39,11 +40,17 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<UserCourse> userCourses = new HashSet<>();
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Embedded
+    private CreateUpdateTime time;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @OneToMany(mappedBy = "student")
+    private Set<Grade> usersGrades = new HashSet<>();
+
+    @OneToMany(mappedBy = "mentor")
+    private Set<Grade> mentorGrades = new HashSet<>();
+
+    @OneToMany(mappedBy = "courseAuthor")
+    private Set<Course> courseAuthor = new HashSet<>();
 
     @ToString.Include(name = "password")
     private String maskPassword() {

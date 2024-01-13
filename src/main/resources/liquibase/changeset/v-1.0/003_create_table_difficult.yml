@@ -18,3 +18,35 @@ databaseChangeLog:
                   constraints:
                     unique: true
                     nullable: false
+
+  - changeSet:
+      id: insert-into-difficult-default-values
+      author: Alexandr
+      changes:
+        - insert:
+            tableName: difficult
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: difficult
+                  value: 'HARD'
+        - insert:
+            tableName: difficult
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: difficult
+                  value: 'MEDIUM'
+        - insert:
+            tableName: difficult
+            columns:
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: difficult
+                  value: 'EASY'

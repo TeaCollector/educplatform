@@ -27,3 +27,26 @@ databaseChangeLog:
                   type: timestamp
                   constraints:
                     defaultValue: now()
+
+  - changeSet:
+      id: insert-into-task-default-values
+      author: Alexandr
+      changes:
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Когда был создан язык Java?'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Сколько примитивных типов есть в Java?'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Что такое функция'

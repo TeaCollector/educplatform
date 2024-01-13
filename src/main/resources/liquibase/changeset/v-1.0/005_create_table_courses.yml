@@ -59,3 +59,32 @@ databaseChangeLog:
                   type: timestamp
                   constraints:
                     defaultValue: now()
+
+  - changeSet:
+      id: insert-into-courses-default-values
+      author: Alexandr
+      changes:
+        - insert:
+            tableName: courses
+            columns:
+              - column:
+                  name: title
+                  value: 'Java-разработчик'
+              - column:
+                  name: description
+                  value: 'На этом курсе вы прокачаетесь до уровня Senior Java Developer и будете самым крутым разработчиком в компании.'
+              - column:
+                  name: duration
+                  value: 150
+              - column:
+                  name: difficult_id
+                  value: 1
+              - column:
+                  name: category_id
+                  value: 1
+              - column:
+                  name: author_id
+                  value: 1
+
+
+

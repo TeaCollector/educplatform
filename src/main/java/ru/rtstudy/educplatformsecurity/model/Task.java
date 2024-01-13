@@ -4,6 +4,7 @@ package ru.rtstudy.educplatformsecurity.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 
 import java.time.LocalDateTime;
 
@@ -20,9 +21,6 @@ public class Task {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Embedded
+    private CreateUpdateTime time;
 }

@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.rtstudy.educplatformsecurity.model.constant.DifficultLevel;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @Entity(name = "Difficult")
@@ -19,4 +22,7 @@ public class Difficult {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "difficult")
     private DifficultLevel difficult;
+
+    @OneToMany(mappedBy = "difficult")
+    private Set<Course> course = new HashSet<>();
 }
