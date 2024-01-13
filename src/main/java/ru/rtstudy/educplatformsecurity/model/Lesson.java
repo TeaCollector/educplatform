@@ -3,6 +3,7 @@ package ru.rtstudy.educplatformsecurity.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 
 @Entity(name = "Lesson")
 @Table(name = "lessons")
@@ -25,10 +26,13 @@ public class Lesson {
 
     @ManyToOne
     @JoinColumn(name = "course_id", referencedColumnName = "id")
-    private Course courseId;
+    private Course course;
 
     @OneToOne
     @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task taskId;
+
+    @Embedded
+    private CreateUpdateTime time;
 
 }

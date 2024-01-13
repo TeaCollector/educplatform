@@ -52,3 +52,62 @@ databaseChangeLog:
                   type: timestamp
                   constraints:
                     defaultValue: now()
+
+  - changeSet:
+      id: insert-into-lessons-default-values
+      author: Alexandr
+      changes:
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'История возникновения языка Java'
+              - column:
+                  name: description
+                  value: 'На этом уроке вы узнаете историю возникновения языка Java, кто придумал, в каком году.'
+              - column:
+                  name: file_name
+                  value: 'java-developer-1-1.mp4'
+              - column:
+                  name: course_id
+                  value: 1
+              - column:
+                  name: task_id
+                  value: 1
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Примитивные типы в языке Java'
+              - column:
+                  name: description
+                  value: 'На этом уроке вы узнаете что такое примитивные типы, и с чем их едят.'
+              - column:
+                  name: file_name
+                  value: 'java-developer-1-2.mp4'
+              - column:
+                  name: course_id
+                  value: 1
+              - column:
+                  name: task_id
+                  value: 2
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Функция'
+              - column:
+                  name: description
+                  value: 'Здесь вам предстоит узнать что такое функция, и познакомится с её синтаксисом.'
+              - column:
+                  name: file_name
+                  value: 'java-developer-1-3.mp4'
+              - column:
+                  name: course_id
+                  value: 1
+              - column:
+                  name: task_id
+                  value: 3

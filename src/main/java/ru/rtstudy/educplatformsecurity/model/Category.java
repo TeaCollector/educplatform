@@ -3,8 +3,8 @@ package ru.rtstudy.educplatformsecurity.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,9 +21,9 @@ public class Category {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "category")
+    private Set<Course> courses = new HashSet<>();
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Embedded
+    private CreateUpdateTime time;
 }

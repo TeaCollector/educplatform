@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
+import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 
 import java.time.LocalDateTime;
 
@@ -18,15 +19,15 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private User student;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "mentor_id", referencedColumnName = "id")
     private User mentor;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "lesson_id", referencedColumnName = "id")
     private Lesson lesson;
 
@@ -42,9 +43,6 @@ public class Grade {
     @Column(name = "mentor_answer")
     private String mentorAnswer;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Embedded
+    private CreateUpdateTime time;
 }

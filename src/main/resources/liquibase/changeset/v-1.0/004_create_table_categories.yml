@@ -28,3 +28,26 @@ databaseChangeLog:
                   type: timestamp
                   constraints:
                     defaultValue: now()
+
+  - changeSet:
+      id: insert-into-categories-default-values
+      author: Alexandr
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: title
+                  value: 'BACKEND'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: title
+                  value: 'FRONTEND'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: title
+                  value: 'DEVOPS'

@@ -3,6 +3,7 @@ package ru.rtstudy.educplatformsecurity.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -24,24 +25,24 @@ public class Course {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "difficult_id", referencedColumnName = "id")
     private Difficult difficult;
 
     @OneToMany(mappedBy = "course")
     private Set<UserCourse> coursesUser = new HashSet<>();
 
+    @OneToMany(mappedBy = "course")
+    private Set<Lesson> lessons = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id" )
     private User courseAuthor;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Embedded
+    private CreateUpdateTime time;
 }
