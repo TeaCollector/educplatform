@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @AllArgsConstructor
-public class SignUpResponseDto {
+public class SignUpDto {
 
     private String email;
     private String firstName;

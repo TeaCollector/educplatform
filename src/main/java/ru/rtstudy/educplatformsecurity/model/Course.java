@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +23,10 @@ public class Course {
 
     @Column(name = "description")
     private String description;
+
+    @Basic
+    @Column(name = "duration")
+    private short duration;
 
     @ManyToOne
     @JoinColumn(name = "difficult_id", referencedColumnName = "id")
