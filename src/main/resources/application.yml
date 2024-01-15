@@ -21,9 +21,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        integrator_provider: ru.rtstudy.educplatformsecurity.config.ClassImportIntegratorProvider
 
   liquibase:
     change-log: classpath:liquibase/db.changelog-master.yml
+
+#  jackson:
+#    serialization:
+#      fail-on-empty-beans: false
 
 jwt:
   secretKey: gfjnkdjgf234234jn2340v8uUNdiFasd4vfeSDSkjvdfggdadg5t53461gradf

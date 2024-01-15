@@ -10,8 +10,8 @@ import ru.rtstudy.educplatformsecurity.auth.AuthenticationService;
 import ru.rtstudy.educplatformsecurity.auth.JwtService;
 import ru.rtstudy.educplatformsecurity.dto.request.SignInRequest;
 import ru.rtstudy.educplatformsecurity.dto.request.SignUpRequest;
-import ru.rtstudy.educplatformsecurity.dto.response.TokenResponseDto;
-import ru.rtstudy.educplatformsecurity.dto.response.SignUpResponseDto;
+import ru.rtstudy.educplatformsecurity.dto.response.TokenDto;
+import ru.rtstudy.educplatformsecurity.dto.response.SignUpDto;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.repository.UserRepository;
@@ -27,7 +27,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public SignUpResponseDto signUp(SignUpRequest request) {
+    public SignUpDto signUp(SignUpRequest request) {
         User user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -36,7 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .role(Role.ROLE_STUDENT)
                 .build();
         userRepository.save(user);
-        return SignUpResponseDto.builder()
+        return SignUpDto.builder()
                 .email(request.getEmail())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -45,13 +45,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public TokenResponseDto signIn(SignInRequest request) {
+    public TokenDto signIn(SignInRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())).getPrincipal();
         User user = userRepository.findUserByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
         String jwt = jwtService.generateToken(user);
-        return TokenResponseDto.builder()
+        return TokenDto.builder()
                 .token(jwt)
                 .build();
     }

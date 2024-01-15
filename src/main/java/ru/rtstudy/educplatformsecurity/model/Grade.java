@@ -4,10 +4,7 @@ package ru.rtstudy.educplatformsecurity.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
-
-import java.time.LocalDateTime;
 
 @Table(name = "grades")
 @Entity(name = "Grade")

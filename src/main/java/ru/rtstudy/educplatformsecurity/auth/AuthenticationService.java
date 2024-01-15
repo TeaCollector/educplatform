@@ -2,13 +2,13 @@ package ru.rtstudy.educplatformsecurity.auth;
 
 import ru.rtstudy.educplatformsecurity.dto.request.SignInRequest;
 import ru.rtstudy.educplatformsecurity.dto.request.SignUpRequest;
-import ru.rtstudy.educplatformsecurity.dto.response.SignUpResponseDto;
-import ru.rtstudy.educplatformsecurity.dto.response.TokenResponseDto;
+import ru.rtstudy.educplatformsecurity.dto.response.SignUpDto;
+import ru.rtstudy.educplatformsecurity.dto.response.TokenDto;
 
 public interface AuthenticationService {
 
-    SignUpResponseDto signUp(SignUpRequest request);
+    SignUpDto signUp(SignUpRequest request);
 
-    TokenResponseDto signIn(SignInRequest request);
+    TokenDto signIn(SignInRequest request);
 
 }
