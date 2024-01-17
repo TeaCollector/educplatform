@@ -65,8 +65,8 @@ public class CourseServiceImpl implements CourseService {
         course.setDifficult(difficult);
 //        log.info("DIFFICULT: {}", difficult);
 
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        User currentPrincipalName = (User) authentication.getPrincipal();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentPrincipalName = (User) authentication.getPrincipal();
 
 //        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
