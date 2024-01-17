@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface TaskService {
 
     TaskDto getTask(Long id);
+
+    Task createTask(Task task);
 }

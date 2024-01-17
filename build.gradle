@@ -34,7 +34,6 @@ dependencies {
     runtimeOnly "org.postgresql:postgresql:$postgresqlVersion"
     implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.7.0'
 
-
     implementation "io.jsonwebtoken:jjwt-api:$jjwtVersion"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:$jjwtVersion"
     runtimeOnly "io.jsonwebtoken:jjwt-jackson:$jjwtVersion"
@@ -42,10 +41,7 @@ dependencies {
     implementation "org.liquibase:liquibase-core:$liquibaseVersion"
 
     implementation "org.mapstruct:mapstruct:$mapstructVersion"
-    implementation "org.mapstruct:mapstruct-processor:$mapstructVersion"
-
-
-
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
 
 }
 
