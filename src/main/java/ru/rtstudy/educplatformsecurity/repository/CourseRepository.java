@@ -1,6 +1,7 @@
 package ru.rtstudy.educplatformsecurity.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
@@ -19,6 +20,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             """)
     Optional<List<CourseShortDescriptionDto>> findCourseByDifficultId(@Param(value = "id") Long id);
 
+
     @Query("""
             select new CourseLongDescriptionDto(c.title, c.description, c.category.title, c.duration, c.difficult.difficult) 
             from Course c 
@@ -32,4 +34,10 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             where c.category.id = :id
             """)
     Optional<CourseShortDescriptionDto> findCourseByCategoryId(@Param(value = "id") Long id);
+
+
+/*    @Query(value = """
+            select
+            """)
+    void addCourse();*/
 }

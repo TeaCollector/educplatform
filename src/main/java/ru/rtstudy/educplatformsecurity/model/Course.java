@@ -1,17 +1,18 @@
 package ru.rtstudy.educplatformsecurity.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Builder
 @Entity(name = "Course")
 @Table(name = "courses")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Course {
 
     @Id
@@ -32,10 +33,10 @@ public class Course {
     @JoinColumn(name = "difficult_id", referencedColumnName = "id")
     private Difficult difficult;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private Set<UserCourse> coursesUser = new HashSet<>();
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private Set<Lesson> lessons = new HashSet<>();
 
     @ManyToOne

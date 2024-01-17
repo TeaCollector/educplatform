@@ -21,4 +21,9 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.getTaskById(id)
                 .orElseThrow(() -> new TaskNotFoundException("Task was not found."));
     }
+
+    @Override
+    public Task createTask(Task task) {
+        return taskRepository.save(task);
+    }
 }

@@ -2,15 +2,16 @@ package ru.rtstudy.educplatformsecurity.model;
 
 import jakarta.persistence.*;
 import liquibase.change.DatabaseChangeNote;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.rtstudy.educplatformsecurity.model.constant.DifficultLevel;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "Difficult")
 @Table(name = "difficult")
 public class Difficult {

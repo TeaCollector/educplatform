@@ -1,0 +1,15 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  minio:
+    url: http://${MINIO_HOST}
+    access-key: ${MINIO_USERNAME}
+    secret-key: ${MINIO_PASSWORD}
+    bucket: sample
+
+#  jpa:
+#    hibernate:
+#      ddl-auto: create-drop
+
+server:
+  port: 8082
