@@ -16,7 +16,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     Category getCategoryByName(String title);
 
     @Query("""
-            select new CourseLongDescriptionDto(c.title, c.description, c.category.title, c.duration, c.difficult.difficult)
+            select new CourseLongDescriptionDto(c.title, c.description, c.category.title, c.duration, c.difficult.difficultLevel)
             from Course c
             where c.category.id = :categoryId
             """)

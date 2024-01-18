@@ -18,7 +18,7 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
-@ToString
+@ToString(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity(name = "User")
 @Table(name = "users")
@@ -29,15 +29,18 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ToString.Include
     @Column(name = "email")
     private String email;
 
     @Column(name = "password")
     private String password;
 
+    @ToString.Include
     @Column(name = "first_name")
     private String firstName;
 
+    @ToString.Include
     @Column(name = "last_name")
     private String lastName;
 

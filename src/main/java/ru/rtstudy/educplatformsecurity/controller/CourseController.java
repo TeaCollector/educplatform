@@ -41,6 +41,7 @@ public class CourseController {
         courseService.updateCourse(course, id);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
+
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteCourse(@PathVariable(name = "id") Long id) {
         courseService.deleteCourse(id);
