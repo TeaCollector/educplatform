@@ -2,13 +2,15 @@ package ru.rtstudy.educplatformsecurity.model;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 
 @Table(name = "grades")
 @Entity(name = "Grade")
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@Builder(toBuilder = true)
 @NoArgsConstructor
 public class Grade {
 

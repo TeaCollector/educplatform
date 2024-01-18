@@ -35,4 +35,9 @@ public class UserCourseServiceImpl implements UserCourseService {
         log.info("UserCourse: {}", userCourse);
         userCourseRepository.save(userCourse);
     }
+
+    @Override
+    public void finishCourse(Long id) {
+
+    }
 }
