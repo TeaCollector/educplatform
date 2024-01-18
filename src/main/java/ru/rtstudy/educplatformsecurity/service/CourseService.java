@@ -12,7 +12,7 @@ public interface CourseService {
 
     List<CourseShortDescriptionDto> getCoursesByDifficultId(Long id);
 
-    CourseShortDescriptionDto findCourseByCategoryId(Long id);
+    List<CourseShortDescriptionDto> findCourseByCategoryId(Long id);
 
     Course createCourse(Course course);
 }

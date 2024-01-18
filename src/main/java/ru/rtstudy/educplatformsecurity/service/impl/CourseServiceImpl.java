@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.auth.JwtService;
@@ -40,15 +41,15 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseLongDescriptionDto findCourseById(Long id) {
-        return courseRepository.findCourseById(id)
-                .orElseThrow(() -> new CourseNotFoundException("Course was not found"));
+    public List<CourseShortDescriptionDto> findCourseByCategoryId(Long id) {
+        return courseRepository.findCourseByCategoryId(id)
+                .orElseThrow(() -> new CategoryNotExistsException("Category was not found."));
     }
 
     @Override
-    public CourseShortDescriptionDto findCourseByCategoryId(Long id) {
-        return courseRepository.findCourseByCategoryId(id)
-                .orElseThrow(() -> new CategoryNotExistsException("Category was not found."));
+    public CourseLongDescriptionDto findCourseById(Long id) {
+        return courseRepository.findCourseById(id)
+                .orElseThrow(() -> new CourseNotFoundException("Course was not found"));
     }
 
     @Override
@@ -56,23 +57,22 @@ public class CourseServiceImpl implements CourseService {
     public Course createCourse(Course course) {
 
         Category category = categoryRepository.getCategoryByName(course.getCategory().getTitle());
-//        log.info("CATEGORY: {} AND COURSES: {}", category.getId(), category.getTitle());
+        log.info("CATEGORY: {} AND COURSES: {}", category.getId(), category.getTitle());
 
         course.setCategory(category);
 
         Difficult difficult = difficultRepository.getDifficultByDifficultName(course.getDifficult().getDifficult());
 
         course.setDifficult(difficult);
-//        log.info("DIFFICULT: {}", difficult);
+        log.info("DIFFICULT: {}", difficult);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentPrincipalName = (User) authentication.getPrincipal();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("USER: {}", user.getRole());
 
-//        log.info("USER: {}", currentPrincipalName);
+        course.setCourseAuthor(user);
 
-//        log.info("COURSE: {}", course);
+        log.info("COURSE: {}", course);
         return courseRepository.save(course);
     }
 }

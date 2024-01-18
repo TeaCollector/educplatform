@@ -22,18 +22,18 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
 
     @Query("""
+            select new CourseShortDescriptionDto(c.title, c.description) 
+            from Course c
+            where c.category.id = :id
+            """)
+    Optional<List<CourseShortDescriptionDto>> findCourseByCategoryId(@Param(value = "id") Long id);
+
+    @Query("""
             select new CourseLongDescriptionDto(c.title, c.description, c.category.title, c.duration, c.difficult.difficult) 
             from Course c 
             where c.id = :id
             """)
     Optional<CourseLongDescriptionDto> findCourseById(@Param(value = "id") Long id);
-
-    @Query("""
-            select new CourseShortDescriptionDto(c.title, c.description) 
-            from Course c
-            where c.category.id = :id
-            """)
-    Optional<CourseShortDescriptionDto> findCourseByCategoryId(@Param(value = "id") Long id);
 
 
 /*    @Query(value = """

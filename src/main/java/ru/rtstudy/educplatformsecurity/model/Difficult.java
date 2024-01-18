@@ -7,8 +7,9 @@ import ru.rtstudy.educplatformsecurity.model.constant.DifficultLevel;
 
 import java.util.HashSet;
 import java.util.Set;
-
-@Data
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

@@ -23,6 +23,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
 
@@ -33,8 +34,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers("/api/v1/auth/**")
                             .permitAll()
-                            .anyRequest()
-                            .authenticated();
+                            .anyRequest().authenticated();
+//                            .requestMatchers("/api/v1/courses/**").hasRole("STUDENT");
+
                 })
                         .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                         .authenticationProvider(authenticationProvider()).addFilterBefore(

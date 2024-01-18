@@ -10,7 +10,9 @@ import java.util.Set;
 @Builder
 @Entity(name = "Course")
 @Table(name = "courses")
-@Data
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Course {
@@ -29,7 +31,7 @@ public class Course {
     @Column(name = "duration")
     private short duration;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "difficult_id", referencedColumnName = "id")
     private Difficult difficult;
 
