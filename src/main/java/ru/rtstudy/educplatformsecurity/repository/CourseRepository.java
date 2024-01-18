@@ -35,9 +35,4 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             """)
     Optional<CourseLongDescriptionDto> findCourseById(@Param(value = "id") Long id);
 
-
-/*    @Query(value = """
-            select
-            """)
-    void addCourse();*/
 }

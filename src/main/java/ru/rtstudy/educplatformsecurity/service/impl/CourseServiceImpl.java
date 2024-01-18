@@ -69,7 +69,8 @@ public class CourseServiceImpl implements CourseService {
     @Transactional
     public void updateCourse(Course course, Long id) {
 
-        Course toUpdate = courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException("Course was not found."));
+        Course toUpdate = courseRepository.findById(id)
+                .orElseThrow(() -> new CourseNotFoundException("Course was not found."));
 
         toUpdate.setDuration(course.getDuration());
         toUpdate.setTitle(course.getTitle());
