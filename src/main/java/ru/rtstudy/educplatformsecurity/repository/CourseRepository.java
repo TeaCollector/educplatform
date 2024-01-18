@@ -29,7 +29,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     Optional<List<CourseShortDescriptionDto>> findCourseByCategoryId(@Param(value = "id") Long id);
 
     @Query("""
-            select new CourseLongDescriptionDto(c.title, c.description, c.category.title, c.duration, c.difficult.difficult) 
+            select new CourseLongDescriptionDto(c.title, c.description, c.category.title, c.duration, c.difficult.difficultLevel) 
             from Course c 
             where c.id = :id
             """)

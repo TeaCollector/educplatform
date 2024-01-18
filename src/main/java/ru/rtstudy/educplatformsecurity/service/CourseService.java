@@ -15,4 +15,8 @@ public interface CourseService {
     List<CourseShortDescriptionDto> findCourseByCategoryId(Long id);
 
     Course createCourse(Course course);
+
+    void updateCourse(Course course, Long id);
+
+    void deleteCourse(Long id);
 }

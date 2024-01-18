@@ -9,7 +9,9 @@ import java.util.Set;
 
 @AllArgsConstructor
 @Builder
-@Data
+@Setter
+@Getter
+@ToString
 @Entity(name = "Category")
 @Table(name = "categories")
 @NoArgsConstructor
@@ -22,7 +24,7 @@ public class Category {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Course> courses = new HashSet<>();
 
     @Embedded
