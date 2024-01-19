@@ -36,8 +36,15 @@ public class UserCourseServiceImpl implements UserCourseService {
         userCourseRepository.save(userCourse);
     }
 
+    // TODO: 19.01.2024 Подумать над логикой окончания курса.
     @Override
     public void finishCourse(Long id) {
+
+    }
+
+
+    @Override
+    public void upgradeToMentor(Long id) {
 
     }
 }

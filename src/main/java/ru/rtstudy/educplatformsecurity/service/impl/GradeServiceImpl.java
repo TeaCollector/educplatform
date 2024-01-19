@@ -4,9 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.rtstudy.educplatformsecurity.dto.ChangeStudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.request.StudentAnswerDto;
-import ru.rtstudy.educplatformsecurity.dto.response.StudentAnswerAtAllLesson;
+import ru.rtstudy.educplatformsecurity.dto.response.AllStudentAnswers;
+import ru.rtstudy.educplatformsecurity.exception.AnswersNotFoundException;
 import ru.rtstudy.educplatformsecurity.model.Grade;
+import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.repository.GradeRepository;
 import ru.rtstudy.educplatformsecurity.repository.LessonRepository;
 import ru.rtstudy.educplatformsecurity.service.GradeService;
@@ -16,7 +19,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-@Slf4j
 public class GradeServiceImpl implements GradeService {
 
     private final GradeRepository gradeRepository;
@@ -37,9 +39,28 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public List<StudentAnswerAtAllLesson> findAllStudentAnswer() {
+    @Transactional
+    public List<AllStudentAnswers> findAllStudentAnswer() {
         Long id = util.findUserFromContext().getId();
-        log.info("USR ID IS 3: {}?", id);
-        return gradeRepository.getAllStudentAnswer(id).orElseThrow();
+        return gradeRepository.getAllStudentAnswer(id)
+                .orElseThrow(() -> new AnswersNotFoundException("Answers not found."));
+    }
+
+    @Override
+    @Transactional
+    public List<AllStudentAnswers> findAllStudentsAnswerForCourse(Long courseId) {
+        Long userId = util.findUserFromContext().getId();
+        return gradeRepository.findAllStudentsAnswerForCourse(courseId, userId)
+                .orElseThrow(() -> new AnswersNotFoundException("Answers not found."));
+    }
+
+
+    // TODO: 19.01.2024 Какой ответ студента будем исправлять? Последний к выбранному уроку? Если он еще не проверен
+    @Override
+    @Transactional
+    public ChangeStudentAnswerDto changeAnswer(Long id, ChangeStudentAnswerDto studentsAnswerDto) {
+        Long studentId = util.findUserFromContext().getId();
+        gradeRepository.changeAnswer(id, studentsAnswerDto.studentAnswer(), studentId);
+        return studentsAnswerDto;
     }
 }
