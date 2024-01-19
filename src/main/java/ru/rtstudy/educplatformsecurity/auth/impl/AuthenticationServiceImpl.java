@@ -36,6 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .role(Role.ROLE_STUDENT)
                 .build();
         userRepository.save(user);
+
         return SignUpDto.builder()
                 .email(request.getEmail())
                 .firstName(request.getFirstName())

@@ -24,11 +24,11 @@ public class Lesson {
     @Column(name = "file_name")
     private String fileName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task taskId;
 

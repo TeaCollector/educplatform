@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
@@ -15,7 +16,9 @@ import java.util.List;
 import java.util.Set;
 
 @Builder
-@Data
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity(name = "User")
 @Table(name = "users")
@@ -25,31 +28,38 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ToString.Include
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "password")
     private String password;
 
+    @ToString.Include
     @Column(name = "first_name")
     private String firstName;
 
+    @ToString.Include
     @Column(name = "last_name")
     private String lastName;
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserCourse> userCourses = new HashSet<>();
 
     @Embedded
     private CreateUpdateTime time;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private Set<Grade> usersGrades = new HashSet<>();
 
-    @OneToMany(mappedBy = "mentor")
+    @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL)
     private Set<Grade> mentorGrades = new HashSet<>();
 
-    @OneToMany(mappedBy = "courseAuthor")
+    @OneToMany(mappedBy = "courseAuthor", cascade = CascadeType.ALL)
     private Set<Course> courseAuthor = new HashSet<>();
 
     @ToString.Include(name = "password")

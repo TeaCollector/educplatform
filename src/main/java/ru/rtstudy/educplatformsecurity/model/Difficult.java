@@ -1,14 +1,14 @@
 package ru.rtstudy.educplatformsecurity.model;
 
 import jakarta.persistence.*;
-import liquibase.change.DatabaseChangeNote;
 import lombok.*;
 import ru.rtstudy.educplatformsecurity.model.constant.DifficultLevel;
 
 import java.util.HashSet;
 import java.util.Set;
-
-@Data
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,9 +20,10 @@ public class Difficult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Byte id;
 
+    @ToString.Include
     @Enumerated(value = EnumType.STRING)
     @Column(name = "difficult")
-    private DifficultLevel difficult;
+    private DifficultLevel difficultLevel;
 
     @OneToMany(mappedBy = "difficult")
     private Set<Course> course = new HashSet<>();

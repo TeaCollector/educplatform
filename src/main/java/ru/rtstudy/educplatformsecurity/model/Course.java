@@ -10,7 +10,9 @@ import java.util.Set;
 @Builder
 @Entity(name = "Course")
 @Table(name = "courses")
-@Data
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Course {
@@ -19,31 +21,33 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ToString.Include
     @Column(name = "title")
     private String title;
 
+    @ToString.Include
     @Column(name = "description")
     private String description;
 
-    @Basic
+    @ToString.Include
     @Column(name = "duration")
     private short duration;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "difficult_id", referencedColumnName = "id")
     private Difficult difficult;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course")
     private Set<UserCourse> coursesUser = new HashSet<>();
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course")
     private Set<Lesson> lessons = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", referencedColumnName = "id" )
     private User courseAuthor;
 

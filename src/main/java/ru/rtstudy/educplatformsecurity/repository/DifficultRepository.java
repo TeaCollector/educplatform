@@ -8,7 +8,7 @@ import ru.rtstudy.educplatformsecurity.model.constant.DifficultLevel;
 public interface DifficultRepository extends JpaRepository<Difficult, Byte> {
 
     @Query("""
-            select d from Difficult d where d.difficult = :difficult
+            select d from Difficult d where d.difficultLevel = :difficult
             """)
     Difficult getDifficultByDifficultName(DifficultLevel difficult);
 }

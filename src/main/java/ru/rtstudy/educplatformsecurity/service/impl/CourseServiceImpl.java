@@ -2,11 +2,8 @@ package ru.rtstudy.educplatformsecurity.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rtstudy.educplatformsecurity.auth.JwtService;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.exception.CategoryNotExistsException;
@@ -20,6 +17,7 @@ import ru.rtstudy.educplatformsecurity.repository.CategoryRepository;
 import ru.rtstudy.educplatformsecurity.repository.CourseRepository;
 import ru.rtstudy.educplatformsecurity.repository.DifficultRepository;
 import ru.rtstudy.educplatformsecurity.service.CourseService;
+import ru.rtstudy.educplatformsecurity.util.Util;
 
 import java.util.List;
 
@@ -31,12 +29,18 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final CategoryRepository categoryRepository;
     private final DifficultRepository difficultRepository;
-    private final JwtService jwtService;
+    private final Util util;
 
     @Override
     public List<CourseShortDescriptionDto> getCoursesByDifficultId(Long id) {
         return courseRepository.findCourseByDifficultId(id)
                 .orElseThrow(() -> new DifficultNotExistsException("Difficult not exists."));
+    }
+
+    @Override
+    public List<CourseShortDescriptionDto> findCourseByCategoryId(Long id) {
+        return courseRepository.findCourseByCategoryId(id)
+                .orElseThrow(() -> new CategoryNotExistsException("Category was not found."));
     }
 
     @Override
@@ -46,33 +50,42 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseShortDescriptionDto findCourseByCategoryId(Long id) {
-        return courseRepository.findCourseByCategoryId(id)
-                .orElseThrow(() -> new CategoryNotExistsException("Category was not found."));
-    }
-
-    @Override
     @Transactional
     public Course createCourse(Course course) {
 
         Category category = categoryRepository.getCategoryByName(course.getCategory().getTitle());
-//        log.info("CATEGORY: {} AND COURSES: {}", category.getId(), category.getTitle());
-
         course.setCategory(category);
 
-        Difficult difficult = difficultRepository.getDifficultByDifficultName(course.getDifficult().getDifficult());
-
+        Difficult difficult = difficultRepository.getDifficultByDifficultName(course.getDifficult().getDifficultLevel());
         course.setDifficult(difficult);
-//        log.info("DIFFICULT: {}", difficult);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentPrincipalName = (User) authentication.getPrincipal();
+        User user = util.findUserFromContext();
+        course.setCourseAuthor(user);
 
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-//        log.info("USER: {}", currentPrincipalName);
-
-//        log.info("COURSE: {}", course);
         return courseRepository.save(course);
+    }
+
+    @Override
+    @Transactional
+    public void updateCourse(Course course, Long id) {
+
+        Course toUpdate = courseRepository.findById(id)
+                .orElseThrow(() -> new CourseNotFoundException("Course was not found."));
+
+        toUpdate.setDuration(course.getDuration());
+        toUpdate.setTitle(course.getTitle());
+        toUpdate.setDescription(course.getDescription());
+
+        if (!course.getCategory().getTitle().equals(toUpdate.getCategory().getTitle())) {
+            toUpdate.setCategory(categoryRepository.getCategoryByName(course.getCategory().getTitle()));
+        }
+        if (!course.getDifficult().getDifficultLevel().name().equals(toUpdate.getDifficult().getDifficultLevel().name())) {
+            toUpdate.setDifficult(difficultRepository.getDifficultByDifficultName(course.getDifficult().getDifficultLevel()));
+        }
+    }
+
+    @Override
+    public void deleteCourse(Long id) {
+        courseRepository.deleteById(id);
     }
 }
