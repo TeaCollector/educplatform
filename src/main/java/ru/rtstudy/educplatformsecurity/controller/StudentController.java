@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rtstudy.educplatformsecurity.dto.request.StudentAnswerDto;
+import ru.rtstudy.educplatformsecurity.dto.response.StudentAnswerAtAllLesson;
 import ru.rtstudy.educplatformsecurity.service.GradeService;
 import ru.rtstudy.educplatformsecurity.service.UserCourseService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/students")
@@ -36,9 +39,13 @@ public class StudentController {
         return ResponseEntity
                 .status(HttpStatus.valueOf(201))
                 .body(studentAnswerDto);
+    }
 
-
-
+    @GetMapping
+    public ResponseEntity<List<StudentAnswerAtAllLesson>> receiveAllStudentsAnswer() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(gradeService.findAllStudentAnswer());
     }
 
 
