@@ -28,9 +28,9 @@ public class StudentController {
                 .ok(HttpStatus.valueOf(201));
     }
 
-    @PostMapping("finish/{course_id}")
-    public ResponseEntity<HttpStatus> finishCourse(@PathVariable(name = "course_id") Long id) {
-        userCourseService.finishCourse(id);
+    @PostMapping("finish-course/{course_id}")
+    public ResponseEntity<HttpStatus> finishCourse(@PathVariable(name = "course_id") Long courseId) {
+        gradeService.finishCourse(courseId);
         return ResponseEntity
                 .ok(HttpStatus.valueOf(201));
     }
@@ -61,18 +61,16 @@ public class StudentController {
 
     @PutMapping("lesson/{id}")
     public ResponseEntity<ChangeStudentAnswerDto> changeAnswer(@PathVariable(name = "id") Long id,
-                                               @RequestBody ChangeStudentAnswerDto studentsAnswerDto ) {
+                                                               @RequestBody ChangeStudentAnswerDto studentsAnswerDto) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(gradeService.changeAnswer(id, studentsAnswerDto));
     }
 
     @PostMapping("upgrade-to-mentor/{course_id}")
-    public ResponseEntity<HttpStatus> upgradeToMentor(@PathVariable(name = "course_id") Long id) {
-        userCourseService.upgradeToMentor(id);
+    public ResponseEntity<HttpStatus> upgradeToMentor(@PathVariable(name = "course_id") Long courseId) {
+        userCourseService.upgradeToMentor(courseId);
         return ResponseEntity
                 .ok(HttpStatus.valueOf(201));
     }
-
-
 }

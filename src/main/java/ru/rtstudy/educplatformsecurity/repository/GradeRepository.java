@@ -3,6 +3,7 @@ package ru.rtstudy.educplatformsecurity.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.rtstudy.educplatformsecurity.dto.response.AllStudentAnswers;
 import ru.rtstudy.educplatformsecurity.model.Grade;
 
@@ -47,4 +48,22 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
 
             """)
     void changeAnswer(Long id, String studentAnswer, Long studentId);
+
+    @Query("""
+            select l.id
+            from Lesson l
+            where l.course.id = :courseId
+            """)
+    Optional<List<Long>> getAllLessonsId(Long courseId);
+
+    @Query(value = """
+            select g 
+            from Grade g
+            where g.lesson.id in :lessonsIds
+            and g.rework = false
+            and g.grade > 0
+            and g.student.id = :userId
+            """)
+    Optional<List<Grade>> getGrades(@Param(value = "lessonsIds") List<Long> lessonsIds,
+                                    @Param(value = "userId") Long userId);
 }

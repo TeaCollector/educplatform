@@ -4,8 +4,6 @@ public interface UserCourseService {
 
     void enterOnCourse(Long id);
 
-    void finishCourse(Long id);
-
     void upgradeToMentor(Long id);
 }
 

@@ -5,25 +5,30 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.exception.CourseNotFoundException;
+import ru.rtstudy.educplatformsecurity.exception.NotEnoughScoreToMentorException;
+import ru.rtstudy.educplatformsecurity.model.Grade;
 import ru.rtstudy.educplatformsecurity.model.UserCourse;
 import ru.rtstudy.educplatformsecurity.repository.CourseRepository;
 import ru.rtstudy.educplatformsecurity.repository.UserCourseRepository;
+import ru.rtstudy.educplatformsecurity.service.GradeService;
 import ru.rtstudy.educplatformsecurity.service.UserCourseService;
 import ru.rtstudy.educplatformsecurity.util.Util;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class UserCourseServiceImpl implements UserCourseService {
 
     private final CourseRepository courseRepository;
     private final UserCourseRepository userCourseRepository;
+    private final GradeService gradeService;
     private final Util util;
 
     @Override
-    @Transactional
     public void enterOnCourse(Long id) {
         UserCourse userCourse = UserCourse.builder()
                 .user(util.findUserFromContext())
@@ -36,15 +41,19 @@ public class UserCourseServiceImpl implements UserCourseService {
         userCourseRepository.save(userCourse);
     }
 
-    // TODO: 19.01.2024 Подумать над логикой окончания курса.
     @Override
-    public void finishCourse(Long id) {
-
-    }
-
-
-    @Override
-    public void upgradeToMentor(Long id) {
-
+    public void upgradeToMentor(Long courseId) {
+        Long userId = util.findUserFromContext().getId();
+        List<Long> lessonsIds = gradeService.getAllLessonsId(courseId);
+        List<Grade> gradeList = gradeService.getAllGradesFromCourse(lessonsIds, userId);
+        double average = 0;
+        for (Grade grade: gradeList) {
+            average += grade.getGrade();
+        }
+        if (average / gradeList.size() >= 8) {
+            userCourseRepository.upgradeToMentor(userId, courseId);
+        } else {
+            throw new NotEnoughScoreToMentorException("You don't have enough score to became a mentor.");
+        }
     }
 }

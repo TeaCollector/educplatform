@@ -9,6 +9,7 @@ import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 @Entity(name = "Grade")
 @Setter
 @Getter
+@ToString(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @NoArgsConstructor
@@ -30,12 +31,15 @@ public class Grade {
     @JoinColumn(name = "lesson_id", referencedColumnName = "id")
     private Lesson lesson;
 
+    @ToString.Include
     @Column(name = "grade")
     private byte grade;
 
+    @ToString.Include
     @Column(name = "rework")
     private boolean rework;
 
+    @ToString.Include
     @Column(name = "student_answer")
     private String studentAnswer;
 
