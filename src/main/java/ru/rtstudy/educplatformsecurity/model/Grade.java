@@ -2,13 +2,16 @@ package ru.rtstudy.educplatformsecurity.model;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 
 @Table(name = "grades")
 @Entity(name = "Grade")
-@Data
+@Setter
+@Getter
+@ToString(onlyExplicitlyIncluded = true)
+@AllArgsConstructor
+@Builder(toBuilder = true)
 @NoArgsConstructor
 public class Grade {
 
@@ -16,24 +19,27 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private User student;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mentor_id", referencedColumnName = "id")
     private User mentor;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_id", referencedColumnName = "id")
     private Lesson lesson;
 
+    @ToString.Include
     @Column(name = "grade")
     private byte grade;
 
+    @ToString.Include
     @Column(name = "rework")
     private boolean rework;
 
+    @ToString.Include
     @Column(name = "student_answer")
     private String studentAnswer;
 
