@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.exception.UserNotFoundException;
+import ru.rtstudy.educplatformsecurity.model.constant.Role;
 import ru.rtstudy.educplatformsecurity.repository.UserRepository;
 import ru.rtstudy.educplatformsecurity.service.UserService;
 
@@ -18,4 +19,12 @@ public class UserServiceImpl implements UserService {
         return email -> userRepository.findUserByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
+
+    @Override
+    public void changeUserRole(Long id, Role newRole) {
+        var user = userRepository.getReferenceById(id);
+        user.setRole(newRole);
+        userRepository.saveAndFlush(user);
+    }
+
 }

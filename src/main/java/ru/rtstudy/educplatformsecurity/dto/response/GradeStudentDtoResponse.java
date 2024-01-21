@@ -8,8 +8,8 @@ public record GradeStudentDtoResponse(
         String lastName,
         Long lessonId,
         String description,
-        byte grade,
-        boolean rework,
+        Byte grade,
+        Boolean rework,
         String studentAnswer,
         String mentorAnswer
 ) {

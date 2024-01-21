@@ -1,10 +1,10 @@
 package ru.rtstudy.educplatformsecurity.dto.response;
 
-public record GradeDtoResponse (
+public record GradeDtoResponse(
         Long lessonId,
         String description,
-        byte grade,
-        boolean rework,
+        Byte grade,
+        Boolean rework,
         String studentAnswer,
         String mentorAnswer
 ) {

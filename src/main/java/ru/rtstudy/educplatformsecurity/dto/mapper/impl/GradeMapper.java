@@ -14,7 +14,7 @@ public interface GradeMapper extends Mappable<Grade, GradeStudentDtoResponse> {
                 .lessonId(grade.getLesson().getId())
                 .description(grade.getLesson().getTaskId().getDescription())
                 .grade(grade.getGrade())
-                .rework(grade.isRework())
+                .rework(grade.getRework())
                 .studentAnswer(grade.getStudentAnswer())
                 .mentorAnswer(grade.getMentorAnswer())
                 .build();

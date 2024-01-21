@@ -31,5 +31,4 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
                 AND us.mentorCourse = true
             """)
     boolean isMentorForLesson(Long userId, Long lessonId);
-
 }

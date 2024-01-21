@@ -1,12 +1,11 @@
 package ru.rtstudy.educplatformsecurity.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.rtstudy.educplatformsecurity.dto.request.MentorAnswerDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.GradeDtoResponse;
 import ru.rtstudy.educplatformsecurity.dto.response.GradeStudentDtoResponse;
 import ru.rtstudy.educplatformsecurity.service.MentorService;
@@ -15,13 +14,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping ("/api/v1/mentors")
+@RequestMapping("/api/v1/mentors")
 public class MentorController {
 
     private final MentorService mentorService;
 
     @GetMapping
-    ResponseEntity<List<GradeDtoResponse>> getAllAnswersForMentorCourses(){
+    ResponseEntity<List<GradeDtoResponse>> getAllAnswersForMentorCourses() {
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
                 .body(mentorService.getAllAnswersForMentorCourses());
@@ -39,5 +38,28 @@ public class MentorController {
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
                 .body(mentorService.getAllAnswersForLesson(id));
+    }
+
+    @PutMapping("/grades/{grade_id}")
+    ResponseEntity<MentorAnswerDtoRequest> reviewStudentAnswer(@PathVariable(name = "grade_id") Long id,
+                                                               @RequestBody MentorAnswerDtoRequest mentorAnswerDtoRequest) {
+        return ResponseEntity
+                .status(HttpStatusCode.valueOf(201))
+                .body(mentorService.reviewStudentAnswer(id, mentorAnswerDtoRequest));
+    }
+
+    @PatchMapping("/grades/{grade_id}")
+    ResponseEntity<MentorAnswerDtoRequest> updateMentorAnswer(@PathVariable(name = "grade_id") Long id,
+                                                              @RequestBody MentorAnswerDtoRequest mentorAnswerDtoRequest) {
+        return ResponseEntity
+                .status(HttpStatusCode.valueOf(204))
+                .body(mentorService.updateMentorAnswer(id, mentorAnswerDtoRequest));
+    }
+
+    @PostMapping("/upgrade-to-author")
+    ResponseEntity<HttpStatus> updateMentorAnswer() {
+        mentorService.upgradeToAuthor();
+        return ResponseEntity
+                .ok(HttpStatus.valueOf(200));
     }
 }
