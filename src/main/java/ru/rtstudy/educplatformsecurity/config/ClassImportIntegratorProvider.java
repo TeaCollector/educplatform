@@ -16,8 +16,10 @@ public class ClassImportIntegratorProvider implements IntegratorProvider {
                         List.of(CourseShortDescriptionDto.class,
                                 CourseLongDescriptionDto.class,
                                 LessonDto.class,
+                                AllStudentAnswers.class,
                                 TaskDto.class,
-                                AllStudentAnswers.class)
+                                GradeDtoResponse.class,
+                                GradeStudentDtoResponse.class)
                 )
         );
     }
