@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.exception.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.NotEnoughScoreToMentorException;
 import ru.rtstudy.educplatformsecurity.model.Grade;
+import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.model.UserCourse;
+import ru.rtstudy.educplatformsecurity.model.constant.Role;
 import ru.rtstudy.educplatformsecurity.repository.CourseRepository;
 import ru.rtstudy.educplatformsecurity.repository.UserCourseRepository;
 import ru.rtstudy.educplatformsecurity.service.GradeService;
@@ -43,15 +45,16 @@ public class UserCourseServiceImpl implements UserCourseService {
 
     @Override
     public void upgradeToMentor(Long courseId) {
-        Long userId = util.findUserFromContext().getId();
+        User user = util.findUserFromContext();
         List<Long> lessonsIds = gradeService.getAllLessonsId(courseId);
-        List<Grade> gradeList = gradeService.getAllGradesFromCourse(lessonsIds, userId);
+        List<Grade> gradeList = gradeService.getAllGradesFromCourse(lessonsIds, user.getId());
         double average = 0;
         for (Grade grade: gradeList) {
             average += grade.getGrade();
         }
         if (average / gradeList.size() >= 8) {
-            userCourseRepository.upgradeToMentor(userId, courseId);
+            userCourseRepository.upgradeToMentor(user.getId(), courseId);
+            user.setRole(Role.ROLE_MENTOR);
         } else {
             throw new NotEnoughScoreToMentorException("You don't have enough score to became a mentor.");
         }

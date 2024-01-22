@@ -16,6 +16,6 @@ public class CourseLongDescriptionDto {
     private String description;
     private String category;
     private short duration;
-    private DifficultLevel difficult;
+    private DifficultLevel difficultLevel;
 
 }

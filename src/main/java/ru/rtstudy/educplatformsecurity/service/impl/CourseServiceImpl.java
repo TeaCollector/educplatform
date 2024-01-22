@@ -24,6 +24,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
@@ -46,11 +47,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseLongDescriptionDto findCourseById(Long id) {
         return courseRepository.findCourseById(id)
-                .orElseThrow(() -> new CourseNotFoundException("Course was not found"));
+                .orElseThrow(() -> new CourseNotFoundException("Course was not found."));
     }
 
     @Override
-    @Transactional
     public Course createCourse(Course course) {
 
         Category category = categoryRepository.getCategoryByName(course.getCategory().getTitle());
@@ -66,7 +66,6 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    @Transactional
     public void updateCourse(Course course, Long id) {
 
         Course toUpdate = courseRepository.findById(id)

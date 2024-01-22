@@ -34,14 +34,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers("/api/v1/auth/**")
                             .permitAll()
-                            .anyRequest().authenticated();
+                            .anyRequest()
+                            .authenticated();
 //                            .requestMatchers("/api/v1/courses/**").hasRole("STUDENT");
 
                 })
-                        .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
-                        .authenticationProvider(authenticationProvider()).addFilterBefore(
-                                jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                        .build();
+                .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
+                .authenticationProvider(authenticationProvider()).addFilterBefore(
+                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean

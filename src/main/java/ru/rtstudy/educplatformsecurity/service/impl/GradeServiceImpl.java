@@ -1,5 +1,6 @@
 package ru.rtstudy.educplatformsecurity.service.impl;
 
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

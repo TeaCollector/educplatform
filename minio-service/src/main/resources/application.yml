@@ -1,3 +1,6 @@
+server:
+  port: 8082
+
 spring:
   config:
     import: optional:file:.env[.properties]
@@ -5,11 +8,30 @@ spring:
     url: http://${MINIO_HOST}
     access-key: ${MINIO_USERNAME}
     secret-key: ${MINIO_PASSWORD}
-    bucket: sample
+    bucket: educplatform
+    put-object-part-size: 5242880
+
+  datasource:
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://${POSTGRES_HOST}/${POSTGRES_DB}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  liquibase:
+    change-log: classpath:liquibase/db.changelog-master.yml
+
+app:
+  streaming:
+
 
 #  jpa:
 #    hibernate:
 #      ddl-auto: create-drop
-
-server:
-  port: 8082

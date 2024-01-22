@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.CourseMapper;
 import ru.rtstudy.educplatformsecurity.dto.request.CourseDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
+import ru.rtstudy.educplatformsecurity.exception.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.model.Course;
 import ru.rtstudy.educplatformsecurity.service.CourseService;
 
