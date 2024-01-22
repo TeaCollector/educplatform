@@ -36,7 +36,7 @@ public class MentorServiceImpl implements MentorService {
     public List<Course> getAllCoursesForMentor() {
         User mentor = util.findUserFromContext();
         return userCourseRepository.findAllByUserAndMentorCourse(mentor, true)
-                .orElseThrow(() -> new UserNotMentorException("Пользователь не является ментором ни для одного курса!"))
+                .orElseThrow(() -> new UserNotMentorException("User is not a mentor for any course"))
                 .stream()
                 .map(UserCourse::getCourse)
                 .toList();
@@ -47,10 +47,10 @@ public class MentorServiceImpl implements MentorService {
         List<Course> mentorCourses = getAllCoursesForMentor();
         return mentorCourses.stream()
                 .flatMap(course -> gradeRepository.findAllByCourseId(course.getId())
-                        .orElseThrow(() -> new NoCompletedTasksException("Нет готовых для проверки заданий!"))
+                        .orElseThrow(() -> new NoCompletedTasksException("There are no completed tasks"))
                         .stream())
                 .map(grade -> gradeRepository.getGradeById(grade.getId())
-                        .orElseThrow(() -> new GradeNotFoundException("Такой оценки не существует")))
+                        .orElseThrow(() -> new GradeNotFoundException("Grade not found")))
                 .toList();
     }
 
@@ -60,12 +60,12 @@ public class MentorServiceImpl implements MentorService {
         boolean isMentorForCourse = userCourseRepository.isMentorForCourse(mentorId, courseId);
         if (isMentorForCourse) {
             return gradeRepository.findAllByCourseId(courseId)
-                    .orElseThrow(() -> new NoCompletedTasksException("Нет готовых для проверки заданий!"))
+                    .orElseThrow(() -> new NoCompletedTasksException("There are no completed tasks"))
                     .stream()
                     .map(gradeMapper::toDto)
                     .toList();
         } else {
-            throw new UserNotMentorException("Пользователь не является ментором для данного курса");
+            throw new UserNotMentorException("User is not a mentor for any course");
         }
     }
 
@@ -75,12 +75,12 @@ public class MentorServiceImpl implements MentorService {
         boolean isMentorForLesson = userCourseRepository.isMentorForLesson(mentorId, lessonId);
         if (isMentorForLesson) {
             return gradeRepository.findAllByLessonId(lessonId)
-                    .orElseThrow(() -> new NoCompletedTasksException("Нет готовых для проверки заданий!"))
+                    .orElseThrow(() -> new NoCompletedTasksException("There are no completed tasks"))
                     .stream()
                     .map(gradeMapper::toDto)
                     .toList();
         } else {
-            throw new UserNotMentorException("Пользователь не является ментором для урока данного курса");
+            throw new UserNotMentorException("User is not a mentor for any course");
         }
 
     }
@@ -91,10 +91,10 @@ public class MentorServiceImpl implements MentorService {
         Grade gradeToUpdate = gradeRepository.getReferenceById(id);
         boolean isMentorForLesson = userCourseRepository.isMentorForLesson(mentor.getId(), gradeToUpdate.getLesson().getId());
         if (!isMentorForLesson) {
-            throw new UserNotMentorException("Пользователь не является ментором для урока данного курса");
+            throw new UserNotMentorException("User is not a mentor for this course lesson");
         }
         if (gradeToUpdate.getMentor() != null) {
-            throw new MentorAnswerAlreadyExistsException("Это задание уже было проверено");
+            throw new MentorAnswerAlreadyExistsException("This task is already reviewed");
         }
         gradeRepository.addMentorReview(id, mentorAnswerDtoRequest.grade(), mentorAnswerDtoRequest.rework(), mentorAnswerDtoRequest.mentorAnswer(), mentor);
         return mentorAnswerDtoRequest;
@@ -109,7 +109,7 @@ public class MentorServiceImpl implements MentorService {
             gradeRepository.updateMentorReview(id, mentorAnswerDtoRequest.grade(), mentorAnswerDtoRequest.rework(), mentorAnswerDtoRequest.mentorAnswer());
             return mentorAnswerDtoRequest;
         } else {
-            throw new UserNotMentorException("Пользователь не является ментором для урока данного курса");
+            throw new UserNotMentorException("User is not a mentor for this course lesson");
         }
     }
 
@@ -119,7 +119,7 @@ public class MentorServiceImpl implements MentorService {
         if (gradeRepository.countAllAnswersByMentorUserId(mentorId) >= 100) {
             userService.changeUserRole(mentorId, Role.ROLE_AUTHOR);
         } else {
-            throw new NotEnoughScoreToAuthorException("Недостаточное количество проверенных заданий для права авторства");
+            throw new NotEnoughScoreToAuthorException("Not enough reviewed tasks to become author");
         }
     }
 }
