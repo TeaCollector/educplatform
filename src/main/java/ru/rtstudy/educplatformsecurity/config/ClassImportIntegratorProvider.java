@@ -17,6 +17,8 @@ public class ClassImportIntegratorProvider implements IntegratorProvider {
                                 CourseLongDescriptionDto.class,
                                 LessonDto.class,
                                 TaskDto.class,
+                                GradeDtoResponse.class,
+                                GradeStudentDtoResponse.class)
                                 AllStudentAnswers.class)
                 )
         );
