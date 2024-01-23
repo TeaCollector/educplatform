@@ -69,7 +69,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: title
-                  value: 'Java-разработчик'
+                  value: 'Java-developer'
               - column:
                   name: description
                   value: 'На этом курсе вы прокачаетесь до уровня Senior Java Developer и будете самым крутым разработчиком в компании.'

@@ -10,7 +10,7 @@ import ru.rtstudy.educplatformsecurity.exception.*;
 
 import java.time.LocalDateTime;
 
-@RestControllerAdvice
+//@RestControllerAdvice
 public class ExceptionController {
 
     @ExceptionHandler(value = {

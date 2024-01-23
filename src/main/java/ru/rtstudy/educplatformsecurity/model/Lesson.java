@@ -1,14 +1,16 @@
 package ru.rtstudy.educplatformsecurity.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 
 @Entity(name = "Lesson")
 @Table(name = "lessons")
 @NoArgsConstructor
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@Builder
 public class Lesson {
 
     @Id

@@ -38,12 +38,14 @@ public class TaskController {
                                                  @RequestBody TaskDto taskDto) {
         Task task = mapper.toEntity(taskDto);
         taskService.updateTask(id, task);
-        return ResponseEntity.ok(HttpStatus.valueOf(201));
+        return ResponseEntity
+                .ok(HttpStatus.valueOf(201));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteTask(@PathVariable(name = "id") Long id) {
         taskService.deleteTask(id);
-        return ResponseEntity.ok(HttpStatus.valueOf(204));
+        return ResponseEntity
+                .ok(HttpStatus.valueOf(204));
     }
 }

@@ -10,4 +10,6 @@ public interface MinioService {
     Mono<UploadResponse> uploadFile(Mono<FilePart> filePart);
 
     Mono<ByteArrayResource> download(String fileName);
+
+    Mono<UploadResponse> putObject(FilePart file);
 }

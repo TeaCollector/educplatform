@@ -32,14 +32,12 @@ databaseChangeLog:
                   name: course_id
                   type: bigint
                   constraints:
-                    nullable: false
                     foreignKeyName: fk_lessons_courses
                     references: courses(id)
               - column:
                   name: task_id
                   type: bigint
                   constraints:
-                    nullable: false
                     foreignKeyName: fk_lessons_tasks
                     references: tasks(id)
               - column:
