@@ -1,8 +1,11 @@
 package ru.rtstudy.educplatformsecurity.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.data.jpa.repository.Query;
 import ru.rtstudy.educplatformsecurity.model.User;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import ru.rtstudy.educplatformsecurity.model.UserCourse;
 
 import java.util.List;
@@ -21,6 +24,7 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
             """)
     boolean isMentorForCourse(Long userId, Long courseId);
 
+
     @Query("""
             select count(us) > 0
             from UserCourse us
@@ -31,4 +35,23 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
                 AND us.mentorCourse = true
             """)
     boolean isMentorForLesson(Long userId, Long lessonId);
+
+    @Modifying
+    @Query("""
+            update UserCourse us
+            set us.endCourse = true, us.finishCourse = current_timestamp 
+            where us.user.id = :userId
+            and us.course.id = :courseId
+            """)
+    void finishCourse(Long userId, Long courseId);
+
+
+    @Modifying
+    @Query("""
+            update UserCourse us
+            set us.mentorCourse = true
+            where us.user.id = :userId
+            and us.course.id = :courseId
+            """)
+    void upgradeToMentor(Long userId, Long courseId);
 }

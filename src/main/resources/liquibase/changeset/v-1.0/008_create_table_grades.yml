@@ -23,7 +23,6 @@ databaseChangeLog:
                   name: mentor_id
                   type: bigint
                   constraints:
-                    nullable: false
                     foreignKeyName: fk_grades_users-mentor
                     references: users(id)
               - column:
