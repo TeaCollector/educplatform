@@ -3,6 +3,7 @@ package ru.rtstudy.educplatformsecurity.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
+import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.model.Category;
 
 import java.util.List;
@@ -16,11 +17,11 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     Category getCategoryByName(String title);
 
     @Query("""
-            select new CourseLongDescriptionDto(c.title, c.description, c.category.title, c.duration, c.difficult.difficultLevel)
+            select new CourseShortDescriptionDto(c.title, c.description)
             from Course c
             where c.category.id = :categoryId
             """)
-    Optional<List<CourseLongDescriptionDto>> getCourseByCategoryId(Long categoryId);
+    Optional<List<CourseShortDescriptionDto>> getCourseByCategoryId(Long categoryId);
 }
 
 

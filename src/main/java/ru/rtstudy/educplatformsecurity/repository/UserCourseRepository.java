@@ -51,4 +51,12 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
             and us.course.id = :courseId
             """)
     void upgradeToMentor(Long userId, Long courseId);
+
+    @Query("""
+            select 1 
+            from UserCourse uc
+            where uc.course.id = :courseId
+            and uc.user.id = :userId
+            """)
+    boolean onCourse(Long courseId, Long userId);
 }

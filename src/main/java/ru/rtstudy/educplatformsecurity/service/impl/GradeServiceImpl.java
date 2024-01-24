@@ -1,6 +1,5 @@
 package ru.rtstudy.educplatformsecurity.service.impl;
 
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -8,10 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.dto.ChangeStudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.request.StudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.response.AllStudentAnswers;
-import ru.rtstudy.educplatformsecurity.exception.AnswersNotFoundException;
-import ru.rtstudy.educplatformsecurity.exception.CourseNotFoundException;
-import ru.rtstudy.educplatformsecurity.exception.ResolveAllTaskException;
+import ru.rtstudy.educplatformsecurity.exception.*;
 import ru.rtstudy.educplatformsecurity.model.Grade;
+import ru.rtstudy.educplatformsecurity.model.Lesson;
+import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.repository.GradeRepository;
 import ru.rtstudy.educplatformsecurity.repository.LessonRepository;
 import ru.rtstudy.educplatformsecurity.repository.UserCourseRepository;
@@ -33,13 +32,22 @@ public class GradeServiceImpl implements GradeService {
     private final Util util;
 
     @Override
+    @Transactional
     public StudentAnswerDto sendAnswer(StudentAnswerDto studentAnswerDto) {
-        Grade grade = Grade.builder()
-                .lesson(lessonRepository.getReferenceById(studentAnswerDto.lessonId()))
-                .student(util.findUserFromContext())
-                .studentAnswer(studentAnswerDto.studentAnswer())
-                .build();
-        gradeRepository.save(grade);
+        User user = util.findUserFromContext();
+        Lesson lesson = lessonRepository.findById(studentAnswerDto.lessonId())
+                .orElseThrow(() -> new LessonNotFoundException("Lesson not found."));
+        boolean onCourse = userCourseRepository.onCourse(lesson.getCourse().getId(), user.getId());
+        if (onCourse) {
+            Grade grade = Grade.builder()
+                    .lesson(lesson)
+                    .student(user)
+                    .studentAnswer(studentAnswerDto.studentAnswer())
+                    .build();
+            gradeRepository.save(grade);
+        } else {
+            throw new EnterOnCourseException("Please enter on course.");
+        }
         return studentAnswerDto;
     }
 

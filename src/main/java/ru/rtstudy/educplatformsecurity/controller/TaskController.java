@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.TaskMapper;
 import ru.rtstudy.educplatformsecurity.dto.response.TaskDto;
@@ -25,6 +26,7 @@ public class TaskController {
                 .body(taskService.getTask(id));
     }
 
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PostMapping
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
         taskService.createTask(taskDto);
@@ -33,6 +35,7 @@ public class TaskController {
                 .body(taskDto);
     }
 
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PutMapping("{id}")
     public ResponseEntity<HttpStatus> updateTask(@PathVariable(name = "id") Long id,
                                                  @RequestBody TaskDto taskDto) {
@@ -42,6 +45,7 @@ public class TaskController {
                 .ok(HttpStatus.valueOf(201));
     }
 
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteTask(@PathVariable(name = "id") Long id) {
         taskService.deleteTask(id);

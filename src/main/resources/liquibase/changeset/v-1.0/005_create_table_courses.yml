@@ -30,7 +30,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: difficult_id
-                  type: smallint
+                  type: bigint
                   constraints:
                     nullable: false
                     foreignKeyName: fk_courses_difficult

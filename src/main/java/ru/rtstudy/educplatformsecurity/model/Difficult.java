@@ -18,7 +18,7 @@ public class Difficult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Byte id;
+    private Long id;
 
     @ToString.Include
     @Enumerated(value = EnumType.STRING)

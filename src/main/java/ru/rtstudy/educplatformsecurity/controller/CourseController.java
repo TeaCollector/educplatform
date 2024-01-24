@@ -3,6 +3,7 @@ package ru.rtstudy.educplatformsecurity.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.CourseMapper;
 import ru.rtstudy.educplatformsecurity.dto.request.CourseDtoRequest;
@@ -27,14 +28,7 @@ public class CourseController {
                 .body(courseService.findCourseById(id));
     }
 
-    @PostMapping
-    public ResponseEntity<CourseDtoRequest> createCourse(@RequestBody CourseDtoRequest courseDtoRequest) {
-        Course course = mapper.toEntity(courseDtoRequest);
-        return ResponseEntity
-                .status(HttpStatusCode.valueOf(201))
-                .body(mapper.toDto(courseService.createCourse(course)));
-    }
-
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PutMapping("{id}")
     public ResponseEntity<HttpStatus> updateCourse(@PathVariable(name = "id") Long id,
                                                    @RequestBody CourseDtoRequest courseDtoRequest) {
@@ -43,6 +37,16 @@ public class CourseController {
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    @PostMapping
+    public ResponseEntity<CourseDtoRequest> createCourse(@RequestBody CourseDtoRequest courseDtoRequest) {
+        Course course = mapper.toEntity(courseDtoRequest);
+        return ResponseEntity
+                .status(HttpStatusCode.valueOf(201))
+                .body(mapper.toDto(courseService.createCourse(course)));
+    }
+
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteCourse(@PathVariable(name = "id") Long id) {
         courseService.deleteCourse(id);

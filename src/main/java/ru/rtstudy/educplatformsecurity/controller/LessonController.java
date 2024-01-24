@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.LessonMapper;
 import ru.rtstudy.educplatformsecurity.dto.request.LessonDtoRequest;
@@ -27,6 +28,7 @@ public class LessonController {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PostMapping
     public ResponseEntity<LessonDtoResponse> createLesson(@RequestBody LessonDtoRequest lessonDtoRequest) {
         Lesson lesson = lessonService.createLesson(lessonDtoRequest);
@@ -36,6 +38,7 @@ public class LessonController {
                 .body(lessonResponse);
     }
 
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PutMapping("{lesson_id}")
     public ResponseEntity<LessonDtoRequest> changeLesson(@PathVariable(name = "lesson_id") Long lessonId,
                                                          @RequestBody LessonDtoRequest lessonDtoRequest) {
@@ -45,6 +48,7 @@ public class LessonController {
                 .body(lessonDtoRequest);
     }
 
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatusCode> deleteLesson(@PathVariable(name = "id") Long id) {
         lessonService.deleteLesson(id);

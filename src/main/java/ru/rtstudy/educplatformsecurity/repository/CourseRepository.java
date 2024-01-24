@@ -19,7 +19,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             """)
     Optional<List<CourseShortDescriptionDto>> findCourseByDifficultId(@Param(value = "id") Long id);
 
-
     @Query("""
             select new CourseShortDescriptionDto(c.title, c.description) 
             from Course c

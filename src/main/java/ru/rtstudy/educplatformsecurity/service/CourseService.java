@@ -12,11 +12,11 @@ public interface CourseService {
 
     List<CourseShortDescriptionDto> getCoursesByDifficultId(Long id);
 
-    List<CourseShortDescriptionDto> findCourseByCategoryId(Long id);
-
     Course createCourse(Course course);
 
     void updateCourse(Course course, Long id);
 
     void deleteCourse(Long id);
+
+    boolean checkForUpdateOrDeleteCourse(Long courseId);
 }

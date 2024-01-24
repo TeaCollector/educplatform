@@ -9,6 +9,7 @@ import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.exception.CategoryNotExistsException;
 import ru.rtstudy.educplatformsecurity.exception.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.DifficultNotExistsException;
+import ru.rtstudy.educplatformsecurity.exception.NotCourseAuthorException;
 import ru.rtstudy.educplatformsecurity.model.Category;
 import ru.rtstudy.educplatformsecurity.model.Course;
 import ru.rtstudy.educplatformsecurity.model.Difficult;
@@ -34,14 +35,16 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<CourseShortDescriptionDto> getCoursesByDifficultId(Long id) {
-        return courseRepository.findCourseByDifficultId(id)
+        difficultRepository.findById(id)
                 .orElseThrow(() -> new DifficultNotExistsException("Difficult not exists."));
-    }
-
-    @Override
-    public List<CourseShortDescriptionDto> findCourseByCategoryId(Long id) {
-        return courseRepository.findCourseByCategoryId(id)
-                .orElseThrow(() -> new CategoryNotExistsException("Category was not found."));
+        return courseRepository.findCourseByDifficultId(id)
+                .map(course -> {
+                    if(course.size() == 0) {
+                        return null;
+                    }
+                    return course;
+                })
+                .orElseThrow(() -> new CourseNotFoundException("Course not found"));
     }
 
     @Override
@@ -66,25 +69,40 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void updateCourse(Course course, Long id) {
+    public void updateCourse(Course course, Long courseId) {
 
-        Course toUpdate = courseRepository.findById(id)
+        Course toUpdate = courseRepository.findById(courseId)
                 .orElseThrow(() -> new CourseNotFoundException("Course was not found."));
 
-        toUpdate.setDuration(course.getDuration());
-        toUpdate.setTitle(course.getTitle());
-        toUpdate.setDescription(course.getDescription());
+        if (checkForUpdateOrDeleteCourse(courseId)) {
+            toUpdate.setDuration(course.getDuration());
+            toUpdate.setTitle(course.getTitle());
+            toUpdate.setDescription(course.getDescription());
 
-        if (!course.getCategory().getTitle().equals(toUpdate.getCategory().getTitle())) {
-            toUpdate.setCategory(categoryRepository.getCategoryByName(course.getCategory().getTitle()));
-        }
-        if (!course.getDifficult().getDifficultLevel().name().equals(toUpdate.getDifficult().getDifficultLevel().name())) {
-            toUpdate.setDifficult(difficultRepository.getDifficultByDifficultName(course.getDifficult().getDifficultLevel()));
+            if (!course.getCategory().getTitle().equals(toUpdate.getCategory().getTitle())) {
+                toUpdate.setCategory(categoryRepository.getCategoryByName(course.getCategory().getTitle()));
+            }
+            if (!course.getDifficult().getDifficultLevel().name().equals(toUpdate.getDifficult().getDifficultLevel().name())) {
+                toUpdate.setDifficult(difficultRepository.getDifficultByDifficultName(course.getDifficult().getDifficultLevel()));
+            }
+        } else {
+            throw new NotCourseAuthorException("You are not course author.");
         }
     }
 
     @Override
-    public void deleteCourse(Long id) {
-        courseRepository.deleteById(id);
+    public void deleteCourse(Long courseId) {
+        if (checkForUpdateOrDeleteCourse(courseId)) {
+            courseRepository.deleteById(courseId);
+        } else {
+            throw new NotCourseAuthorException("You are not course author");
+        }
+    }
+
+    public boolean checkForUpdateOrDeleteCourse(Long courseId) {
+        Course toDelete = courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseNotFoundException("Course was not found."));
+        Long authorCourseId = util.findUserFromContext().getId();
+        return authorCourseId.equals(toDelete.getCourseAuthor().getId());
     }
 }

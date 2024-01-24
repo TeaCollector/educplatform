@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
+import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.service.CategoryService;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<CourseLongDescriptionDto>> getCoursesByCategoryId(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<List<CourseShortDescriptionDto>> getCoursesByCategoryId(@PathVariable(name = "id") Long id) {
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
                 .body(categoryService.getCoursesByCategory(id));
