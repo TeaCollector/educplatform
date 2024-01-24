@@ -53,7 +53,7 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
     void upgradeToMentor(Long userId, Long courseId);
 
     @Query("""
-            select 1 
+            select count(uc) > 0
             from UserCourse uc
             where uc.course.id = :courseId
             and uc.user.id = :userId

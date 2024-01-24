@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 public class ExceptionController {
 
     @ExceptionHandler(value = {
-            RuntimeException.class,
             CourseNotFoundException.class,
             LessonNotFoundException.class,
             AnswersNotFoundException.class,
