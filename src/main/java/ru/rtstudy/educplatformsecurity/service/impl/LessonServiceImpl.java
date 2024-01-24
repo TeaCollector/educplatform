@@ -1,11 +1,10 @@
 package ru.rtstudy.educplatformsecurity.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-import ru.rtstudy.educplatformsecurity.dto.response.LessonDto;
+import ru.rtstudy.educplatformsecurity.dto.request.LessonDtoRequest;
+import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoResponse;
 import ru.rtstudy.educplatformsecurity.exception.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.LessonNotFoundException;
 import ru.rtstudy.educplatformsecurity.model.Course;
@@ -22,7 +21,7 @@ public class LessonServiceImpl implements LessonService {
     private final CourseRepository courseRepository;
 
     @Override
-    public LessonDto findLessonById(Long id) {
+    public LessonDtoResponse findLessonById(Long id) {
         return lessonRepository.getLessonById(id)
                 .orElseThrow(() -> new LessonNotFoundException("Lesson was not found."));
     }
@@ -34,16 +33,35 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     @Transactional
-    public LessonDto createLesson(LessonDto lessonDto) {
-        Course course = courseRepository.findByTitle(lessonDto.courseName())
+    public Lesson updateLesson(LessonDtoRequest lessonDtoRequest, Long lessonId) {
+        Lesson lesson = lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new LessonNotFoundException("Lesson not found."));
+
+        lesson.setTitle(lessonDtoRequest.title());
+        lesson.setDescription(lessonDtoRequest.description());
+        lesson.setFileName(lessonDtoRequest.fileName());
+
+        if (!lessonDtoRequest.courseName().equals(lesson.getCourse().getTitle())) {
+            Course course = courseRepository.findByTitle(lessonDtoRequest.courseName())
+                    .orElseThrow(() -> new CourseNotFoundException("Course not found."));
+            lesson.setCourse(course);
+        }
+        return lesson;
+    }
+
+    @Override
+    @Transactional
+    public Lesson createLesson(LessonDtoRequest lessonDtoRequest) {
+        Course course = courseRepository.findByTitle(lessonDtoRequest.courseName())
                 .orElseThrow(() -> new CourseNotFoundException("Course not found."));
+
         Lesson lesson = Lesson.builder()
-                .title(lessonDto.title())
-                .description(lessonDto.description())
-                .fileName(lessonDto.fileName())
+                .title(lessonDtoRequest.title())
+                .description(lessonDtoRequest.description())
+                .fileName(lessonDtoRequest.fileName())
                 .course(course)
                 .build();
         lessonRepository.save(lesson);
-        return lessonDto;
+        return lesson;
     }
 }

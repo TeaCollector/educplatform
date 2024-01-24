@@ -4,31 +4,15 @@ server:
 spring:
   config:
     import: optional:file:.env[.properties]
+
   minio:
     url: http://${MINIO_HOST}
     access-key: ${MINIO_USERNAME}
     secret-key: ${MINIO_PASSWORD}
     bucket: ${MINIO_BUCKET}
 
-  datasource:
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
-    url: jdbc:postgresql://${POSTGRES_HOST}/${POSTGRES_DB}
-    driver-class-name: org.postgresql.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-
-  liquibase:
-    change-log: classpath:liquibase/db.changelog-master.yml
-
 educplatform:
-  uri: http://localhost:8081/api/v1/auth/check
+  uri: ${COURSE_SERVICE_URI}
 #  jpa:
 #    hibernate:
 #      ddl-auto: create-drop

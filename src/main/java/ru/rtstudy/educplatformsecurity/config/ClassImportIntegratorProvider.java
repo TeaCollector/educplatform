@@ -15,11 +15,13 @@ public class ClassImportIntegratorProvider implements IntegratorProvider {
                 new ClassImportIntegrator(
                         List.of(CourseShortDescriptionDto.class,
                                 CourseLongDescriptionDto.class,
-                                LessonDto.class,
+                                LessonDtoResponse.class,
                                 AllStudentAnswers.class,
                                 TaskDto.class,
                                 GradeDtoResponse.class,
-                                GradeStudentDtoResponse.class)
+                                GradeStudentDtoResponse.class,
+                                LessonDtoResponse.class)
+
                 )
         );
     }

@@ -9,7 +9,7 @@ public interface TaskService {
 
     TaskDto getTask(Long id);
 
-    Task createTask(Task task);
+    Task createTask(TaskDto task);
 
     void updateTask(Long id, Task task);
 

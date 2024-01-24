@@ -27,10 +27,10 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
-        Task task = mapper.toEntity(taskDto);
+        taskService.createTask(taskDto);
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
-                .body(mapper.toDto(taskService.createTask(task)));
+                .body(taskDto);
     }
 
     @PutMapping("{id}")

@@ -10,7 +10,7 @@ import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 @Setter
 @Getter
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class Lesson {
 
     @Id
@@ -26,7 +26,7 @@ public class Lesson {
     @Column(name = "file_name")
     private String fileName;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 

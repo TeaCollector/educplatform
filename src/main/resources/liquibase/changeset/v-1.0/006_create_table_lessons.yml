@@ -33,6 +33,7 @@ databaseChangeLog:
                   type: bigint
                   constraints:
                     foreignKeyName: fk_lessons_courses
+                    onDelete: set null
                     references: courses(id)
               - column:
                   name: task_id

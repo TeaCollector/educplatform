@@ -53,4 +53,9 @@ public class Course {
 
     @Embedded
     private CreateUpdateTime time;
+
+    @PreRemove
+    private void preRemove() {
+        lessons.forEach(lesson -> lesson.setCourse(null));
+    }
 }

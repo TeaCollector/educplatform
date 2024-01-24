@@ -1,12 +1,16 @@
 package ru.rtstudy.educplatformsecurity.service;
 
-import ru.rtstudy.educplatformsecurity.dto.response.LessonDto;
+import ru.rtstudy.educplatformsecurity.dto.request.LessonDtoRequest;
+import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoResponse;
+import ru.rtstudy.educplatformsecurity.model.Lesson;
 
 public interface LessonService {
 
-    LessonDto findLessonById(Long id);
+    LessonDtoResponse findLessonById(Long id);
 
     void deleteLesson(Long id);
 
-    LessonDto createLesson(LessonDto lessonDto);
+    Lesson updateLesson(LessonDtoRequest lessonDtoRequest, Long lessonId);
+
+    Lesson createLesson(LessonDtoRequest lesson);
 }

@@ -1,4 +1,8 @@
 databaseChangeLog:
+  - property:
+      name: now
+      value: now()
+      dbms: postgresql
   - changeSet:
       id: create-table-users
       author: Alexandr
@@ -42,7 +46,7 @@ databaseChangeLog:
                   name: created_at
                   type: timestamp
                   constraints:
-                    defaultValue: now()
+                    defaultValueFunction: ${now}
               - column:
                   name: updated_at
                   type: timestamp

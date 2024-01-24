@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.dto.response.TaskDto;
+import ru.rtstudy.educplatformsecurity.exception.LessonNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.TaskNotFoundException;
+import ru.rtstudy.educplatformsecurity.model.Lesson;
 import ru.rtstudy.educplatformsecurity.model.Task;
 import ru.rtstudy.educplatformsecurity.repository.TaskRepository;
 import ru.rtstudy.educplatformsecurity.service.TaskService;
@@ -23,8 +25,17 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task createTask(Task task) {
-        return taskRepository.save(task);
+    @Transactional
+    public Task createTask(TaskDto taskDto) {
+        Task task = Task.builder()
+                .description(taskDto.description())
+                .build();
+
+        task = taskRepository.save(task);
+        Lesson lesson = taskRepository.getLessonById(taskDto.lessonId())
+                .orElseThrow(() -> new LessonNotFoundException("Lesson was not found."));
+        lesson.setTaskId(task);
+        return task;
     }
 
     @Override

@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @ToString(onlyExplicitlyIncluded = true)
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Task {
 
