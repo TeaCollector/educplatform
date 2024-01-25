@@ -11,5 +11,7 @@ public interface AuthenticationService {
 
     TokenDto signIn(SignInRequest request);
 
-    boolean hasCredential(String fileName);
+    boolean hasCredentialToDelete(String fileName);
+
+    boolean isAuthor(Long userId);
 }

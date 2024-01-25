@@ -12,6 +12,7 @@ import ru.rtstudy.educplatformsecurity.dto.request.SignInRequest;
 import ru.rtstudy.educplatformsecurity.dto.request.SignUpRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.TokenDto;
 import ru.rtstudy.educplatformsecurity.dto.response.SignUpDto;
+import ru.rtstudy.educplatformsecurity.exception.UserNotFoundException;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.repository.UserRepository;
@@ -61,8 +62,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public boolean hasCredential(String fileName) {
+    public boolean hasCredentialToDelete(String fileName) {
         Long userId = util.findUserFromContext().getId();
-        return userRepository.hasCredential(fileName, userId);
+        boolean b = userRepository.hasCredential(fileName, userId);
+        log.info("FILE NAME IS: {} AND HAS CREDENTIAL: {}", fileName, b);
+        return b;
+    }
+
+    @Override
+    public boolean isAuthor(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found."))
+                .getRole()
+                .equals(Role.ROLE_AUTHOR);
     }
 }

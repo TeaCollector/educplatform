@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.rtstudy.educplatform.minioservice.dto.UploadResponse;
+import ru.rtstudy.educplatform.minioservice.exception.NotAuthenticatedException;
+import ru.rtstudy.educplatform.minioservice.exception.NotAuthorException;
 import ru.rtstudy.educplatform.minioservice.exception.NotLessonAuthorException;
 import ru.rtstudy.educplatform.minioservice.service.MinioService;
 
@@ -28,32 +30,48 @@ public class MinioController {
     @PostMapping
     public Mono<UploadResponse> upload(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
                                        @RequestPart(value = "files") Mono<FilePart> files) {
-        authenticationRequest(token, null);
-        return minioService.uploadFile(files);
+        boolean isAuthor = authenticationRequest(token);
+        if (isAuthor) {
+            return minioService.uploadFile(files);
+        } else {
+            try {
+                throw new NotAuthorException("You not author.");
+            } catch (NotAuthorException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @PostMapping("stream")
+    public Mono<UploadResponse> uploadStream(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+                                             @RequestPart(value = "files") FilePart files) {
+        boolean isAuthor = authenticationRequest(token);
+        if (isAuthor) {
+            return minioService.putObject(files);
+        } else {
+            try {
+                throw new NotAuthorException("You not author.");
+            } catch (NotAuthorException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @GetMapping("{file_name}")
     public ResponseEntity<Mono<ByteArrayResource>> download(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
                                                             @PathVariable(value = "file_name") String fileName) {
-        authenticationRequest(token, null);
+        boolean isAuthenticated = authenticationRequest(token);
+        log.info("Is Authenticated: {}", isAuthenticated);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
                 .body(minioService.download(fileName));
     }
 
-    @PostMapping("stream")
-    public Mono<UploadResponse> uploadStream(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-                                             @RequestPart(value = "files") FilePart files) {
-        authenticationRequest(token, null);
-        return minioService.putObject(files);
-
-    }
-
-    @DeleteMapping("${file_name}")
+    @DeleteMapping("{file_name}")
     public ResponseEntity<Mono<HttpStatus>> deleteFile(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-                                                       @PathVariable(name = "file_name") String fileName) {
-        boolean hasCredential = authenticationRequest(token, fileName);
+                                                       @PathVariable(value = "file_name") String fileName) {
+        boolean hasCredential = authenticationRequestToDeleteFile(token, fileName);
         if (hasCredential) {
             minioService.deleteFile(fileName);
         } else {
@@ -63,12 +81,34 @@ public class MinioController {
                 .ok(Mono.just(HttpStatus.valueOf(204)));
     }
 
-    private boolean authenticationRequest(String token, String fileName) {
-        return Boolean.TRUE.equals(webClient.get()
-                .header("Authorization", token)
-                .header("file-name", fileName)
+    private Boolean authenticationRequest(String token) {
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/check")
+                        .build())
+                .header(HttpHeaders.AUTHORIZATION, token)
                 .retrieve()
                 .bodyToMono(Boolean.class)
-                .block());
+                .block();
+    }
+
+    private Boolean authenticationRequestToDeleteFile(String token, String fileName) {
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/check-for-delete")
+                        .queryParam("file-name", fileName)
+                        .build())
+                .header(HttpHeaders.AUTHORIZATION, token)
+//                .header("file-name", fileName)
+//                .exchangeToMono(response -> {
+//                    log.info("RESPONSE: {}", response);
+//                    if (response.statusCode().equals(HttpStatus.OK)) {
+//                        return response.bodyToMono(Boolean.class);
+//                    }
+//                    throw new NotAuthenticatedException("You are not authenticated.");
+//                })
+                .retrieve()
+                .bodyToMono(Boolean.class)
+                .block();
     }
 }

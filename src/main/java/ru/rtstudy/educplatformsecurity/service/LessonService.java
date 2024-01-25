@@ -13,4 +13,6 @@ public interface LessonService {
     Lesson updateLesson(LessonDtoRequest lessonDtoRequest, Long lessonId);
 
     Lesson createLesson(LessonDtoRequest lesson);
+
+    void deleteFile(String fileName);
 }

@@ -11,10 +11,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserByEmail(String email);
 
     @Query("""
-            select count(l.fileName) > 0 
+            select count(l) > 0 
             from Course c 
             join User u on c.courseAuthor.id = u.id
-            join Lesson l on c.id = l.course.id 
+            join Lesson l on l.course.id = c.id
             where l.fileName = :fileName
             and u.id = :userId
             """)

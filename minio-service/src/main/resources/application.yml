@@ -10,6 +10,3 @@ spring:
     access-key: ${MINIO_USERNAME}
     secret-key: ${MINIO_PASSWORD}
     bucket: ${MINIO_BUCKET}
-
-educplatform:
-  uri: ${COURSE_SERVICE_URI}

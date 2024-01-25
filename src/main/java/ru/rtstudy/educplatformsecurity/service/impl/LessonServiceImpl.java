@@ -68,6 +68,11 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
+    public void deleteFile(String fileName) {
+        lessonRepository.deleteLesson(fileName);
+    }
+
+    @Override
     public void deleteLesson(Long lessonId) {
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new LessonNotFoundException("Lesson not found."));
