@@ -4,15 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import ru.rtstudy.educplatformsecurity.dto.response.GradeDtoResponse;
+import ru.rtstudy.educplatformsecurity.dto.response.GradeStudentDtoResponse;
 import ru.rtstudy.educplatformsecurity.model.Grade;
 import ru.rtstudy.educplatformsecurity.model.User;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.rtstudy.educplatformsecurity.dto.response.AllStudentAnswers;
-import ru.rtstudy.educplatformsecurity.model.Grade;
 
 
 import java.util.List;
@@ -21,21 +18,32 @@ import java.util.Optional;
 public interface GradeRepository extends JpaRepository<Grade, Long> {
 
     @Query("""
-
             select g
             from Grade g
-            join fetch g.lesson l
+            join g.lesson l
             where l.course.id = :courseId
             """)
-    Optional<List<Grade>> findAllByCourseId(Long courseId);
+    Optional<List<Grade>> findAllGradesByCourseId(Long courseId);
 
     @Query("""
-            select g
+            select new GradeStudentDtoResponse(s.firstName, s.lastName, l.id, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
             from Grade g
-            join fetch g.lesson l
+            join g.lesson l
+            join g.student s
+            join l.taskId t
             where l.id = :lessonId
             """)
-    Optional<List<Grade>> findAllByLessonId(Long lessonId);
+    Optional<List<GradeStudentDtoResponse>> findAllStudentsAnswersByLessonId(Long lessonId);
+
+    @Query("""
+            select new GradeStudentDtoResponse(s.firstName, s.lastName, l.id, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
+            from Grade g
+            join g.lesson l
+            join g.student s
+            join l.taskId t
+            where l.course.id = :courseId
+            """)
+    Optional<List<GradeStudentDtoResponse>> findAllStudentsAnswersByCourseId(Long courseId);
 
     @Query("""
             select new GradeDtoResponse(g.lesson.id, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
@@ -45,13 +53,14 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
             where g.id = :gradeId
             """)
     Optional<GradeDtoResponse> getGradeById(Long gradeId);
+
     @Query("""
             select new AllStudentAnswers(t.description,
-             g.grade, 
-             g.rework, 
-             g.studentAnswer, 
-             g.mentorAnswer) 
-            from Grade g 
+             g.grade,
+             g.rework,
+             g.studentAnswer,
+             g.mentorAnswer)
+            from Grade g
             join Lesson l on g.lesson.id = l.id
             join Task t on l.taskId.id = t.id
             where g.student.id = :id
@@ -60,11 +69,11 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
 
     @Query("""
             select new AllStudentAnswers(t.description,
-             g.grade, 
-             g.rework, 
-             g.studentAnswer, 
-             g.mentorAnswer) 
-            from Grade g 
+             g.grade,
+             g.rework,
+             g.studentAnswer,
+             g.mentorAnswer)
+            from Grade g
             join Lesson l on g.lesson.id = l.id
             join Task t on l.taskId.id = t.id
             where g.student.id = :userId
@@ -72,14 +81,13 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
             """)
     Optional<List<AllStudentAnswers>> findAllStudentsAnswerForCourse(Long courseId, Long userId);
 
-
     @Modifying
     @Query("""
             update Grade g
             set g.grade = :grade,
-                g.rework = :rework,
-                g.mentorAnswer = :mentorAnswer,
-                g.mentor = :mentor
+            g.rework = :rework,
+            g.mentorAnswer = :mentorAnswer,
+            g.mentor = :mentor
             where g.id = :gradeId
             """)
     void addMentorReview(Long gradeId, Byte grade, Boolean rework, String mentorAnswer, User mentor);
@@ -88,8 +96,8 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     @Query("""
             update Grade g
             set g.grade = :grade,
-                g.rework = :rework,
-                g.mentorAnswer = :mentorAnswer
+            g.rework = :rework,
+            g.mentorAnswer = :mentorAnswer
             where g.id = :gradeId
             """)
     void updateMentorReview(Long gradeId, Byte grade, Boolean rework, String mentorAnswer);
@@ -100,6 +108,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
            where g.mentor.id = :userId
            """)
     int countAllAnswersByMentorUserId(Long userId);
+
     @Modifying
     @Query("""
             update Grade g
@@ -117,7 +126,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     Optional<List<Long>> getAllLessonsId(Long courseId);
 
     @Query(value = """
-            select g 
+            select g
             from Grade g
             where g.lesson.id in :lessonsIds
             and g.rework = false
