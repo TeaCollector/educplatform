@@ -22,4 +22,11 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             where l.id = :lessonId
             """)
     Optional<Lesson> getLessonById(Long lessonId);
+
+    @Query("""
+            select l.course.id
+            from Task t join Lesson l 
+            where t.id = :taskId
+            """)
+    Long findCourseByTaskId(Long taskId);
 }

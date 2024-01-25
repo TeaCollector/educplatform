@@ -5,18 +5,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.dto.response.TaskDto;
 import ru.rtstudy.educplatformsecurity.exception.LessonNotFoundException;
+import ru.rtstudy.educplatformsecurity.exception.NotCourseAuthorException;
 import ru.rtstudy.educplatformsecurity.exception.TaskNotFoundException;
 import ru.rtstudy.educplatformsecurity.model.Lesson;
 import ru.rtstudy.educplatformsecurity.model.Task;
 import ru.rtstudy.educplatformsecurity.repository.TaskRepository;
+import ru.rtstudy.educplatformsecurity.service.CourseService;
 import ru.rtstudy.educplatformsecurity.service.TaskService;
 
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
+    private final CourseService courseService;
 
     @Override
     public TaskDto getTask(Long id) {
@@ -25,7 +29,6 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    @Transactional
     public Task createTask(TaskDto taskDto) {
         Task task = Task.builder()
                 .description(taskDto.description())
@@ -39,15 +42,29 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    @Transactional
-    public void updateTask(Long id, Task task) {
-        Task toUpdate = taskRepository.findById(id)
+    public Task updateTask(Long taskId, Task task) {
+        Task toUpdate = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException("Task was not found"));
-        toUpdate.setDescription(task.getDescription());
+        Long courseId = taskRepository.findCourseByTaskId(toUpdate.getId());
+        boolean isAuthor = courseService.isAuthor(courseId);
+        if (isAuthor) {
+            toUpdate.setDescription(task.getDescription());
+        } else {
+            throw new NotCourseAuthorException("You are not course author.");
+        }
+        return task;
     }
 
     @Override
-    public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
+    public void deleteTask(Long taskId) {
+        Task taskToDelete = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Task was not found"));
+        Long courseId = taskRepository.findCourseByTaskId(taskToDelete.getId());
+        boolean isAuthor = courseService.isAuthor(courseId);
+        if (isAuthor) {
+            taskRepository.deleteById(taskId);
+        } else {
+            throw new NotCourseAuthorException("You are not course author.");
+        }
     }
 }

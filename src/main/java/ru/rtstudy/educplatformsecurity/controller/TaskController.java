@@ -36,19 +36,20 @@ public class TaskController {
     }
 
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    @PutMapping("{id}")
-    public ResponseEntity<HttpStatus> updateTask(@PathVariable(name = "id") Long id,
+    @PutMapping("{task_id}")
+    public ResponseEntity<TaskDto> updateTask(@PathVariable(name = "task_id") Long id,
                                                  @RequestBody TaskDto taskDto) {
         Task task = mapper.toEntity(taskDto);
-        taskService.updateTask(id, task);
+        taskDto = mapper.toDto(taskService.updateTask(id, task));
         return ResponseEntity
-                .ok(HttpStatus.valueOf(201));
+                .status(HttpStatus.valueOf(201))
+                .body(taskDto);
     }
 
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    @DeleteMapping("{id}")
-    public ResponseEntity<HttpStatus> deleteTask(@PathVariable(name = "id") Long id) {
-        taskService.deleteTask(id);
+    @DeleteMapping("{task_id}")
+    public ResponseEntity<HttpStatus> deleteTask(@PathVariable(name = "task_id") Long taskId) {
+        taskService.deleteTask(taskId);
         return ResponseEntity
                 .ok(HttpStatus.valueOf(204));
     }

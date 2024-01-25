@@ -7,18 +7,22 @@ import ru.rtstudy.educplatformsecurity.dto.request.LessonDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoResponse;
 import ru.rtstudy.educplatformsecurity.exception.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.LessonNotFoundException;
+import ru.rtstudy.educplatformsecurity.exception.NotCourseAuthorException;
 import ru.rtstudy.educplatformsecurity.model.Course;
 import ru.rtstudy.educplatformsecurity.model.Lesson;
 import ru.rtstudy.educplatformsecurity.repository.CourseRepository;
 import ru.rtstudy.educplatformsecurity.repository.LessonRepository;
+import ru.rtstudy.educplatformsecurity.service.CourseService;
 import ru.rtstudy.educplatformsecurity.service.LessonService;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class LessonServiceImpl implements LessonService {
 
     private final LessonRepository lessonRepository;
     private final CourseRepository courseRepository;
+    private final CourseService courseService;
 
     @Override
     public LessonDtoResponse findLessonById(Long id) {
@@ -27,30 +31,28 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public void deleteLesson(Long id) {
-        lessonRepository.deleteById(id);
-    }
-
-    @Override
-    @Transactional
     public Lesson updateLesson(LessonDtoRequest lessonDtoRequest, Long lessonId) {
+
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new LessonNotFoundException("Lesson not found."));
+        boolean isAuthor = courseService.isAuthor(lesson.getCourse().getId());
 
-        lesson.setTitle(lessonDtoRequest.title());
-        lesson.setDescription(lessonDtoRequest.description());
-        lesson.setFileName(lessonDtoRequest.fileName());
-
-        if (!lessonDtoRequest.courseName().equals(lesson.getCourse().getTitle())) {
-            Course course = courseRepository.findByTitle(lessonDtoRequest.courseName())
-                    .orElseThrow(() -> new CourseNotFoundException("Course not found."));
-            lesson.setCourse(course);
+        if (isAuthor) {
+            lesson.setTitle(lessonDtoRequest.title());
+            lesson.setDescription(lessonDtoRequest.description());
+            lesson.setFileName(lessonDtoRequest.fileName());
+            if (!lessonDtoRequest.courseName().equals(lesson.getCourse().getTitle())) {
+                Course course = courseRepository.findByTitle(lessonDtoRequest.courseName())
+                        .orElseThrow(() -> new CourseNotFoundException("Course not found."));
+                lesson.setCourse(course);
+            }
+        } else {
+            throw new NotCourseAuthorException("You are not course author.");
         }
         return lesson;
     }
 
     @Override
-    @Transactional
     public Lesson createLesson(LessonDtoRequest lessonDtoRequest) {
         Course course = courseRepository.findByTitle(lessonDtoRequest.courseName())
                 .orElseThrow(() -> new CourseNotFoundException("Course not found."));
@@ -63,5 +65,18 @@ public class LessonServiceImpl implements LessonService {
                 .build();
         lessonRepository.save(lesson);
         return lesson;
+    }
+
+    @Override
+    public void deleteLesson(Long lessonId) {
+        Lesson lesson = lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new LessonNotFoundException("Lesson not found."));
+        boolean isAuthor = courseService.isAuthor(lesson.getCourse().getId());
+
+        if (isAuthor) {
+            lessonRepository.deleteById(lessonId);
+        } else {
+            throw new NotCourseAuthorException("You are not course author.");
+        }
     }
 }

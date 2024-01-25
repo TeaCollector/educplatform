@@ -13,6 +13,3 @@ spring:
 
 educplatform:
   uri: ${COURSE_SERVICE_URI}
-#  jpa:
-#    hibernate:
-#      ddl-auto: create-drop

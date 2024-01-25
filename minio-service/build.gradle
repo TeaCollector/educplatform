@@ -29,11 +29,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
 
-    runtimeOnly "org.postgresql:postgresql:$postgresqlVersion"
-
-    implementation "org.liquibase:liquibase-core:$liquibaseVersion"
-
-    implementation "com.jlefebure:spring-boot-starter-minio:$minioSpringBootVersion"
     implementation "io.minio:minio:$minioVersion"
 }
 

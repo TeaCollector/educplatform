@@ -18,5 +18,5 @@ public interface CourseService {
 
     void deleteCourse(Long id);
 
-    boolean checkForUpdateOrDeleteCourse(Long courseId);
+    boolean isAuthor(Long courseId);
 }

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
-import ru.rtstudy.educplatformsecurity.exception.CategoryNotExistsException;
 import ru.rtstudy.educplatformsecurity.exception.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.DifficultNotExistsException;
 import ru.rtstudy.educplatformsecurity.exception.NotCourseAuthorException;
@@ -74,7 +73,7 @@ public class CourseServiceImpl implements CourseService {
         Course toUpdate = courseRepository.findById(courseId)
                 .orElseThrow(() -> new CourseNotFoundException("Course was not found."));
 
-        if (checkForUpdateOrDeleteCourse(courseId)) {
+        if (isAuthor(courseId)) {
             toUpdate.setDuration(course.getDuration());
             toUpdate.setTitle(course.getTitle());
             toUpdate.setDescription(course.getDescription());
@@ -92,17 +91,17 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void deleteCourse(Long courseId) {
-        if (checkForUpdateOrDeleteCourse(courseId)) {
+        if (isAuthor(courseId)) {
             courseRepository.deleteById(courseId);
         } else {
             throw new NotCourseAuthorException("You are not course author");
         }
     }
 
-    public boolean checkForUpdateOrDeleteCourse(Long courseId) {
-        Course toDelete = courseRepository.findById(courseId)
+    public boolean isAuthor(Long courseId) {
+        Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new CourseNotFoundException("Course was not found."));
         Long authorCourseId = util.findUserFromContext().getId();
-        return authorCourseId.equals(toDelete.getCourseAuthor().getId());
+        return authorCourseId.equals(course.getCourseAuthor().getId());
     }
 }
