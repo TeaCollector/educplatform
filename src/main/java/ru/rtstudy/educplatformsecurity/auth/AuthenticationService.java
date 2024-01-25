@@ -11,4 +11,5 @@ public interface AuthenticationService {
 
     TokenDto signIn(SignInRequest request);
 
+    boolean hasCredential(String fileName);
 }

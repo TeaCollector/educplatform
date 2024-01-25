@@ -1,6 +1,9 @@
 package ru.rtstudy.educplatform.minioservice.service.impl;
 
 import io.minio.*;
+import io.minio.errors.InsufficientDataException;
+import io.minio.errors.InternalException;
+import io.minio.errors.XmlParserException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 @Service
@@ -88,6 +93,20 @@ public class MinioServiceImpl implements MinioService {
                 }).log();
     }
 
+    @Override
+    public boolean deleteFile(String fileName) {
+        try {
+            minioClient.removeObject(RemoveObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(fileName)
+                    .build());
+            return true;
+        } catch (InsufficientDataException | InternalException | InvalidKeyException | IOException |
+                 NoSuchAlgorithmException | XmlParserException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     private UploadObjectArgs getUploadObjectArgs(FilePart multipartFile, File temp) throws IOException {
         return UploadObjectArgs.builder()
@@ -108,7 +127,7 @@ public class MinioServiceImpl implements MinioService {
     }
 
     private String createUUID() {
-        String uuid = UUID.randomUUID().toString().replace("-","");
+        String uuid = UUID.randomUUID().toString().replace("-", "");
         return uuid;
     }
 }

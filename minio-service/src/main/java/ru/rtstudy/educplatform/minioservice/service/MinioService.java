@@ -12,4 +12,6 @@ public interface MinioService {
     Mono<ByteArrayResource> download(String fileName);
 
     Mono<UploadResponse> putObject(FilePart file);
+
+    boolean deleteFile(String fileName);
 }

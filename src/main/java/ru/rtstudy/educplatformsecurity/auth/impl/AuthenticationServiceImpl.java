@@ -15,6 +15,7 @@ import ru.rtstudy.educplatformsecurity.dto.response.SignUpDto;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.repository.UserRepository;
+import ru.rtstudy.educplatformsecurity.util.Util;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final Util util;
 
     @Override
     public SignUpDto signUp(SignUpRequest request) {
@@ -47,13 +49,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public TokenDto signIn(SignInRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())).getPrincipal();
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()))
+                .getPrincipal();
         User user = userRepository.findUserByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
         String jwt = jwtService.generateToken(user);
         return TokenDto.builder()
                 .token(jwt)
                 .build();
+    }
+
+    @Override
+    public boolean hasCredential(String fileName) {
+        Long userId = util.findUserFromContext().getId();
+        return userRepository.hasCredential(fileName, userId);
     }
 }

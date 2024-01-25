@@ -27,7 +27,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("check")
-    public ResponseEntity<Boolean> forAuthentication() {
+    public ResponseEntity<Boolean> forAuthentication(@RequestHeader(value = "file-name") String fileName) {
+        authenticationService.hasCredential(fileName);
         return ResponseEntity
                 .ok(true);
     }
