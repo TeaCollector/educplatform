@@ -3,7 +3,6 @@ package ru.rtstudy.educplatformsecurity.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rtstudy.educplatformsecurity.dto.mapper.impl.GradeMapper;
 import ru.rtstudy.educplatformsecurity.dto.request.MentorAnswerDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.GradeDtoResponse;
 import ru.rtstudy.educplatformsecurity.dto.response.GradeStudentDtoResponse;
@@ -28,7 +27,6 @@ public class MentorServiceImpl implements MentorService {
 
     private final UserCourseRepository userCourseRepository;
     private final GradeRepository gradeRepository;
-    private final GradeMapper gradeMapper;
     private final Util util;
     private final UserService userService;
 
@@ -46,7 +44,7 @@ public class MentorServiceImpl implements MentorService {
     public List<GradeDtoResponse> getAllAnswersForMentorCourses() {
         List<Course> mentorCourses = getAllCoursesForMentor();
         return mentorCourses.stream()
-                .flatMap(course -> gradeRepository.findAllByCourseId(course.getId())
+                .flatMap(course -> gradeRepository.findAllGradesByCourseId(course.getId())
                         .orElseThrow(() -> new NoCompletedTasksException("There are no completed tasks"))
                         .stream())
                 .map(grade -> gradeRepository.getGradeById(grade.getId())
@@ -59,11 +57,8 @@ public class MentorServiceImpl implements MentorService {
         Long mentorId = util.findUserFromContext().getId();
         boolean isMentorForCourse = userCourseRepository.isMentorForCourse(mentorId, courseId);
         if (isMentorForCourse) {
-            return gradeRepository.findAllByCourseId(courseId)
-                    .orElseThrow(() -> new NoCompletedTasksException("There are no completed tasks"))
-                    .stream()
-                    .map(gradeMapper::toDto)
-                    .toList();
+            return gradeRepository.findAllStudentsAnswersByCourseId(courseId)
+                    .orElseThrow(() -> new NoCompletedTasksException("There are no completed tasks"));
         } else {
             throw new UserNotMentorException("User is not a mentor for any course");
         }
@@ -74,11 +69,8 @@ public class MentorServiceImpl implements MentorService {
         Long mentorId = util.findUserFromContext().getId();
         boolean isMentorForLesson = userCourseRepository.isMentorForLesson(mentorId, lessonId);
         if (isMentorForLesson) {
-            return gradeRepository.findAllByLessonId(lessonId)
-                    .orElseThrow(() -> new NoCompletedTasksException("There are no completed tasks"))
-                    .stream()
-                    .map(gradeMapper::toDto)
-                    .toList();
+            return gradeRepository.findAllStudentsAnswersByLessonId(lessonId)
+                    .orElseThrow(() -> new NoCompletedTasksException("There are no completed tasks"));
         } else {
             throw new UserNotMentorException("User is not a mentor for any course");
         }
