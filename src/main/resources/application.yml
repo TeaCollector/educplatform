@@ -26,17 +26,6 @@ spring:
   liquibase:
     change-log: classpath:liquibase/db.changelog-master.yml
 
-  servlet:
-    multipart:
-      max-request-size: 100000000
-      enabled: true
-      max-file-size: 100000000
-      resolve-lazily: true
-
-#  jackson:
-#    serialization:
-#      fail-on-empty-beans: false
-
 jwt:
   secretKey: gfjnkdjgf234234jn2340v8uUNdiFasd4vfeSDSkjvdfggdadg5t53461gradf
 
