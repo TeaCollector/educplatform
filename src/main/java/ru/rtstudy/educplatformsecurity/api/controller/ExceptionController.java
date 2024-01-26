@@ -1,4 +1,4 @@
-package ru.rtstudy.educplatformsecurity.controller;
+package ru.rtstudy.educplatformsecurity.api.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
