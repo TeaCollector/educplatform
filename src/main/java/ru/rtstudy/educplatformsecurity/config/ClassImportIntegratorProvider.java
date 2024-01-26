@@ -22,6 +22,8 @@ public class ClassImportIntegratorProvider implements IntegratorProvider {
                                 GradeStudentDtoResponse.class,
                                 LessonDtoResponse.class)
 
+                                GradeStudentDtoResponse.class,
+                                AllStudentAnswers.class)
                 )
         );
     }

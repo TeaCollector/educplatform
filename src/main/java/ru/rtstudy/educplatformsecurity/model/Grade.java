@@ -33,11 +33,11 @@ public class Grade {
 
     @ToString.Include
     @Column(name = "grade")
-    private byte grade;
+    private Byte grade;
 
     @ToString.Include
     @Column(name = "rework")
-    private boolean rework;
+    private Boolean rework;
 
     @ToString.Include
     @Column(name = "student_answer")
