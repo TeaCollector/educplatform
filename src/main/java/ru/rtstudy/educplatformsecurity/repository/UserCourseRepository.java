@@ -35,7 +35,6 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
             """)
     void upgradeToMentor(Long userId, Long courseId);
 
-
     @Query("""
             select count(us) > 0
             from UserCourse us
