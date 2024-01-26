@@ -1,9 +1,10 @@
-package ru.rtstudy.educplatformsecurity.controller;
+package ru.rtstudy.educplatformsecurity.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.rtstudy.educplatformsecurity.api.AuthenticationApi;
 import ru.rtstudy.educplatformsecurity.auth.AuthenticationService;
 import ru.rtstudy.educplatformsecurity.dto.request.SignInRequest;
 import ru.rtstudy.educplatformsecurity.dto.request.SignUpRequest;
@@ -15,32 +16,31 @@ import ru.rtstudy.educplatformsecurity.util.Util;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-public class AuthenticationController {
+public class AuthenticationController implements AuthenticationApi {
 
     private final AuthenticationService authenticationService;
     private final LessonService lessonService;
     private final Util util;
 
-    @PostMapping("signup")
-    public ResponseEntity<SignUpDto> signup(@RequestBody SignUpRequest request) {
+    @Override
+    public ResponseEntity<SignUpDto> signup(SignUpRequest request) {
         return ResponseEntity.ok(authenticationService.signUp(request));
     }
 
-    @PostMapping("signin")
-    public ResponseEntity<TokenDto> signIn(@RequestBody SignInRequest request) {
+    @Override
+    public ResponseEntity<TokenDto> signIn(SignInRequest request) {
         return ResponseEntity.ok(authenticationService.signIn(request));
     }
 
-    @GetMapping("check")
+    @Override
     public Boolean forAuthentication() {
         User user = util.findUserFromContext();
         return authenticationService.isAuthor(user.getId());
     }
 
-    @GetMapping("check-for-delete")
-    public Boolean forAuthenticationToDelete(@RequestParam(value = "file-name") String fileName) {
+    @Override
+    public Boolean forAuthenticationToDelete(String fileName) {
         User user = util.findUserFromContext();
         log.info("User name: {}", user.getEmail());
         if (authenticationService.isAuthor(user.getId()) &&

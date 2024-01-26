@@ -1,5 +1,10 @@
 package ru.rtstudy.educplatformsecurity.config;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +43,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> {
                     request
                             .requestMatchers("/api/v1/auth/**").permitAll()
+                            .requestMatchers("/swagger-ui/**").permitAll()
+                            .requestMatchers("/v3/api-docs/**").permitAll()
                             .anyRequest().authenticated();
                 })
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
@@ -79,4 +86,25 @@ public class SecurityConfig {
         expressionHandler.setRoleHierarchy(roleHierarchy);
         return expressionHandler;
     }
+    @Bean
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .addSecurityItem(new SecurityRequirement()
+                        .addList("bearerAuth"))
+                .components(
+                        new Components()
+                                .addSecuritySchemes("bearerAuth",
+                                        new SecurityScheme()
+                                                .type(SecurityScheme.Type.HTTP)
+                                                .scheme("bearer")
+                                                .bearerFormat("JWT")
+                                )
+                )
+                .info(new Info()
+                        .title("BIN Educational Platform API")
+                        .description("OpenAPI документация для проекта EduPlatform")
+                        .version("1.0.0")
+                );
+    }
 }
+
