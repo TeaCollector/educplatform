@@ -51,7 +51,9 @@ public interface CategoryApi {
     @GetMapping("/{id}")
     ResponseEntity<List<CourseShortDescriptionDto>> getCoursesByCategoryId(@PathVariable(name = "id")
                                                                            @Parameter(
-                                                                                   name = "id", description = "Идентификатор категории", required = true,
+                                                                                   name = "id",
+                                                                                   description = "Идентификатор категории",
+                                                                                   required = true,
                                                                                    schema = @Schema(type = "integer")
                                                                            )
                                                                            Long id);

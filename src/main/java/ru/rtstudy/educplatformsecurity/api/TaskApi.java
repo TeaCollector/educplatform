@@ -23,13 +23,15 @@ public interface TaskApi {
             description = "Информация о задании",
             content = {@Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = TaskDto.class, description = "Полученное задание"))
+                    schema = @Schema(implementation = TaskDto.class))
             })
     )
     @GetMapping("{task_id}")
     ResponseEntity<TaskDto> getTask(@PathVariable(name = "task_id")
                                     @Parameter(
-                                            name = "task_id", description = "Идентификатор задания", required = true,
+                                            name = "task_id",
+                                            description = "Идентификатор задания",
+                                            required = true,
                                             schema = @Schema(type = "integer")
                                     )
                                     Long id);
@@ -41,7 +43,7 @@ public interface TaskApi {
             description = "Успешное создание задания",
             content = {@Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = TaskDto.class, description = "Новое задание"))
+                    schema = @Schema(implementation = TaskDto.class))
             })
     )
     @PostMapping
@@ -56,7 +58,9 @@ public interface TaskApi {
     @PutMapping("{task_id}")
     ResponseEntity<TaskDto> updateTask(@PathVariable(name = "task_id")
                                        @Parameter(
-                                               name = "task_id", description = "Идентификатор задания", required = true,
+                                               name = "task_id",
+                                               description = "Идентификатор задания",
+                                               required = true,
                                                schema = @Schema(type = "integer")
                                        )
                                        Long id,
@@ -71,7 +75,9 @@ public interface TaskApi {
     @DeleteMapping("{task_id}")
     ResponseEntity<HttpStatus> deleteTask(@PathVariable(name = "task_id")
                                           @Parameter(
-                                                  name = "task_id", description = "Идентификатор задания", required = true,
+                                                  name = "task_id",
+                                                  description = "Идентификатор задания",
+                                                  required = true,
                                                   schema = @Schema(type = "integer")
                                           )
                                           Long taskId);
