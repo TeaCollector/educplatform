@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3'
 
 networks:
   educ_platform:
@@ -12,20 +12,20 @@ volumes:
 
 services:
 
-  platform:
+  education-platform:
     build:
       context: .
     container_name: education_platform
     networks:
       - educ_platform
     depends_on:
-      - postgres
+      - database
     env_file:
       - .env
     ports:
       - '8081:8081'
 
-  postgres:
+  database:
     restart: always
     container_name: postgres
     networks:
@@ -36,12 +36,14 @@ services:
       POSTGRES_USER: ${POSTGRES_USERNAME}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - '5435:5432'
+      - "5435:5432"
 
   minio-service:
     build:
       context: ./minio-service
     container_name: minio-service
+    env_file:
+      - .env
     networks:
       - educ_platform
     depends_on:

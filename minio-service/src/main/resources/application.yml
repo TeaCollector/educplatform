@@ -10,3 +10,6 @@ spring:
     access-key: ${MINIO_USERNAME}
     secret-key: ${MINIO_PASSWORD}
     bucket: ${MINIO_BUCKET}
+
+educplatform:
+  uri: http://education-platform:8081/api/v1/auth/

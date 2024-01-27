@@ -26,6 +26,7 @@ spring:
   liquibase:
     change-log: classpath:liquibase/db.changelog-master.yml
 
+
 jwt:
   secretKey: gfjnkdjgf234234jn2340v8uUNdiFasd4vfeSDSkjvdfggdadg5t53461gradf
 

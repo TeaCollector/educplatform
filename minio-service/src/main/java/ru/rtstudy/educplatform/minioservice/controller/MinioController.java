@@ -30,22 +30,20 @@ public class MinioController {
     @PostMapping
     public Mono<UploadResponse> upload(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
                                        @RequestPart(value = "files") Mono<FilePart> files) {
-        boolean isAuthor = authenticationRequest(token);
-        if (isAuthor) {
-            return minioService.uploadFile(files);
-        } else {
-            try {
-                throw new NotAuthorException("You not author.");
-            } catch (NotAuthorException e) {
-                throw new RuntimeException(e);
+        return authenticationRequest(token).flatMap(isAuthor -> {
+            if (isAuthor) {
+                return minioService.uploadFile(files);
+            } else {
+                return Mono.error(new NotAuthorException("You not author."));
             }
-        }
+        });
+
     }
 
     @PostMapping("stream")
     public Mono<UploadResponse> uploadStream(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
                                              @RequestPart(value = "files") FilePart files) {
-        boolean isAuthor = authenticationRequest(token);
+        boolean isAuthor = authenticationRequest(token).block();
         if (isAuthor) {
             return minioService.putObject(files);
         } else {
@@ -60,7 +58,7 @@ public class MinioController {
     @GetMapping("{file_name}")
     public ResponseEntity<Mono<ByteArrayResource>> download(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
                                                             @PathVariable(value = "file_name") String fileName) {
-        boolean isAuthenticated = authenticationRequest(token);
+        boolean isAuthenticated = authenticationRequest(token).block();
         log.info("Is Authenticated: {}", isAuthenticated);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
@@ -81,15 +79,14 @@ public class MinioController {
                 .ok(Mono.just(HttpStatus.valueOf(204)));
     }
 
-    private Boolean authenticationRequest(String token) {
+    private Mono<Boolean> authenticationRequest(String token) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/check")
                         .build())
                 .header(HttpHeaders.AUTHORIZATION, token)
                 .retrieve()
-                .bodyToMono(Boolean.class)
-                .block();
+                .bodyToMono(Boolean.class);
     }
 
     private Boolean authenticationRequestToDeleteFile(String token, String fileName) {
