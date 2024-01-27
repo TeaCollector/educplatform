@@ -37,7 +37,6 @@ public class MinioController {
                 return Mono.error(new NotAuthorException("You not author."));
             }
         });
-
     }
 
     @PostMapping("stream")
