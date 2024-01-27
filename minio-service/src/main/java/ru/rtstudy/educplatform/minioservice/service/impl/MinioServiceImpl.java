@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -19,8 +21,6 @@ import ru.rtstudy.educplatform.minioservice.util.InputStreamCollector;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
@@ -35,29 +35,20 @@ public class MinioServiceImpl implements MinioService {
     private String bucketName;
 
     public Mono<UploadResponse> uploadFile(Mono<FilePart> file) {
-        return file
-                .subscribeOn(Schedulers.boundedElastic())
-                .map(multipartFile -> {
-                    try {
-                        Path path = Path.of(multipartFile.filename());
-
-                        File temp = new File(createUUID());
-                        log.info("THIS IS FILE CAN READ: {}", temp.canRead());
-//                        temp.createNewFile();
-                        log.info("THIS IS FILE CAN READ: {}", temp.canRead());
-                        multipartFile.transferTo(path);
-
-                        UploadObjectArgs uploadObjectArgs = getUploadObjectArgs(multipartFile, path.toFile());
-
-                        ObjectWriteResponse response = minioClient.uploadObject(uploadObjectArgs).get();
-//                        temp.delete();
-                        return UploadResponse.builder()
-                                .objectName(response.object())
-                                .build();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                }).log();
+        return file.subscribeOn(Schedulers.boundedElastic()).map(multipartFile -> {
+            File temp = new File(createUUID());
+            try {
+                multipartFile.transferTo(temp).block();
+                UploadObjectArgs uploadObjectArgs = getUploadObjectArgs(multipartFile, temp);
+                ObjectWriteResponse response = minioClient.uploadObject(uploadObjectArgs).get();
+                temp.delete();
+                return UploadResponse.builder()
+                        .objectName(response.object())
+                        .build();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).log();
     }
 
 
@@ -111,9 +102,16 @@ public class MinioServiceImpl implements MinioService {
     private UploadObjectArgs getUploadObjectArgs(FilePart multipartFile, File temp) throws IOException {
         return UploadObjectArgs.builder()
                 .bucket(bucketName)
-                .object(multipartFile.filename())
-                .filename(temp.getAbsolutePath())
+                .object(temp.getName())
+                .filename(temp.getName())
+                .contentType(getMediaType(multipartFile.headers()))
                 .build();
+    }
+
+    private String getMediaType(HttpHeaders headers) {
+        return headers.getContentType() == null ?
+                MediaType.APPLICATION_OCTET_STREAM_VALUE :
+                headers.getContentType().toString();
     }
 
     private PutObjectArgs getPutObjectArgs(FilePart file, InputStreamCollector inputStreamCollector) throws IOException {

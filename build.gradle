@@ -32,7 +32,7 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
     runtimeOnly "org.postgresql:postgresql:$postgresqlVersion"
-    implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.7.0'
+    implementation "io.hypersistence:hypersistence-utils-hibernate-63:$hypersistenceVrsion"
 
     implementation "io.jsonwebtoken:jjwt-api:$jjwtVersion"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:$jjwtVersion"
@@ -42,6 +42,7 @@ dependencies {
 
     implementation "org.mapstruct:mapstruct:$mapstructVersion"
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+
 
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocOpenApiVersion"
     implementation "io.swagger.core.v3:swagger-annotations:$swaggerAnnotationsVersion"

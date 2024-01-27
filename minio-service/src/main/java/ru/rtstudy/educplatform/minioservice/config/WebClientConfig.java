@@ -8,10 +8,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
+    @Value("${educplatform.uri}")
+    private String uri;
+
     @Bean
     public WebClient webClient() {
         return WebClient.builder()
-                .baseUrl("http://localhost:8081/api/v1/auth/")
+                .baseUrl(uri)
                 .build();
     }
 }
