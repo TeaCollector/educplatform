@@ -1,4 +1,4 @@
-package ru.rtstudy.educplatformsecurity.controller;
+package ru.rtstudy.educplatformsecurity.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.rtstudy.educplatformsecurity.api.LessonApi;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.LessonMapper;
 import ru.rtstudy.educplatformsecurity.dto.request.LessonDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoResponse;
@@ -14,23 +15,21 @@ import ru.rtstudy.educplatformsecurity.service.LessonService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/lessons")
-public class LessonController {
+public class LessonController implements LessonApi {
 
     private final LessonService lessonService;
     private final LessonMapper mapper;
 
-    @GetMapping("{id}")
-    public ResponseEntity<LessonDtoResponse> getLessonById(@PathVariable(name = "id") Long id) {
+    @Override
+    public ResponseEntity<LessonDtoResponse> getLessonById(Long id) {
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
                 .body(lessonService.findLessonById(id));
     }
 
-
+    @Override
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    @PostMapping
-    public ResponseEntity<LessonDtoResponse> createLesson(@RequestBody LessonDtoRequest lessonDtoRequest) {
+    public ResponseEntity<LessonDtoResponse> createLesson(LessonDtoRequest lessonDtoRequest) {
         Lesson lesson = lessonService.createLesson(lessonDtoRequest);
         LessonDtoResponse lessonResponse = mapper.fromEntityToResponse(lesson);
         return ResponseEntity
@@ -38,19 +37,18 @@ public class LessonController {
                 .body(lessonResponse);
     }
 
+    @Override
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    @PutMapping("{lesson_id}")
-    public ResponseEntity<LessonDtoRequest> changeLesson(@PathVariable(name = "lesson_id") Long lessonId,
-                                                         @RequestBody LessonDtoRequest lessonDtoRequest) {
+    public ResponseEntity<LessonDtoRequest> changeLesson(Long lessonId, LessonDtoRequest lessonDtoRequest) {
         lessonService.updateLesson(lessonDtoRequest, lessonId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(lessonDtoRequest);
     }
 
+    @Override
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    @DeleteMapping("{id}")
-    public ResponseEntity<HttpStatusCode> deleteLesson(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<HttpStatusCode> deleteLesson(Long id) {
         lessonService.deleteLesson(id);
         return ResponseEntity
                 .ok(HttpStatusCode.valueOf(204));

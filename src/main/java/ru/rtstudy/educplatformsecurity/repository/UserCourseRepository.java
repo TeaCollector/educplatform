@@ -25,20 +25,21 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
                 AND us.mentorCourse = true
             """)
     boolean isMentorForCourse(Long userId, Long courseId);
+
+    @Modifying
     @Query("""
-            select count(us) > 0
-            from UserCourse us
+            update UserCourse us
+            set us.mentorCourse = true
             where us.user.id = :userId
-                AND us.course.id = :courseId
-                AND us.mentorCourse = true
+            and us.course.id = :courseId
             """)
-    boolean isMentorForCourse(Long userId, Long courseId);
+    void upgradeToMentor(Long userId, Long courseId);
 
     @Query("""
             select count(us) > 0
             from UserCourse us
             join Lesson l
-            on l.id = :lessonId
+            with l.id = :lessonId
             where us.user.id = :userId
                 AND us.course.id = l.course.id
                 AND us.mentorCourse = true
@@ -54,43 +55,11 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
             """)
     void finishCourse(Long userId, Long courseId);
 
-
-    @Modifying
-    @Query("""
-            update UserCourse us
-            set us.mentorCourse = true
-            where us.user.id = :userId
-            and us.course.id = :courseId
-            """)
-    void upgradeToMentor(Long userId, Long courseId);
-
-
     @Query("""
             select count(uc) > 0
             from UserCourse uc
             where uc.course.id = :courseId
             and uc.user.id = :userId
             """)
-    boolean isMentorForLesson(Long userId, Long lessonId);
-
-    @Modifying
-    @Query("""
-            update UserCourse us
-            set us.endCourse = true, us.finishCourse = current_timestamp 
-            where us.user.id = :userId
-            and us.course.id = :courseId
-            """)
-    void finishCourse(Long userId, Long courseId);
-
     boolean onCourse(Long courseId, Long userId);
-}
-
-    @Modifying
-    @Query("""
-            update UserCourse us
-            set us.mentorCourse = true
-            where us.user.id = :userId
-            and us.course.id = :courseId
-            """)
-    void upgradeToMentor(Long userId, Long courseId);
 }
