@@ -219,6 +219,7 @@ databaseChangeLog:
               - column:
                   name: mentor_answer
                   value: 'Да, ты молодец'
+        #                  Курс по Java
         - insert:
             tableName: grades
             columns:
@@ -239,10 +240,10 @@ databaseChangeLog:
                   value: false
               - column:
                   name: student_answer
-                  value: 'Ответ от студента Ивана 1'
+                  value: '(Курс Java) Ответ от студента Ивана 1'
               - column:
                   name: mentor_answer
-                  value: 'Комментарий на ответ Ивана 1'
+                  value: '(Курс Java) Комментарий на ответ Ивана 1'
         - insert:
             tableName: grades
             columns:
@@ -263,10 +264,10 @@ databaseChangeLog:
                   value: false
               - column:
                   name: student_answer
-                  value: 'Ответ от студента Ивана 2'
+                  value: '(Курс Java) Ответ от студента Ивана 2'
               - column:
                   name: mentor_answer
-                  value: 'Комментарий на ответ Ивана 2'
+                  value: '(Курс Java) Комментарий на ответ Ивана 2'
         - insert:
             tableName: grades
             columns:
@@ -287,10 +288,10 @@ databaseChangeLog:
                   value: false
               - column:
                   name: student_answer
-                  value: 'Ответ от студента Ивана 3'
+                  value: '(Курс Java) Ответ от студента Ивана 3'
               - column:
                   name: mentor_answer
-                  value: 'Комментарий на ответ Ивана 3'
+                  value: '(Курс Java) Комментарий на ответ Ивана 3'
         - insert:
             tableName: grades
             columns:
@@ -311,10 +312,10 @@ databaseChangeLog:
                   value: true
               - column:
                   name: student_answer
-                  value: 'Ответ от студента Кузьмы 1'
+                  value: '(Курс Java) Ответ от студента Кузьмы 1'
               - column:
                   name: mentor_answer
-                  value: 'Комментарий на ответ Кузьмы 1'
+                  value: '(Курс Java) Комментарий на ответ Кузьмы 1'
         - insert:
             tableName: grades
             columns:
@@ -335,10 +336,10 @@ databaseChangeLog:
                   value: false
               - column:
                   name: student_answer
-                  value: 'Повторная попытка ответа на задание 1'
+                  value: '(Курс Java) Повторная попытка ответа на задание 1'
               - column:
                   name: mentor_answer
-                  value: 'Комментарий на повторный ответ Кузьмы 1'
+                  value: '(Курс Java) Комментарий на повторный ответ Кузьмы 1'
         - insert:
             tableName: grades
             columns:
@@ -359,7 +360,346 @@ databaseChangeLog:
                   value: true
               - column:
                   name: student_answer
-                  value: 'Ответ от студента Кузьмы 2'
+                  value: '(Курс Java) Ответ от студента Кузьмы 2'
               - column:
                   name: mentor_answer
-                  value: 'Комментарий на ответ Кузьмы 2'
+                  value: '(Курс Java) Комментарий на ответ Кузьмы 2'
+        #                  Курс по Python
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 6
+              - column:
+                  name: lesson_id
+                  value: 4
+              - column:
+                  name: student_answer
+                  value: '(Курс Python) Ответ от студента Ивана 1'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 6
+              - column:
+                  name: lesson_id
+                  value: 5
+              - column:
+                  name: student_answer
+                  value: '(Курс Python) Ответ от студента Ивана 2'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 6
+              - column:
+                  name: lesson_id
+                  value: 6
+              - column:
+                  name: student_answer
+                  value: '(Курс Python) Ответ от студента Ивана 3'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 9
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 4
+              - column:
+                  name: grade
+                  value: 5
+              - column:
+                  name: rework
+                  value: true
+              - column:
+                  name: student_answer
+                  value: '(Курс Python) Ответ от студента Кузьмы 1'
+              - column:
+                  name: mentor_answer
+                  value: '(Курс Python) Комментарий на ответ Кузьмы 1'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 9
+              - column:
+                  name: lesson_id
+                  value: 5
+              - column:
+                  name: student_answer
+                  value: '(Курс Python) Ответ от студента Кузьмы 2'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 9
+              - column:
+                  name: mentor_id
+                  value: 5
+              - column:
+                  name: lesson_id
+                  value: 6
+              - column:
+                  name: grade
+                  value: 9
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: '(Курс Python) Ответ от студента Кузьмы 3'
+              - column:
+                  name: mentor_answer
+                  value: '(Курс Python) Комментарий на ответ Кузьмы 3'
+        #                  Курс по HTML&CSS
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 7
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 10
+              - column:
+                  name: grade
+                  value: 7
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: '(Курс HTML&CSS) Ответ от студента Петра 1'
+              - column:
+                  name: mentor_answer
+                  value: '(Курс HTML&CSS) Комментарий на ответ Петра 1'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 7
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 11
+              - column:
+                  name: grade
+                  value: 8
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: '(Курс HTML&CSS) Ответ от студента Петра 2'
+              - column:
+                  name: mentor_answer
+                  value: '(Курс HTML&CSS) Комментарий на ответ Петра 2'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 7
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 12
+              - column:
+                  name: grade
+                  value: 4
+              - column:
+                  name: rework
+                  value: true
+              - column:
+                  name: student_answer
+                  value: '(Курс HTML&CSS) Ответ от студента Петра 3'
+              - column:
+                  name: mentor_answer
+                  value: '(Курс HTML&CSS) Комментарий на ответ Петра 3'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 8
+              - column:
+                  name: lesson_id
+                  value: 10
+              - column:
+                  name: student_answer
+                  value: '(Курс HTML&CSS) Ответ от студента Александра 1'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 8
+              - column:
+                  name: lesson_id
+                  value: 11
+              - column:
+                  name: student_answer
+                  value: '(Курс HTML&CSS) Ответ от студента Александра 2'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 8
+              - column:
+                  name: lesson_id
+                  value: 12
+              - column:
+                  name: student_answer
+                  value: '(Курс HTML&CSS) Ответ от студента Александра 3'
+        #                  Курс по JS & TS
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 7
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 13
+              - column:
+                  name: grade
+                  value: 1
+              - column:
+                  name: rework
+                  value: true
+              - column:
+                  name: student_answer
+                  value: '(Курс JS & TS) Ответ от студента Петра 1'
+              - column:
+                  name: mentor_answer
+                  value: '(Курс JS & TS) Комментарий на ответ Петра 1'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 7
+              - column:
+                  name: mentor_id
+                  value: 2
+              - column:
+                  name: lesson_id
+                  value: 13
+              - column:
+                  name: grade
+                  value: 6
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: '(Курс JS & TS) Повторный ответ от студента Петра 1'
+              - column:
+                  name: mentor_answer
+                  value: '(Курс JS & TS) Повторный комментарий на ответ Петра 1'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 7
+              - column:
+                  name: lesson_id
+                  value: 14
+              - column:
+                  name: student_answer
+                  value: '(Курс JS & TS) Ответ от студента Петра 2'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 7
+              - column:
+                  name: lesson_id
+                  value: 15
+              - column:
+                  name: student_answer
+                  value: '(Курс JS & TS) Ответ от студента Петра 3'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 8
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 13
+              - column:
+                  name: grade
+                  value: 8
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: '(Курс JS & TS) Ответ от студента Александра 1'
+              - column:
+                  name: mentor_answer
+                  value: '(Курс JS & TS) Комментарий на ответ Александра 1'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 8
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 14
+              - column:
+                  name: grade
+                  value: 10
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: '(Курс JS & TS) Ответ от студента Александра 2'
+              - column:
+                  name: mentor_answer
+                  value: '(Курс JS & TS) Комментарий на ответ Александра 2'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 8
+              - column:
+                  name: lesson_id
+                  value: 15
+              - column:
+                  name: student_answer
+                  value: '(Курс JS & TS) Ответ от студента Александра 3'
