@@ -1,0 +1,152 @@
+databaseChangeLog:
+  - changeSet:
+      id: test-data-insert-into-table-courses
+      author: Anton
+      changes:
+        - insert:
+            tableName: courses
+            columns:
+              - column:
+                  name: title
+                  value: 'Python-developer'
+              - column:
+                  name: description
+                  value: 'Этот курс для любителей синтаксического сахара.'
+              - column:
+                  name: duration
+                  value: 86
+              - column:
+                  name: difficult_id
+                  value: 3
+              - column:
+                  name: category_id
+                  value: 1
+              - column:
+                  name: author_id
+                  value: 1
+        - insert:
+            tableName: courses
+            columns:
+              - column:
+                  name: title
+                  value: 'Kotlin-developer'
+              - column:
+                  name: description
+                  value: 'На этом курсе вы забудете язык Java.'
+              - column:
+                  name: duration
+                  value: 124
+              - column:
+                  name: difficult_id
+                  value: 2
+              - column:
+                  name: category_id
+                  value: 1
+              - column:
+                  name: author_id
+                  value: 1
+        - insert:
+            tableName: courses
+            columns:
+              - column:
+                  name: title
+                  value: 'Основы вёрстки HTML&CSS'
+              - column:
+                  name: description
+                  value: 'На этом курсе будем красить кнопочки.'
+              - column:
+                  name: duration
+                  value: 60
+              - column:
+                  name: difficult_id
+                  value: 3
+              - column:
+                  name: category_id
+                  value: 2
+              - column:
+                  name: author_id
+                  value: 1
+        - insert:
+            tableName: courses
+            columns:
+              - column:
+                  name: title
+                  value: 'Основы веб-разработки JavaScript и TypeScript'
+              - column:
+                  name: description
+                  value: 'Это база это знать надо для Frontend-разработки.'
+              - column:
+                  name: duration
+                  value: 100
+              - column:
+                  name: difficult_id
+                  value: 2
+              - column:
+                  name: category_id
+                  value: 2
+              - column:
+                  name: author_id
+                  value: 1
+        - insert:
+            tableName: courses
+            columns:
+              - column:
+                  name: title
+                  value: 'DevOps-инженер'
+              - column:
+                  name: description
+                  value: 'Этот курс позволит вам взглянуть с другой стороны на разработку.'
+              - column:
+                  name: duration
+                  value: 128
+              - column:
+                  name: difficult_id
+                  value: 1
+              - column:
+                  name: category_id
+                  value: 3
+              - column:
+                  name: author_id
+                  value: 1
+        - insert:
+            tableName: courses
+            columns:
+              - column:
+                  name: title
+                  value: 'Микросервисная архитектура'
+              - column:
+                  name: description
+                  value: 'Этот курс не понравится любителям монолита.'
+              - column:
+                  name: duration
+                  value: 168
+              - column:
+                  name: difficult_id
+                  value: 1
+              - column:
+                  name: category_id
+                  value: 1
+              - column:
+                  name: author_id
+                  value: 2
+        - insert:
+            tableName: courses
+            columns:
+              - column:
+                  name: title
+                  value: 'Реактивное программирование'
+              - column:
+                  name: description
+                  value: 'На этом курсе вы окунётесь в новый дивный мир со своими законами.'
+              - column:
+                  name: duration
+                  value: 180
+              - column:
+                  name: difficult_id
+                  value: 1
+              - column:
+                  name: category_id
+                  value: 1
+              - column:
+                  name: author_id
+                  value: 3

@@ -1,0 +1,365 @@
+databaseChangeLog:
+  - changeSet:
+      id: test-data-insert-into-table-grades
+      author: Anton
+      changes:
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 10
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 1
+              - column:
+                  name: grade
+                  value: 8
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: 'Правильный ответ'
+              - column:
+                  name: mentor_answer
+                  value: 'Ну раз правильный, то поставим 8'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 10
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 2
+              - column:
+                  name: grade
+                  value: 9
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: 'Выдающийся ответ'
+              - column:
+                  name: mentor_answer
+                  value: 'Я такого гения никогда не видел'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 10
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 3
+              - column:
+                  name: grade
+                  value: 10
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: 'Открытие века'
+              - column:
+                  name: mentor_answer
+                  value: 'Это просто прекрасно'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 11
+              - column:
+                  name: mentor_id
+                  value: 5
+              - column:
+                  name: lesson_id
+                  value: 4
+              - column:
+                  name: grade
+                  value: 2
+              - column:
+                  name: rework
+                  value: true
+              - column:
+                  name: student_answer
+                  value: 'Питон ужасный язык'
+              - column:
+                  name: mentor_answer
+                  value: 'Ну и зачем ты сюда поступил тогда?'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 11
+              - column:
+                  name: mentor_id
+                  value: 5
+              - column:
+                  name: lesson_id
+                  value: 4
+              - column:
+                  name: grade
+                  value: 9
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: 'Ну ладно, не такой плохой язык'
+              - column:
+                  name: mentor_answer
+                  value: 'Другое дело, принимаю ответ'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 11
+              - column:
+                  name: mentor_id
+                  value: 5
+              - column:
+                  name: lesson_id
+                  value: 5
+              - column:
+                  name: grade
+                  value: 10
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: 'Я придумал многопоточку в Python'
+              - column:
+                  name: mentor_answer
+                  value: 'Охотно верим'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 11
+              - column:
+                  name: mentor_id
+                  value: 5
+              - column:
+                  name: lesson_id
+                  value: 6
+              - column:
+                  name: grade
+                  value: 1
+              - column:
+                  name: rework
+                  value: true
+              - column:
+                  name: student_answer
+                  value: 'Это моя первая попытка'
+              - column:
+                  name: mentor_answer
+                  value: 'Такая себе первая попытка'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 11
+              - column:
+                  name: mentor_id
+                  value: 5
+              - column:
+                  name: lesson_id
+                  value: 6
+              - column:
+                  name: grade
+                  value: 5
+              - column:
+                  name: rework
+                  value: true
+              - column:
+                  name: student_answer
+                  value: 'Это моя вторая попытка'
+              - column:
+                  name: mentor_answer
+                  value: 'Уже лучше, давай доработаем'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 11
+              - column:
+                  name: mentor_id
+                  value: 5
+              - column:
+                  name: lesson_id
+                  value: 6
+              - column:
+                  name: grade
+                  value: 10
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: 'Это ведь последняя, да?'
+              - column:
+                  name: mentor_answer
+                  value: 'Да, ты молодец'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 6
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 1
+              - column:
+                  name: grade
+                  value: 10
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: 'Ответ от студента Ивана 1'
+              - column:
+                  name: mentor_answer
+                  value: 'Комментарий на ответ Ивана 1'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 6
+              - column:
+                  name: mentor_id
+                  value: 5
+              - column:
+                  name: lesson_id
+                  value: 2
+              - column:
+                  name: grade
+                  value: 9
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: 'Ответ от студента Ивана 2'
+              - column:
+                  name: mentor_answer
+                  value: 'Комментарий на ответ Ивана 2'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 6
+              - column:
+                  name: mentor_id
+                  value: 5
+              - column:
+                  name: lesson_id
+                  value: 3
+              - column:
+                  name: grade
+                  value: 8
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: 'Ответ от студента Ивана 3'
+              - column:
+                  name: mentor_answer
+                  value: 'Комментарий на ответ Ивана 3'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 9
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 1
+              - column:
+                  name: grade
+                  value: 3
+              - column:
+                  name: rework
+                  value: true
+              - column:
+                  name: student_answer
+                  value: 'Ответ от студента Кузьмы 1'
+              - column:
+                  name: mentor_answer
+                  value: 'Комментарий на ответ Кузьмы 1'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 9
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 1
+              - column:
+                  name: grade
+                  value: 6
+              - column:
+                  name: rework
+                  value: false
+              - column:
+                  name: student_answer
+                  value: 'Повторная попытка ответа на задание 1'
+              - column:
+                  name: mentor_answer
+                  value: 'Комментарий на повторный ответ Кузьмы 1'
+        - insert:
+            tableName: grades
+            columns:
+              - column:
+                  name: student_id
+                  value: 9
+              - column:
+                  name: mentor_id
+                  value: 4
+              - column:
+                  name: lesson_id
+                  value: 2
+              - column:
+                  name: grade
+                  value: 1
+              - column:
+                  name: rework
+                  value: true
+              - column:
+                  name: student_answer
+                  value: 'Ответ от студента Кузьмы 2'
+              - column:
+                  name: mentor_answer
+                  value: 'Комментарий на ответ Кузьмы 2'

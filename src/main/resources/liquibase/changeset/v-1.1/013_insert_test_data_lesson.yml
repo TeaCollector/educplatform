@@ -1,0 +1,311 @@
+databaseChangeLog:
+  - changeSet:
+      id: test-data-insert-into-table-lessons
+      author: Anton
+      changes:
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Урок по Python 1'
+              - column:
+                  name: description
+                  value: 'Это первый урок по нашему прекрасному Python'
+              - column:
+                  name: file_name
+                  value: 'python-1.mp4'
+              - column:
+                  name: course_id
+                  value: 2
+              - column:
+                  name: task_id
+                  value: 4
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Урок по Python 2'
+              - column:
+                  name: description
+                  value: 'Это второй урок по нашему прекрасному Python'
+              - column:
+                  name: file_name
+                  value: 'python-2.mp4'
+              - column:
+                  name: course_id
+                  value: 2
+              - column:
+                  name: task_id
+                  value: 5
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Урок по Python 3'
+              - column:
+                  name: description
+                  value: 'Это третий урок по нашему прекрасному Python'
+              - column:
+                  name: file_name
+                  value: 'python-3.mp4'
+              - column:
+                  name: course_id
+                  value: 2
+              - column:
+                  name: task_id
+                  value: 6
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Урок по Kotlin 1'
+              - column:
+                  name: description
+                  value: 'Описание урока с Kotlin 1'
+              - column:
+                  name: file_name
+                  value: 'kotlin-1.mp4'
+              - column:
+                  name: course_id
+                  value: 3
+              - column:
+                  name: task_id
+                  value: 7
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Урок по Kotlin 2'
+              - column:
+                  name: description
+                  value: 'Описание урока с Kotlin 2'
+              - column:
+                  name: file_name
+                  value: 'kotlin-2.mp4'
+              - column:
+                  name: course_id
+                  value: 3
+              - column:
+                  name: task_id
+                  value: 8
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Урок по Kotlin 3'
+              - column:
+                  name: description
+                  value: 'Описание урока с Kotlin 3'
+              - column:
+                  name: file_name
+                  value: 'kotlin-3.mp4'
+              - column:
+                  name: course_id
+                  value: 3
+              - column:
+                  name: task_id
+                  value: 9
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Красим кнопочки и не только на самом деле 1'
+              - column:
+                  name: description
+                  value: 'Подробное объяснение про HTML/CSS 1'
+              - column:
+                  name: file_name
+                  value: 'htmlcss-1.mp4'
+              - column:
+                  name: course_id
+                  value: 4
+              - column:
+                  name: task_id
+                  value: 10
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Красим кнопочки и не только на самом деле 2'
+              - column:
+                  name: description
+                  value: 'Подробное объяснение про HTML/CSS 2'
+              - column:
+                  name: file_name
+                  value: 'htmlcss-2.mp4'
+              - column:
+                  name: course_id
+                  value: 4
+              - column:
+                  name: task_id
+                  value: 11
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Красим кнопочки и не только на самом деле 3'
+              - column:
+                  name: description
+                  value: 'Подробное объяснение про HTML/CSS 3'
+              - column:
+                  name: file_name
+                  value: 'htmlcss-3.mp4'
+              - column:
+                  name: course_id
+                  value: 4
+              - column:
+                  name: task_id
+                  value: 12
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Добавляем жизнь на наши страницы вместе с JS и TS 1'
+              - column:
+                  name: description
+                  value: 'Как и c чем есть JS/TS 1'
+              - column:
+                  name: file_name
+                  value: 'jsts-1.mp4'
+              - column:
+                  name: course_id
+                  value: 5
+              - column:
+                  name: task_id
+                  value: 13
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Добавляем жизнь на наши страницы вместе с JS и TS 2'
+              - column:
+                  name: description
+                  value: 'Как и c чем есть JS/TS 2'
+              - column:
+                  name: file_name
+                  value: 'jsts-2.mp4'
+              - column:
+                  name: course_id
+                  value: 5
+              - column:
+                  name: task_id
+                  value: 14
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Добавляем жизнь на наши страницы вместе с JS и TS 3'
+              - column:
+                  name: description
+                  value: 'Как и c чем есть JS/TS 3'
+              - column:
+                  name: file_name
+                  value: 'jsts-3.mp4'
+              - column:
+                  name: course_id
+                  value: 5
+              - column:
+                  name: task_id
+                  value: 15
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Принципы DevOps 1'
+              - column:
+                  name: description
+                  value: 'Основный принципы DevOps это...'
+              - column:
+                  name: file_name
+                  value: 'devops-1.mp4'
+              - column:
+                  name: course_id
+                  value: 6
+              - column:
+                  name: task_id
+                  value: 16
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Принципы DevOps 2'
+              - column:
+                  name: description
+                  value: 'Ещё другие принципы DevOps это...'
+              - column:
+                  name: file_name
+                  value: 'devops-2.mp4'
+              - column:
+                  name: course_id
+                  value: 6
+              - column:
+                  name: task_id
+                  value: 17
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Принципы DevOps 3'
+              - column:
+                  name: description
+                  value: 'Конец принципов DevOps...'
+              - column:
+                  name: file_name
+                  value: 'devops-3.mp4'
+              - column:
+                  name: course_id
+                  value: 6
+              - column:
+                  name: task_id
+                  value: 18
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Урок про микросервисы'
+              - column:
+                  name: description
+                  value: 'Основные паттерны микросервисной архитектуры...'
+              - column:
+                  name: file_name
+                  value: 'MSA-1.mp4'
+              - column:
+                  name: course_id
+                  value: 7
+              - column:
+                  name: task_id
+                  value: 19
+        - insert:
+            tableName: lessons
+            columns:
+              - column:
+                  name: title
+                  value: 'Урок про реактивщину'
+              - column:
+                  name: description
+                  value: 'Реактивное программирование возникло в результате...'
+              - column:
+                  name: file_name
+                  value: 'reactive.mp4'
+              - column:
+                  name: course_id
+                  value: 8
+              - column:
+                  name: task_id
+                  value: 20
