@@ -30,7 +30,9 @@ public interface LessonApi {
     @GetMapping("{lesson_id}")
     ResponseEntity<LessonDtoResponse> getLessonById(@PathVariable(name = "lesson_id")
                                                     @Parameter(
-                                                            name = "lesson_id", description = "Идентификатор урока", required = true,
+                                                            name = "lesson_id",
+                                                            description = "Идентификатор урока",
+                                                            required = true,
                                                             schema = @Schema(type = "integer")
                                                     )
                                                     Long id);
@@ -57,7 +59,9 @@ public interface LessonApi {
     @PutMapping("{lesson_id}")
     ResponseEntity<LessonDtoRequest> changeLesson(@PathVariable(name = "lesson_id")
                                                   @Parameter(
-                                                          name = "lesson_id", description = "Идентификатор урока", required = true,
+                                                          name = "lesson_id",
+                                                          description = "Идентификатор урока",
+                                                          required = true,
                                                           schema = @Schema(type = "integer")
                                                   )
                                                   Long lessonId,
@@ -72,7 +76,9 @@ public interface LessonApi {
     @DeleteMapping("{lesson_id}")
     ResponseEntity<HttpStatusCode> deleteLesson(@PathVariable(name = "lesson_id")
                                                 @Parameter(
-                                                        name = "lesson_id", description = "Идентификатор урока", required = true,
+                                                        name = "lesson_id",
+                                                        description = "Идентификатор урока",
+                                                        required = true,
                                                         schema = @Schema(type = "integer")
                                                 )
                                                 Long id);

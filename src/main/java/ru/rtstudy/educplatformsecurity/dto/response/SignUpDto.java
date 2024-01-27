@@ -16,9 +16,9 @@ public class SignUpDto {
 
     @Schema(description = "Электронная почта зарегистрированного пользователя", example = "newuser@testmail.com")
     private String email;
-    @Schema(description = "Имя зарегистрированного пользователя", example = "Тест")
+    @Schema(description = "Имя зарегистрированного пользователя", example = "Пример")
     private String firstName;
-    @Schema(description = "Фамилия зарегистрированного пользователя", example = "Тестовый")
+    @Schema(description = "Фамилия зарегистрированного пользователя", example = "Примерочный")
     private String lastName;
     @Schema(description = "Роль зарегистрированного пользователя", example = "ROLE_STUDENT")
     private String role;

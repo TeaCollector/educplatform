@@ -35,7 +35,9 @@ public interface DifficultApi {
     @GetMapping("{id}")
     ResponseEntity<List<CourseShortDescriptionDto>> getCourseByDifficult(@PathVariable(name = "id")
                                                                          @Parameter(
-                                                                                 name = "id", description = "Идентификатор уровня сложности", required = true,
+                                                                                 name = "id",
+                                                                                 description = "Идентификатор уровня сложности",
+                                                                                 required = true,
                                                                                  schema = @Schema(type = "integer")
                                                                          )
                                                                          Long id);

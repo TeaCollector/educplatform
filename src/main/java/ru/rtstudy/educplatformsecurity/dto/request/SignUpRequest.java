@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Request to Sign Up DTO")
 public class SignUpRequest {
 
-    @Schema(description = "Полное имя нового пользователя", example = "Тест")
+    @Schema(description = "Полное имя нового пользователя", example = "Пример")
     private String firstName;
-    @Schema(description = "Полная фамилия нового пользователя", example = "Тестовый")
+    @Schema(description = "Полная фамилия нового пользователя", example = "Примерочный")
     private String lastName;
     @Schema(description = "Электронная почта нового пользователя", example = "newuser@testmail.com")
     private String email;

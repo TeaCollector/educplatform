@@ -30,7 +30,9 @@ public interface CourseApi {
     @GetMapping("{id}")
     ResponseEntity<CourseLongDescriptionDto> getCourse(@PathVariable(name = "id")
                                                        @Parameter(
-                                                               name = "id", description = "Идентификатор курса", required = true,
+                                                               name = "id",
+                                                               description = "Идентификатор курса",
+                                                               required = true,
                                                                schema = @Schema(type = "integer")
                                                        )
                                                        Long id);
@@ -44,7 +46,9 @@ public interface CourseApi {
     @PutMapping("{id}")
     ResponseEntity<HttpStatus> updateCourse(@PathVariable(name = "id")
                                             @Parameter(
-                                                    name = "id", description = "Идентификатор курса", required = true,
+                                                    name = "id",
+                                                    description = "Идентификатор курса",
+                                                    required = true,
                                                     schema = @Schema(type = "integer")
                                             )
                                             Long id,
@@ -72,7 +76,9 @@ public interface CourseApi {
     @DeleteMapping("{id}")
     ResponseEntity<HttpStatus> deleteCourse(@PathVariable(name = "id")
                                             @Parameter(
-                                                    name = "id", description = "Идентификатор курса", required = true,
+                                                    name = "id",
+                                                    description = "Идентификатор курса",
+                                                    required = true,
                                                     schema = @Schema(type = "integer")
                                             )
                                             Long id);
