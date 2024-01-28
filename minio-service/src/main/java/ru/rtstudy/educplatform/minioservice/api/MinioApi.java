@@ -29,7 +29,6 @@ public interface MinioApi {
             description = "Успешная загрузка файла")
     )
     @PostMapping
-//            (consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}) TODO: Надо проверить
     Mono<UploadResponse> upload(
             @Parameter(
                     name = "Токен авторизации",
@@ -44,7 +43,7 @@ public interface MinioApi {
                     name = "Файл для загрузки",
                     description = "Файл, который необходимо загрузить в хранилище",
                     required = true,
-                    content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE) //TODO: в другом варианте тут было MediaType.APPLICATION_JSON_VALUE
+                    content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)
             )
             @RequestPart(value = "files") Mono<FilePart> files);
 
@@ -55,7 +54,6 @@ public interface MinioApi {
             description = "Успешная загрузка файла")
     )
     @PostMapping("stream")
-//    (consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}) TODO: Надо проверить
     Mono<UploadResponse> uploadStream(
             @Parameter(
                     name = "Токен авторизации",
@@ -70,7 +68,7 @@ public interface MinioApi {
                     name = "Файл для загрузки",
                     description = "Файл, который необходимо загрузить в хранилище",
                     required = true,
-                    content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE) //TODO: в другом варианте тут было MediaType.APPLICATION_JSON_VALUE
+                    content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)
             )
             @RequestPart(value = "files") FilePart files);
 
