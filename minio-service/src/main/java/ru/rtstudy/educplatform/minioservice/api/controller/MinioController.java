@@ -27,49 +27,55 @@ public class MinioController implements MinioApi {
 
     @Override
     public Mono<UploadResponse> upload(String token, Mono<FilePart> files) {
-        return authenticationRequest(token).flatMap(isAuthor -> {
-            if (isAuthor) {
-                return minioService.uploadFile(files);
-            } else {
-                return Mono.error(new NotAuthorException("You not author."));
-            }
-        });
+        return authenticationRequest(token)
+                .flatMap(isAuthor -> {
+                    if (isAuthor) {
+                        return minioService.uploadFile(files);
+                    } else {
+                        return Mono.error(new NotAuthorException("You not author."));
+                    }
+                });
     }
 
     @Override
     public Mono<UploadResponse> uploadStream(String token, FilePart files) {
-        boolean isAuthor = authenticationRequest(token).block();
-        if (isAuthor) {
-            return minioService.putObject(files);
-        } else {
-            try {
-                throw new NotAuthorException("You not author.");
-            } catch (NotAuthorException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        return authenticationRequest(token)
+                .flatMap(isAuthor -> {
+                            if (isAuthor) {
+                                return minioService.putObject(files);
+                            } else {
+                                return Mono.error(new NotAuthorException("You not author."));
+                            }
+                        }
+                );
     }
 
     @Override
-    public ResponseEntity<Mono<ByteArrayResource>> download(String token, String fileName) {
-        boolean isAuthenticated = authenticationRequest(token).block();
-        log.info("Is Authenticated: {}", isAuthenticated);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
-                .body(minioService.download(fileName));
+    public Mono<ByteArrayResource> download(String token, String fileName) {
+        return authenticationRequest(token)
+                .flatMap(isAuthor -> {
+                    if (isAuthor) {
+//                .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
+//                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
+//                        .body(minioService.download(fileName));
+                        return minioService.download(fileName);
+                    } else {
+                        return Mono.error(new NotAuthorException("You not author."));
+                    }
+                });
     }
 
     @Override
-    public ResponseEntity<Mono<HttpStatus>> deleteFile(String token, String fileName) {
-        boolean hasCredential = authenticationRequestToDeleteFile(token, fileName);
-        if (hasCredential) {
-            minioService.deleteFile(fileName);
-        } else {
-            throw new NotLessonAuthorException("You are not lesson author.");
-        }
-        return ResponseEntity
-                .ok(Mono.just(HttpStatus.valueOf(204)));
+    public Mono<HttpStatus> deleteFile(String token, String fileName) {
+        return authenticationRequestToDeleteFile(token, fileName)
+                .flatMap(isAuthor -> {
+                    if (isAuthor) {
+                        minioService.deleteFile(fileName);
+                        return Mono.just(HttpStatus.valueOf(204));
+                    } else {
+                        return Mono.error(new NotAuthorException("You not author."));
+                    }
+                });
     }
 
     private Mono<Boolean> authenticationRequest(String token) {
@@ -82,7 +88,7 @@ public class MinioController implements MinioApi {
                 .bodyToMono(Boolean.class);
     }
 
-    private Boolean authenticationRequestToDeleteFile(String token, String fileName) {
+    private Mono<Boolean> authenticationRequestToDeleteFile(String token, String fileName) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/check-for-delete")
@@ -98,7 +104,6 @@ public class MinioController implements MinioApi {
 //                    throw new NotAuthenticatedException("You are not authenticated.");
 //                })
                 .retrieve()
-                .bodyToMono(Boolean.class)
-                .block();
+                .bodyToMono(Boolean.class);
     }
 }

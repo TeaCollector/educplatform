@@ -11,5 +11,5 @@ RUN gradle clean build
 FROM openjdk:17-alpine3.12
 COPY --from=build /minio-service/build/libs/minio-service-1.0.0.jar minio-service.jar
 
-EXPOSE 8081
+EXPOSE 8082
 ENTRYPOINT ["java", "-jar", "/minio-service.jar"]

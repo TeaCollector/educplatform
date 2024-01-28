@@ -81,7 +81,7 @@ public interface MinioApi {
             description = "Полученный файл")
     )
     @GetMapping("{file_name}")
-    ResponseEntity<Mono<ByteArrayResource>> download(
+    Mono<ByteArrayResource> download(
             @Parameter(
                     name = "Токен авторизации",
                     description = "Токен для проверки наличия прав на получение файлов из хранилища MinIO",
@@ -106,7 +106,7 @@ public interface MinioApi {
             description = "Успешное удаление файла")
     )
     @DeleteMapping("{file_name}")
-    ResponseEntity<Mono<HttpStatus>> deleteFile(
+    Mono<HttpStatus> deleteFile(
             @Parameter(
                     name = "Токен авторизации",
                     description = "Токен для проверки наличия прав на удаление файлов из хранилища MinIO",
