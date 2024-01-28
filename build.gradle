@@ -43,6 +43,7 @@ dependencies {
     implementation "org.mapstruct:mapstruct:$mapstructVersion"
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
 
+
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocOpenApiVersion"
     implementation "io.swagger.core.v3:swagger-annotations:$swaggerAnnotationsVersion"
 
