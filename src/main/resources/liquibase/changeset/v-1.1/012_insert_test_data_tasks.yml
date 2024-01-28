@@ -1,0 +1,107 @@
+databaseChangeLog:
+  - changeSet:
+      id: test-data-insert-into-table-tasks
+      author: Anton
+      changes:
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по Python 1'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по Python 2'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по Python 3'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по Kotlin 1'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по Kotlin 2'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по Kotlin 3'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по HTML/CSS 1'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по HTML/CSS 2'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по HTML/CSS 3'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по JS и TS 1'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по JS и TS 2'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по JS и TS 3'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по DevOps 1'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по DevOps 2'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по DevOps 3'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по микросервисам'
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: description
+                  value: 'Задание по реактивщине'
