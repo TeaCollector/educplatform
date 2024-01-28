@@ -30,6 +30,9 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
     implementation "io.minio:minio:$minioVersion"
+
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocOpenApiVersion"
+    implementation "io.swagger.core.v3:swagger-annotations:$swaggerAnnotationsVersion"
 }
 
 tasks.named('test') {
