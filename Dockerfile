@@ -3,6 +3,7 @@ VOLUME /tmp
 ARG APP_HOME=/educplatform/
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
+RUN mkdir "minio-service"
 ARG JAR_FILE=build/libs/educplatform-1.0.0.jar
 COPY build.gradle settings.gradle gradle.properties $APP_HOME
 COPY src src
