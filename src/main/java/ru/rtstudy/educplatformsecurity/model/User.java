@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
+import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoShortDescription;
 import ru.rtstudy.educplatformsecurity.model.Course;
 
 import java.util.List;
@@ -39,4 +40,11 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             where c.title = :title
             """)
     Optional<Course> findByTitle(String title);
+
+    @Query("""
+            select new LessonDtoShortDescription(l.id, l.title, l.description)
+            from Lesson l
+            where l.course.id = :courseId
+            """)
+    Optional<List<LessonDtoShortDescription>> getAllLessonByCourseId(Long courseId);
 }

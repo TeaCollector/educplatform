@@ -3,7 +3,7 @@ package ru.rtstudy.educplatformsecurity.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 import ru.rtstudy.educplatformsecurity.api.StudentApi;
 import ru.rtstudy.educplatformsecurity.dto.ChangeStudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.request.StudentAnswerDto;

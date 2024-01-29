@@ -86,6 +86,7 @@ public class SecurityConfig {
         expressionHandler.setRoleHierarchy(roleHierarchy);
         return expressionHandler;
     }
+
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()

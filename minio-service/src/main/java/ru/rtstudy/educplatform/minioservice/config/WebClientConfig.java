@@ -1,5 +1,7 @@
 package ru.rtstudy.educplatform.minioservice.config;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,5 +18,15 @@ public class WebClientConfig {
         return WebClient.builder()
                 .baseUrl(uri)
                 .build();
+    }
+
+    @Bean
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("BIN Educational Platform Media Module API")
+                        .description("OpenAPI документация для модуля MinIO проекта EduPlatform")
+                        .version("1.0.0")
+                );
     }
 }

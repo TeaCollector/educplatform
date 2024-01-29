@@ -77,10 +77,13 @@ public class GradeServiceImpl implements GradeService {
     public void finishCourse(Long courseId) {
         Long userId = util.findUserFromContext().getId();
         List<Long> lessonsIds = getAllLessonsId(courseId);
-        List<Long> gradesIds = getAllGradesFromCourse(lessonsIds, userId)
+        List<Long> gradesIds = getAllGradesByLesson(lessonsIds, userId)
                 .stream()
-                .map(Grade::getId)
+                .map(lessonId -> lessonId.getLesson().getId())
                 .toList();
+
+        log.info("STUDENTS LessonsIds: {}", lessonsIds);
+        log.info("STUDENTS GRADES: {}", gradesIds);
 
         if (new HashSet<>(gradesIds).containsAll(lessonsIds)) {
             userCourseRepository.finishCourse(userId, courseId);
@@ -96,7 +99,7 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public List<Grade> getAllGradesFromCourse(List<Long> lessonIds, Long userId) {
+    public List<Grade> getAllGradesByLesson(List<Long> lessonIds, Long userId) {
         return gradeRepository.getGrades(lessonIds, userId)
                 .orElseThrow(() -> new CourseNotFoundException("Course not found."));
     }

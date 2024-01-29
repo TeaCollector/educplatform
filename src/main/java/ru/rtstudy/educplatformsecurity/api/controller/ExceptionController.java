@@ -33,7 +33,7 @@ public class ExceptionController {
     @ExceptionHandler(value = {
             CategoryNotExistsException.class,
             DifficultNotExistsException.class
-            })
+    })
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public ResponseEntity<ErrorMessage> resourceNotExistsException(RuntimeException ex, WebRequest request) {
         return ResponseEntity
@@ -47,10 +47,28 @@ public class ExceptionController {
 
     @ExceptionHandler(value = {
             NotEnoughScoreToMentorException.class,
-            ResolveAllTaskException.class
-            })
+            ResolveAllTaskException.class,
+            EnterOnCourseException.class
+    })
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> studentsException(RuntimeException ex, WebRequest request) {
+        return ResponseEntity
+                .ok(ErrorMessage.builder()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .description(ex.getMessage())
+                        .currentTime(LocalDateTime.now())
+                        .endpoint(request.getDescription(false))
+                        .build());
+    }
+
+    @ExceptionHandler(value = {
+            UserNotMentorException.class,
+            MentorAnswerAlreadyExistsException.class,
+            AlreadyMentorException.class,
+            NotEnoughScoreToAuthorException.class
+    })
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorMessage> mentorsException(RuntimeException ex, WebRequest request) {
         return ResponseEntity
                 .ok(ErrorMessage.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())

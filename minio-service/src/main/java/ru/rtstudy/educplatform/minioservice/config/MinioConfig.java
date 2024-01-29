@@ -3,8 +3,9 @@ package ru.rtstudy.educplatform.minioservice.config;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioAsyncClient;
-import io.minio.MinioClient;
-import io.minio.errors.*;
+import io.minio.errors.InsufficientDataException;
+import io.minio.errors.InternalException;
+import io.minio.errors.XmlParserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +42,7 @@ public class MinioConfig {
                 .build();
 
         try {
-            if(!asyncClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build()).get()) {
+            if (!asyncClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build()).get()) {
                 asyncClient.makeBucket(
                         MakeBucketArgs
                                 .builder()

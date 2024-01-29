@@ -11,10 +11,10 @@ import ru.rtstudy.educplatformsecurity.auth.JwtService;
 import ru.rtstudy.educplatformsecurity.dto.request.SignInRequest;
 import ru.rtstudy.educplatformsecurity.dto.request.SignUpRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.TokenDto;
-import ru.rtstudy.educplatformsecurity.dto.response.SignUpDto;
+import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
 import ru.rtstudy.educplatformsecurity.exception.UserNotFoundException;
-import ru.rtstudy.educplatformsecurity.model.constant.Role;
 import ru.rtstudy.educplatformsecurity.model.User;
+import ru.rtstudy.educplatformsecurity.model.constant.Role;
 import ru.rtstudy.educplatformsecurity.repository.UserRepository;
 import ru.rtstudy.educplatformsecurity.util.Util;
 
@@ -30,7 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final Util util;
 
     @Override
-    public SignUpDto signUp(SignUpRequest request) {
+    public UserDtoResponse signUp(SignUpRequest request) {
         User user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -40,11 +40,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
         userRepository.save(user);
 
-        return SignUpDto.builder()
+        return UserDtoResponse.builder()
                 .email(request.getEmail())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
-                .role(user.getRole().name())
+                .role(user.getRole())
                 .build();
     }
 

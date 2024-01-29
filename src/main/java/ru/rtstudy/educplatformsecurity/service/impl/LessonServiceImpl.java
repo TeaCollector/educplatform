@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.dto.request.LessonDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoResponse;
 import ru.rtstudy.educplatformsecurity.exception.CourseNotFoundException;
+import ru.rtstudy.educplatformsecurity.exception.EnterOnCourseException;
 import ru.rtstudy.educplatformsecurity.exception.LessonNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.NotCourseAuthorException;
 import ru.rtstudy.educplatformsecurity.model.Course;
@@ -14,6 +15,7 @@ import ru.rtstudy.educplatformsecurity.repository.CourseRepository;
 import ru.rtstudy.educplatformsecurity.repository.LessonRepository;
 import ru.rtstudy.educplatformsecurity.service.CourseService;
 import ru.rtstudy.educplatformsecurity.service.LessonService;
+import ru.rtstudy.educplatformsecurity.util.Util;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +25,18 @@ public class LessonServiceImpl implements LessonService {
     private final LessonRepository lessonRepository;
     private final CourseRepository courseRepository;
     private final CourseService courseService;
+    private final Util util;
 
     @Override
-    public LessonDtoResponse findLessonById(Long id) {
-        return lessonRepository.getLessonById(id)
-                .orElseThrow(() -> new LessonNotFoundException("Lesson was not found."));
+    public LessonDtoResponse findLessonById(Long lessonId) {
+        Long userId = util.findUserFromContext().getId();
+        boolean whetherOnCourse = lessonRepository.whetherOnCourse(lessonId, userId);
+        if (whetherOnCourse) {
+            return lessonRepository.getLessonById(lessonId)
+                    .orElseThrow(() -> new LessonNotFoundException("Lesson was not found."));
+        } else {
+            throw new EnterOnCourseException("You must enter on course.");
+        }
     }
 
     @Override
@@ -69,7 +78,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public void deleteFile(String fileName) {
-        lessonRepository.deleteLesson(fileName);
+        lessonRepository.deleteFile(fileName);
     }
 
     @Override

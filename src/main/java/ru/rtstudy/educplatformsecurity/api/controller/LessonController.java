@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 import ru.rtstudy.educplatformsecurity.api.LessonApi;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.LessonMapper;
 import ru.rtstudy.educplatformsecurity.dto.request.LessonDtoRequest;

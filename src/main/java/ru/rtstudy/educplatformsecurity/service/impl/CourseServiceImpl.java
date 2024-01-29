@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
+import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoShortDescription;
 import ru.rtstudy.educplatformsecurity.exception.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.DifficultNotExistsException;
 import ru.rtstudy.educplatformsecurity.exception.NotCourseAuthorException;
@@ -38,7 +39,7 @@ public class CourseServiceImpl implements CourseService {
                 .orElseThrow(() -> new DifficultNotExistsException("Difficult not exists."));
         return courseRepository.findCourseByDifficultId(id)
                 .map(course -> {
-                    if(course.size() == 0) {
+                    if (course.size() == 0) {
                         return null;
                     }
                     return course;
@@ -103,5 +104,11 @@ public class CourseServiceImpl implements CourseService {
                 .orElseThrow(() -> new CourseNotFoundException("Course was not found."));
         Long authorCourseId = util.findUserFromContext().getId();
         return authorCourseId.equals(course.getCourseAuthor().getId());
+    }
+
+    @Override
+    public List<LessonDtoShortDescription> getAllLessonByCourseId(Long courseId) {
+        return courseRepository.getAllLessonByCourseId(courseId)
+                .orElseThrow(() -> new CourseNotFoundException("Course was not found."));
     }
 }

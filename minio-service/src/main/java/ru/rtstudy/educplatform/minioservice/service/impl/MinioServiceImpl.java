@@ -35,36 +35,35 @@ public class MinioServiceImpl implements MinioService {
     private String bucketName;
 
     public Mono<UploadResponse> uploadFile(Mono<FilePart> file) {
-        return file.subscribeOn(Schedulers.boundedElastic()).map(multipartFile -> {
-            File temp = new File(createUUID());
-            try {
-                multipartFile.transferTo(temp).block();
-                UploadObjectArgs uploadObjectArgs = getUploadObjectArgs(multipartFile, temp);
-                ObjectWriteResponse response = minioClient.uploadObject(uploadObjectArgs).get();
-                temp.delete();
-                return UploadResponse.builder()
-                        .objectName(response.object())
-                        .build();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }).log();
+        return file
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(multipartFile -> {
+                    File temp = new File(createUUID(multipartFile));
+                    try {
+                        multipartFile.transferTo(temp).block();
+                        UploadObjectArgs uploadObjectArgs = getUploadObjectArgs(multipartFile, temp);
+                        ObjectWriteResponse response = minioClient.uploadObject(uploadObjectArgs).get();
+                        temp.delete();
+                        return UploadResponse.builder()
+                                .objectName(response.object())
+                                .build();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }).log();
     }
 
 
     public Mono<ByteArrayResource> download(String fileName) {
         return Mono.fromCallable(() -> {
+                    GetObjectArgs objectArgs = getObjectArgs(fileName);
                     InputStream response = minioClient
-                            .getObject(GetObjectArgs.builder()
-                                    .bucket(bucketName)
-                                    .object(fileName)
-                                    .build())
+                            .getObject(objectArgs)
                             .get();
                     return new ByteArrayResource(response.readAllBytes());
                 })
                 .subscribeOn(Schedulers.boundedElastic());
     }
-
 
     public Mono<UploadResponse> putObject(FilePart file) {
         return file.content()
@@ -98,6 +97,12 @@ public class MinioServiceImpl implements MinioService {
         }
     }
 
+    private GetObjectArgs getObjectArgs(String fileName) {
+        return GetObjectArgs.builder()
+                .bucket(bucketName)
+                .object(fileName)
+                .build();
+    }
 
     private UploadObjectArgs getUploadObjectArgs(FilePart multipartFile, File temp) throws IOException {
         return UploadObjectArgs.builder()
@@ -116,16 +121,18 @@ public class MinioServiceImpl implements MinioService {
 
     private PutObjectArgs getPutObjectArgs(FilePart file, InputStreamCollector inputStreamCollector) throws IOException {
         PutObjectArgs args = PutObjectArgs.builder()
-                .object(createUUID())
-                .contentType(file.headers().getContentType().toString())
+                .object(createUUID(file))
+                .contentType(getMediaType(file.headers()))
                 .bucket(bucketName)
                 .stream(inputStreamCollector.getStream(), inputStreamCollector.getStream().available(), -1)
                 .build();
         return args;
     }
 
-    private String createUUID() {
-        String uuid = UUID.randomUUID().toString().replace("-", "");
+    private String createUUID(FilePart file) {
+
+        String uuid = UUID.randomUUID().toString().replace("-", "") + ".";
+        uuid = file.filename().replaceFirst(".*\\.", uuid);
         return uuid;
     }
 }

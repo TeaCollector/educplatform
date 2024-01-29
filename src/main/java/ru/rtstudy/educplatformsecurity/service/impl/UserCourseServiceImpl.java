@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.rtstudy.educplatformsecurity.exception.AlreadyMentorException;
 import ru.rtstudy.educplatformsecurity.exception.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.NotEnoughScoreToMentorException;
 import ru.rtstudy.educplatformsecurity.model.Grade;
@@ -14,6 +15,7 @@ import ru.rtstudy.educplatformsecurity.repository.CourseRepository;
 import ru.rtstudy.educplatformsecurity.repository.UserCourseRepository;
 import ru.rtstudy.educplatformsecurity.service.GradeService;
 import ru.rtstudy.educplatformsecurity.service.UserCourseService;
+import ru.rtstudy.educplatformsecurity.service.UserService;
 import ru.rtstudy.educplatformsecurity.util.Util;
 
 import java.time.LocalDateTime;
@@ -28,6 +30,7 @@ public class UserCourseServiceImpl implements UserCourseService {
     private final CourseRepository courseRepository;
     private final UserCourseRepository userCourseRepository;
     private final GradeService gradeService;
+    private final UserService userService;
     private final Util util;
 
     @Override
@@ -46,15 +49,19 @@ public class UserCourseServiceImpl implements UserCourseService {
     @Override
     public void upgradeToMentor(Long courseId) {
         User user = util.findUserFromContext();
+        boolean courseMentor = userCourseRepository.alreadyCourseMentor(user.getId(), courseId);
+        if (courseMentor) {
+            throw new AlreadyMentorException("You already mentor this course");
+        }
         List<Long> lessonsIds = gradeService.getAllLessonsId(courseId);
-        List<Grade> gradeList = gradeService.getAllGradesFromCourse(lessonsIds, user.getId());
+        List<Grade> gradeList = gradeService.getAllGradesByLesson(lessonsIds, user.getId());
+        log.info("GRADES: {}", gradeList);
         double average = 0;
-        for (Grade grade: gradeList) {
+        for (Grade grade : gradeList) {
             average += grade.getGrade();
         }
         if (average / gradeList.size() >= 8) {
-            userCourseRepository.upgradeToMentor(user.getId(), courseId);
-            user.setRole(Role.ROLE_MENTOR);
+            userService.changeUserRole(user.getId(), Role.ROLE_MENTOR);
         } else {
             throw new NotEnoughScoreToMentorException("You don't have enough score to became a mentor.");
         }

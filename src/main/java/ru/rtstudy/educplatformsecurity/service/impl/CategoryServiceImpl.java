@@ -3,7 +3,6 @@ package ru.rtstudy.educplatformsecurity.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.exception.CategoryNotExistsException;
 import ru.rtstudy.educplatformsecurity.exception.CourseNotFoundException;
@@ -32,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CourseShortDescriptionDto> getCoursesByCategory(Long categoryId) {
         categoryRepository.findById(categoryId)
-                .orElseThrow(()-> new CategoryNotExistsException("Category not found!"));
+                .orElseThrow(() -> new CategoryNotExistsException("Category not found!"));
         return categoryRepository.getCourseByCategoryId(categoryId)
                 .map(courses -> {
                     if (courses.isEmpty()) {

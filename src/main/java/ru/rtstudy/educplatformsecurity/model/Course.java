@@ -48,7 +48,7 @@ public class Course {
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", referencedColumnName = "id" )
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User courseAuthor;
 
     @Embedded
