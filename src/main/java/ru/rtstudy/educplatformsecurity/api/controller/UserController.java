@@ -3,9 +3,11 @@ package ru.rtstudy.educplatformsecurity.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.rtstudy.educplatformsecurity.api.UserApi;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.UserMapper;
+import ru.rtstudy.educplatformsecurity.dto.request.UserUpdateDto;
 import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
 import ru.rtstudy.educplatformsecurity.service.UserService;
 
@@ -22,5 +24,14 @@ public class UserController implements UserApi {
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
                 .body(userDtoResponse);
+    }
+
+    @Override
+    public ResponseEntity<UserUpdateDto> updateUser(UserUpdateDto userUpdateDto) {
+        userService.updateUser(userUpdateDto);
+        return ResponseEntity
+                .status(HttpStatusCode.valueOf(202))
+                .body(userUpdateDto);
+
     }
 }

@@ -1,6 +1,8 @@
 package ru.rtstudy.educplatformsecurity.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
+import ru.rtstudy.educplatformsecurity.dto.request.UserUpdateDto;
+import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
 
@@ -11,4 +13,6 @@ public interface UserService {
     void changeUserRole(Long id, Role role);
 
     User findUserById();
+
+    UserUpdateDto updateUser(UserUpdateDto userUpdateDto);
 }

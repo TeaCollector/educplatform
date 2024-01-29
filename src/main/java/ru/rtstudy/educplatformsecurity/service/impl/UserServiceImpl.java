@@ -3,6 +3,9 @@ package ru.rtstudy.educplatformsecurity.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.rtstudy.educplatformsecurity.dto.request.UserUpdateDto;
+import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
 import ru.rtstudy.educplatformsecurity.exception.UserNotFoundException;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
@@ -12,6 +15,7 @@ import ru.rtstudy.educplatformsecurity.util.Util;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -35,6 +39,15 @@ public class UserServiceImpl implements UserService {
         return userRepository
                 .findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found."));
+    }
+
+    @Override
+    public UserUpdateDto updateUser(UserUpdateDto userUpdateDto) {
+        User user = util.findUserFromContext();
+        user.setFirstName(userUpdateDto.firstName());
+        user.setLastName(userUpdateDto.lastName());
+        userRepository.saveAndFlush(user);
+        return userUpdateDto;
     }
 
 }
