@@ -5,9 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.rtstudy.educplatformsecurity.model.User;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.Query;
-import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.model.UserCourse;
 
 import java.util.List;
@@ -62,4 +59,12 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
             and uc.user.id = :userId
             """)
     boolean onCourse(Long courseId, Long userId);
+
+    @Query("""
+            select count(*) > 0
+            from UserCourse us
+            where us.user.id = :userId
+            and us.course.id = :courseId
+            """)
+    boolean alreadyCourseMentor(Long userId, Long courseId);
 }

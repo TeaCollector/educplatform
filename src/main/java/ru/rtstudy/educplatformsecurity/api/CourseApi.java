@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rtstudy.educplatformsecurity.dto.request.CourseDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
+import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoShortDescription;
+
+import java.util.List;
 
 @Tag(name = "Course Controller", description = "Course Controller API")
 @RequestMapping("api/v1/courses")
@@ -53,6 +56,28 @@ public interface CourseApi {
                                             )
                                             Long id,
                                             @RequestBody CourseDtoRequest courseDtoRequest);
+
+
+
+    @Operation(summary = "Получить краткое описание всех уроков курса")
+    @ApiResponses(value =
+    @ApiResponse (
+            responseCode = "200",
+            description = "Все уроки курса",
+            content = {@Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = LessonDtoShortDescription.class, description = "Все уроки"))
+            })
+    )
+    @GetMapping("lessons/{id}")
+    ResponseEntity<List<LessonDtoShortDescription>> getAllLessonByCourseId(@PathVariable(name = "id")
+                                                                           @Parameter(
+                                                                                   name = "course_id",
+                                                                                   description = "Идентификатор курса",
+                                                                                   required = true,
+                                                                                   schema = @Schema(type = "integer")
+                                                                           )
+                                                                           Long courseId);
 
     @Operation(summary = "Создать новый курс")
     @ApiResponses(value =

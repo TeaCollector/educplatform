@@ -8,8 +8,8 @@ import ru.rtstudy.educplatformsecurity.api.AuthenticationApi;
 import ru.rtstudy.educplatformsecurity.auth.AuthenticationService;
 import ru.rtstudy.educplatformsecurity.dto.request.SignInRequest;
 import ru.rtstudy.educplatformsecurity.dto.request.SignUpRequest;
-import ru.rtstudy.educplatformsecurity.dto.response.SignUpDto;
 import ru.rtstudy.educplatformsecurity.dto.response.TokenDto;
+import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.service.LessonService;
 import ru.rtstudy.educplatformsecurity.util.Util;
@@ -24,7 +24,7 @@ public class AuthenticationController implements AuthenticationApi {
     private final Util util;
 
     @Override
-    public ResponseEntity<SignUpDto> signup(SignUpRequest request) {
+    public ResponseEntity<UserDtoResponse> signup(SignUpRequest request) {
         return ResponseEntity.ok(authenticationService.signUp(request));
     }
 

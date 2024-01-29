@@ -81,7 +81,7 @@ public interface MinioApi {
             description = "Полученный файл")
     )
     @GetMapping("{file_name}")
-    Mono<ByteArrayResource> download(
+    ResponseEntity<Mono<ByteArrayResource>> download(
             @Parameter(
                     name = "Токен авторизации",
                     description = "Токен для проверки наличия прав на получение файлов из хранилища MinIO",

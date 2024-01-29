@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
 import ru.rtstudy.educplatform.minioservice.api.MinioApi;
 import ru.rtstudy.educplatform.minioservice.dto.UploadResponse;
 import ru.rtstudy.educplatform.minioservice.exception.NotAuthorException;
-import ru.rtstudy.educplatform.minioservice.exception.NotLessonAuthorException;
 import ru.rtstudy.educplatform.minioservice.service.MinioService;
 
 
@@ -28,8 +27,8 @@ public class MinioController implements MinioApi {
     @Override
     public Mono<UploadResponse> upload(String token, Mono<FilePart> files) {
         return authenticationRequest(token)
-                .flatMap(isAuthor -> {
-                    if (isAuthor) {
+                .flatMap(authRequest -> {
+                    if (authRequest) {
                         return minioService.uploadFile(files);
                     } else {
                         return Mono.error(new NotAuthorException("You not author."));
@@ -51,18 +50,13 @@ public class MinioController implements MinioApi {
     }
 
     @Override
-    public Mono<ByteArrayResource> download(String token, String fileName) {
-        return authenticationRequest(token)
-                .flatMap(isAuthor -> {
-                    if (isAuthor) {
-//                .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
-//                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
-//                        .body(minioService.download(fileName));
-                        return minioService.download(fileName);
-                    } else {
-                        return Mono.error(new NotAuthorException("You not author."));
-                    }
-                });
+    public ResponseEntity<Mono<ByteArrayResource>> download(String token, String fileName) {
+        boolean isAuthenticated = authenticationRequest(token).block();
+        log.info("Is Authenticated: {}", isAuthenticated);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
+                .body(minioService.download(fileName));
     }
 
     @Override
@@ -95,14 +89,6 @@ public class MinioController implements MinioApi {
                         .queryParam("file-name", fileName)
                         .build())
                 .header(HttpHeaders.AUTHORIZATION, token)
-//                .header("file-name", fileName)
-//                .exchangeToMono(response -> {
-//                    log.info("RESPONSE: {}", response);
-//                    if (response.statusCode().equals(HttpStatus.OK)) {
-//                        return response.bodyToMono(Boolean.class);
-//                    }
-//                    throw new NotAuthenticatedException("You are not authenticated.");
-//                })
                 .retrieve()
                 .bodyToMono(Boolean.class);
     }

@@ -21,5 +21,5 @@ public interface GradeService {
 
     List<Long> getAllLessonsId(Long courseId);
 
-    List<Grade> getAllGradesFromCourse(List<Long> lessonIds, Long userId);
+    List<Grade> getAllGradesByLesson(List<Long> lessonIds, Long userId);
 }

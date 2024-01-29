@@ -114,8 +114,8 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
             and g.grade > 0
             and g.student.id = :userId
             """)
-    Optional<List<Grade>> getGrades(@Param(value = "lessonsIds") List<Long> lessonsIds,
-                                    @Param(value = "userId") Long userId);
+    Optional<List<Grade>> getGrades(List<Long> lessonsIds, Long userId);
+
     @Modifying
     @Query("""
             update Grade g

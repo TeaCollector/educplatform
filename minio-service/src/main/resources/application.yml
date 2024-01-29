@@ -3,7 +3,7 @@ server:
 
 spring:
   config:
-    import: optional:file:.env[.properties]
+    import: optional:file:.env-local[.properties]
 
   minio:
     url: http://${MINIO_HOST}
@@ -12,4 +12,4 @@ spring:
     bucket: ${MINIO_BUCKET}
 
 educplatform:
-  uri: http://education-platform:8081/api/v1/auth/
+  uri: http://${EDUCATIONPLATFORM_HOST}:8081/api/v1/auth/

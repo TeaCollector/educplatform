@@ -25,5 +25,14 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
             set l.fileName = '********' 
             where l.fileName = :fileName
             """)
-    void deleteLesson(String fileName);
+    void deleteFile(String fileName);
+
+    @Query("""
+            select count(*) > 0
+            from Lesson l join Course c on l.course.id = c.id 
+            join UserCourse uc on c.id = uc.course.id
+            where l.id = :lessonId
+            and uc.user.id = :userId
+            """)
+    Boolean whetherOnCourse(Long lessonId, Long userId);
 }
