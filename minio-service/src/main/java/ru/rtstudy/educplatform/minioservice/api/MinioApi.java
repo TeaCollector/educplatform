@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,23 +29,21 @@ public interface MinioApi {
             responseCode = "201",
             description = "Успешная загрузка файла")
     )
-    @PostMapping
-//            (consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}) TODO: Надо проверить
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     Mono<UploadResponse> upload(
             @Parameter(
-                    name = "Токен авторизации",
-                    description = "Токен для проверки наличия прав на загрузку файлов в хранилище MinIO",
-                    required = true,
+                    name = "Опциональная строка",
+                    description = "Опциональная строка для передачи токена",
                     in = ParameterIn.HEADER,
-                    schema = @Schema(type = "string"),
-                    example = "your-token"
+                    schema = @Schema(type = "string")
             )
             @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestBody
             @Parameter(
                     name = "Файл для загрузки",
                     description = "Файл, который необходимо загрузить в хранилище",
                     required = true,
-                    content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE) //TODO: в другом варианте тут было MediaType.APPLICATION_JSON_VALUE
+                    content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)
             )
             @RequestPart(value = "files") Mono<FilePart> files);
 
@@ -54,23 +53,20 @@ public interface MinioApi {
             responseCode = "201",
             description = "Успешная загрузка файла")
     )
-    @PostMapping("stream")
-//    (consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}) TODO: Надо проверить
+    @PostMapping(value = "stream", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
     Mono<UploadResponse> uploadStream(
             @Parameter(
-                    name = "Токен авторизации",
-                    description = "Токен для проверки наличия прав на загрузку файлов в хранилище MinIO",
-                    required = true,
+                    name = "Опциональная строка",
+                    description = "Опциональная строка для передачи токена",
                     in = ParameterIn.HEADER,
-                    schema = @Schema(type = "string"),
-                    example = "your-token"
+                    schema = @Schema(type = "string")
             )
             @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
             @Parameter(
                     name = "Файл для загрузки",
                     description = "Файл, который необходимо загрузить в хранилище",
                     required = true,
-                    content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE) //TODO: в другом варианте тут было MediaType.APPLICATION_JSON_VALUE
+                    content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)
             )
             @RequestPart(value = "files") FilePart files);
 
@@ -83,12 +79,10 @@ public interface MinioApi {
     @GetMapping("{file_name}")
     ResponseEntity<Mono<ByteArrayResource>> download(
             @Parameter(
-                    name = "Токен авторизации",
-                    description = "Токен для проверки наличия прав на получение файлов из хранилища MinIO",
-                    required = true,
+                    name = "Опциональная строка",
+                    description = "Опциональная строка для передачи токена",
                     in = ParameterIn.HEADER,
-                    schema = @Schema(type = "string"),
-                    example = "your-token"
+                    schema = @Schema(type = "string")
             )
             @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
             @Parameter(
@@ -108,12 +102,10 @@ public interface MinioApi {
     @DeleteMapping("{file_name}")
     Mono<HttpStatus> deleteFile(
             @Parameter(
-                    name = "Токен авторизации",
-                    description = "Токен для проверки наличия прав на удаление файлов из хранилища MinIO",
-                    required = true,
+                    name = "Опциональная строка",
+                    description = "Опциональная строка для передачи токена",
                     in = ParameterIn.HEADER,
-                    schema = @Schema(type = "string"),
-                    example = "your-token"
+                    schema = @Schema(type = "string")
             )
             @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
             @Parameter(
