@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.auth.JwtService;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
-import java.security.PublicKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

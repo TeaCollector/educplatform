@@ -31,7 +31,7 @@ public class LessonServiceImpl implements LessonService {
     public LessonDtoResponse findLessonById(Long lessonId) {
         Long userId = util.findUserFromContext().getId();
         boolean whetherOnCourse = lessonRepository.whetherOnCourse(lessonId, userId);
-        if(whetherOnCourse) {
+        if (whetherOnCourse) {
             return lessonRepository.getLessonById(lessonId)
                     .orElseThrow(() -> new LessonNotFoundException("Lesson was not found."));
         } else {

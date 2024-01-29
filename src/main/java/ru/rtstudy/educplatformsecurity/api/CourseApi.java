@@ -58,10 +58,9 @@ public interface CourseApi {
                                             @RequestBody CourseDtoRequest courseDtoRequest);
 
 
-
     @Operation(summary = "Получить краткое описание всех уроков курса")
     @ApiResponses(value =
-    @ApiResponse (
+    @ApiResponse(
             responseCode = "200",
             description = "Все уроки курса",
             content = {@Content(

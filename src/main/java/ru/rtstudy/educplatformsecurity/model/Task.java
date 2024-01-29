@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 
-import java.time.LocalDateTime;
-
 @Table(name = "tasks")
 @Entity(name = "Task")
 @Setter

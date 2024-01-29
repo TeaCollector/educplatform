@@ -3,7 +3,7 @@ package ru.rtstudy.educplatformsecurity.api.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 import ru.rtstudy.educplatformsecurity.api.AuthenticationApi;
 import ru.rtstudy.educplatformsecurity.auth.AuthenticationService;
 import ru.rtstudy.educplatformsecurity.dto.request.SignInRequest;
@@ -42,7 +42,6 @@ public class AuthenticationController implements AuthenticationApi {
     @Override
     public Boolean forAuthenticationToDelete(String fileName) {
         User user = util.findUserFromContext();
-        log.info("User name: {}", user.getEmail());
         if (authenticationService.isAuthor(user.getId()) &&
             authenticationService.hasCredentialToDelete(fileName)) {
             lessonService.deleteFile(fileName);

@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.dto.request.UserUpdateDto;
-import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
 import ru.rtstudy.educplatformsecurity.exception.UserNotFoundException;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
@@ -20,6 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final Util util;
+
     @Override
     public UserDetailsService userDetailsService() {
         return email -> userRepository.findUserByEmail(email)
@@ -49,5 +49,4 @@ public class UserServiceImpl implements UserService {
         userRepository.saveAndFlush(user);
         return userUpdateDto;
     }
-
 }

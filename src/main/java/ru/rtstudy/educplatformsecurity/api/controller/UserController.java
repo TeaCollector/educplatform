@@ -3,7 +3,6 @@ package ru.rtstudy.educplatformsecurity.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.rtstudy.educplatformsecurity.api.UserApi;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.UserMapper;

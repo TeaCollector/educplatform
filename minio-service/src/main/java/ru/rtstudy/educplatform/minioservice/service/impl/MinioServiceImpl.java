@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -39,19 +38,19 @@ public class MinioServiceImpl implements MinioService {
         return file
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(multipartFile -> {
-            File temp = new File(createUUID(multipartFile));
-            try {
-                multipartFile.transferTo(temp).block();
-                UploadObjectArgs uploadObjectArgs = getUploadObjectArgs(multipartFile, temp);
-                ObjectWriteResponse response = minioClient.uploadObject(uploadObjectArgs).get();
-                temp.delete();
-                return UploadResponse.builder()
-                        .objectName(response.object())
-                        .build();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }).log();
+                    File temp = new File(createUUID(multipartFile));
+                    try {
+                        multipartFile.transferTo(temp).block();
+                        UploadObjectArgs uploadObjectArgs = getUploadObjectArgs(multipartFile, temp);
+                        ObjectWriteResponse response = minioClient.uploadObject(uploadObjectArgs).get();
+                        temp.delete();
+                        return UploadResponse.builder()
+                                .objectName(response.object())
+                                .build();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }).log();
     }
 
 

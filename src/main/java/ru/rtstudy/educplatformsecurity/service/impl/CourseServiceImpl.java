@@ -39,7 +39,7 @@ public class CourseServiceImpl implements CourseService {
                 .orElseThrow(() -> new DifficultNotExistsException("Difficult not exists."));
         return courseRepository.findCourseByDifficultId(id)
                 .map(course -> {
-                    if(course.size() == 0) {
+                    if (course.size() == 0) {
                         return null;
                     }
                     return course;

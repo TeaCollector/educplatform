@@ -13,7 +13,6 @@ import ru.rtstudy.educplatformsecurity.model.UserCourse;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
 import ru.rtstudy.educplatformsecurity.repository.CourseRepository;
 import ru.rtstudy.educplatformsecurity.repository.UserCourseRepository;
-import ru.rtstudy.educplatformsecurity.repository.UserRepository;
 import ru.rtstudy.educplatformsecurity.service.GradeService;
 import ru.rtstudy.educplatformsecurity.service.UserCourseService;
 import ru.rtstudy.educplatformsecurity.service.UserService;
@@ -58,7 +57,7 @@ public class UserCourseServiceImpl implements UserCourseService {
         List<Grade> gradeList = gradeService.getAllGradesByLesson(lessonsIds, user.getId());
         log.info("GRADES: {}", gradeList);
         double average = 0;
-        for (Grade grade: gradeList) {
+        for (Grade grade : gradeList) {
             average += grade.getGrade();
         }
         if (average / gradeList.size() >= 8) {

@@ -1,10 +1,9 @@
 package ru.rtstudy.educplatformsecurity.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import ru.rtstudy.educplatformsecurity.model.User;
-import org.springframework.data.jpa.repository.Modifying;
 import ru.rtstudy.educplatformsecurity.model.UserCourse;
 
 import java.util.List;
