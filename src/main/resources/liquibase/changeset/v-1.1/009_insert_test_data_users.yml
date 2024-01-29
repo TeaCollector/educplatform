@@ -11,7 +11,7 @@ databaseChangeLog:
                   value: 'philipp.author@mail.ru'
               - column:
                   name: password
-                  value: 'philipppass'
+                  value: '$2y$10$GZZ9EPvm4EUWWJtc4WIT2.w1sCFs6.9UyNJcV/Xy0D7HVT4e8YgzK'
               - column:
                   name: first_name
                   value: 'Филипп'
@@ -26,10 +26,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: email
-                  value: 'anatoly.author@gmail.com'
+                  value: 'anatoly.author@mail.ru'
               - column:
                   name: password
-                  value: 'anatolypass'
+                  value: '$2y$10$GZZ9EPvm4EUWWJtc4WIT2.w1sCFs6.9UyNJcV/Xy0D7HVT4e8YgzK'
               - column:
                   name: first_name
                   value: 'Анатолий'
@@ -51,7 +51,7 @@ databaseChangeLog:
                   value: 'alexander.mentor@mail.ru'
               - column:
                   name: password
-                  value: 'alexpass'
+                  value: '$2y$10$GZZ9EPvm4EUWWJtc4WIT2.w1sCFs6.9UyNJcV/Xy0D7HVT4e8YgzK'
               - column:
                   name: first_name
                   value: 'Александр'
@@ -66,10 +66,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: email
-                  value: 'anton.mentor@gmail.com'
+                  value: 'anton.mentor@mail.ru'
               - column:
                   name: password
-                  value: 'antonpass'
+                  value: '$2y$10$GZZ9EPvm4EUWWJtc4WIT2.w1sCFs6.9UyNJcV/Xy0D7HVT4e8YgzK'
               - column:
                   name: first_name
                   value: 'Антон'
@@ -88,10 +88,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: email
-                  value: 'ivan.stud@mit.edu'
+                  value: 'ivan.stud@mail.ru'
               - column:
                   name: password
-                  value: 'ivantheterrible'
+                  value: '$2y$10$GZZ9EPvm4EUWWJtc4WIT2.w1sCFs6.9UyNJcV/Xy0D7HVT4e8YgzK'
               - column:
                   name: first_name
                   value: 'Иван'
@@ -106,10 +106,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: email
-                  value: 'peter.stud@cloud.com'
+                  value: 'peter.stud@mail.ru'
               - column:
                   name: password
-                  value: 'peterthegreat'
+                  value: '$2y$10$GZZ9EPvm4EUWWJtc4WIT2.w1sCFs6.9UyNJcV/Xy0D7HVT4e8YgzK'
               - column:
                   name: first_name
                   value: 'Пётр'
@@ -124,10 +124,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: email
-                  value: 'alexander.stud@spb.ru'
+                  value: 'alexander.stud@mail.ru'
               - column:
                   name: password
-                  value: 'alexandernevsky'
+                  value: '$2y$10$GZZ9EPvm4EUWWJtc4WIT2.w1sCFs6.9UyNJcV/Xy0D7HVT4e8YgzK'
               - column:
                   name: first_name
                   value: 'Александр'
@@ -142,10 +142,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: email
-                  value: 'kuzma.stud@ya.ru'
+                  value: 'kuzma.stud@mail.ru'
               - column:
                   name: password
-                  value: 'mininkuz'
+                  value: '$2y$10$GZZ9EPvm4EUWWJtc4WIT2.w1sCFs6.9UyNJcV/Xy0D7HVT4e8YgzK'
               - column:
                   name: first_name
                   value: 'Кузьма'
@@ -160,10 +160,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: email
-                  value: 'boris.stud@pochta.ru'
+                  value: 'boris.stud@mail.ru'
               - column:
                   name: password
-                  value: 'borisgodunov'
+                  value: '$2y$10$GZZ9EPvm4EUWWJtc4WIT2.w1sCFs6.9UyNJcV/Xy0D7HVT4e8YgzK'
               - column:
                   name: first_name
                   value: 'Борис'
@@ -178,10 +178,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: email
-                  value: 'falsedmitry.stud@mail.pl'
+                  value: 'falsedmitry.stud@mail.ru'
               - column:
                   name: password
-                  value: 'iamrusfr'
+                  value: '$2y$10$GZZ9EPvm4EUWWJtc4WIT2.w1sCFs6.9UyNJcV/Xy0D7HVT4e8YgzK'
               - column:
                   name: first_name
                   value: 'Дмитрий'
