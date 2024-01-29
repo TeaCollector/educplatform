@@ -39,8 +39,8 @@ public class MinioController implements MinioApi {
     @Override
     public Mono<UploadResponse> uploadStream(String token, FilePart files) {
         return authenticationRequest(token)
-                .flatMap(isAuthor -> {
-                            if (isAuthor) {
+                .flatMap(authRequest -> {
+                            if (authRequest) {
                                 return minioService.putObject(files);
                             } else {
                                 return Mono.error(new NotAuthorException("You not author."));
@@ -51,12 +51,16 @@ public class MinioController implements MinioApi {
 
     @Override
     public ResponseEntity<Mono<ByteArrayResource>> download(String token, String fileName) {
-        boolean isAuthenticated = authenticationRequest(token).block();
-        log.info("Is Authenticated: {}", isAuthenticated);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
-                .body(minioService.download(fileName));
+        if (authenticationRequest(token).block()) {
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
+                    .body(minioService.download(fileName));
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(Mono.just(new ByteArrayResource(new byte[]{1, 0})));
+        }
     }
 
     @Override
