@@ -14,6 +14,7 @@ import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.service.LessonService;
 import ru.rtstudy.educplatformsecurity.util.Util;
 
+//TODO: Где ResponseBuilder?
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -32,13 +33,13 @@ public class AuthenticationController implements AuthenticationApi {
     public ResponseEntity<TokenDto> signIn(SignInRequest request) {
         return ResponseEntity.ok(authenticationService.signIn(request));
     }
-
+    //TODO: В Controller !!!НЕ!!! должно быть логики. Вынести в ResponseBuilder
     @Override
     public Boolean forAuthentication() {
         User user = util.findUserFromContext();
         return authenticationService.isAuthor(user.getId());
     }
-
+    //TODO: В Controller !!!НЕ!!! должно быть логики. Вынести в AuthenticationServiceImpl
     @Override
     public Boolean forAuthenticationToDelete(String fileName) {
         User user = util.findUserFromContext();

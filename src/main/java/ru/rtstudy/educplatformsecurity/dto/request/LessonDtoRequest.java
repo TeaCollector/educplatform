@@ -7,9 +7,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Schema(description = "Request To Create/Update Lesson DTO")
 public record LessonDtoRequest(
-        @Schema(description = "Название урока", example = "Буферный кэш")
+        @Schema(description = "Название урока", example = "Буферный кэш") //TODO сделать корректный пример
         String title,
-        @Schema(description = "Название файла с материалам к уроку", example = "lesson1.mp4") //TODO сделать корректный пример
+        @Schema(description = "Название файла с материалам к уроку", example = "lesson1.mp4")
         String fileName,
         @Schema(description = "Описание урока", example = "На этом уроке вы узнаете что такое буферный кэш, его особенности и как его можно настраивать.")
         String description,

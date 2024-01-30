@@ -43,11 +43,13 @@ public interface AuthenticationApi {
     @PostMapping("signin")
     ResponseEntity<TokenDto> signIn(@RequestBody SignInRequest request);
 
+    // TODO: Переименовать функцию forAuthentication()
     @Hidden
     @Operation(summary = "Служебный метод для модуля MinIO")
     @GetMapping("check")
     Boolean forAuthentication();
 
+    // TODO: Переименовать функцию forAuthenticationToDelete()
     @Hidden
     @Operation(summary = "Служебный метод для модуля MinIO")
     @GetMapping("check-for-delete")

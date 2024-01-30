@@ -16,7 +16,7 @@ import ru.rtstudy.educplatformsecurity.model.Course;
 import ru.rtstudy.educplatformsecurity.service.CourseService;
 
 import java.util.List;
-
+//TODO: Где ResponseBuilder?
 @RestController
 @RequiredArgsConstructor
 public class CourseController implements CourseApi {

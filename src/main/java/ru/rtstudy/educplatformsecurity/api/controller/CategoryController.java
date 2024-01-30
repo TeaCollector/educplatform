@@ -9,7 +9,7 @@ import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.service.CategoryService;
 
 import java.util.List;
-
+//TODO: Где ResponseBuilder?
 @RestController
 @RequiredArgsConstructor
 public class CategoryController implements CategoryApi {

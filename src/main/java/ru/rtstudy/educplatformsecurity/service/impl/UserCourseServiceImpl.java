@@ -60,6 +60,7 @@ public class UserCourseServiceImpl implements UserCourseService {
         for (Grade grade : gradeList) {
             average += grade.getGrade();
         }
+        //TODO: 8 is magic numbers
         if (average / gradeList.size() >= 8) {
             userService.changeUserRole(user.getId(), Role.ROLE_MENTOR);
         } else {

@@ -29,6 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final Util util;
 
+    //TODO: Нет проверки на уникальность email в БД
     @Override
     public UserDtoResponse signUp(SignUpRequest request) {
         User user = User.builder()
@@ -38,6 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ROLE_STUDENT)
                 .build();
+        //TODO: нужно дождаться возвращаемое значение и в Response положить ID
         userRepository.save(user);
 
         return UserDtoResponse.builder()
