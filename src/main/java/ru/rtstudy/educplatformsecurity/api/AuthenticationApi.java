@@ -13,7 +13,7 @@ import ru.rtstudy.educplatformsecurity.dto.request.SignInRequest;
 import ru.rtstudy.educplatformsecurity.dto.request.SignUpRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.TokenDto;
 import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
-
+//TODO: Зачем тут интерфейс, если анатации можно навесить непосредсвтенно на функции
 @Tag(name = "Authentication Controller", description = "Authentication Controller API")
 @RequestMapping("/api/v1/auth")
 public interface AuthenticationApi {

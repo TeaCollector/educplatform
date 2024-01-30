@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rtstudy.educplatformsecurity.dto.request.LessonDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoResponse;
-
+//TODO: Зачем тут интерфейс, если анатации можно навесить непосредсвтенно на функции
 @Tag(name = "Lesson Controller", description = "Lesson Controller API")
 @RequestMapping("api/v1/lessons")
 public interface LessonApi {

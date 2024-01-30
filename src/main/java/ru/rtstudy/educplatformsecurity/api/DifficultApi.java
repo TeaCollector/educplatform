@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 
 import java.util.List;
-
+//TODO: Зачем тут интерфейс, если анатации можно навесить непосредсвтенно на функции
 @Tag(name = "Difficulty Controller", description = "Difficulty Controller API")
 @RequestMapping("api/v1/difficult")
 public interface DifficultApi {

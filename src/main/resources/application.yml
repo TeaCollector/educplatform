@@ -1,3 +1,4 @@
+#TODO: Не хватает профиля local
 server:
   port: 8081
 

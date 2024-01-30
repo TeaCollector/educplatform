@@ -1,3 +1,4 @@
+#TODO: https://habr.com/ru/articles/179425/ - читайте про кумулитивные логи
 databaseChangeLog:
   - includeAll:
       path: /changeset

@@ -15,7 +15,7 @@ import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
 import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoShortDescription;
 
 import java.util.List;
-
+//TODO: Зачем тут интерфейс, если анатации можно навесить непосредсвтенно на функции
 @Tag(name = "Course Controller", description = "Course Controller API")
 @RequestMapping("api/v1/courses")
 public interface CourseApi {
