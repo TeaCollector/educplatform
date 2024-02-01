@@ -47,7 +47,7 @@ public interface CourseApi {
             description = "Успешное изменение курса")
     )
     @PutMapping("{id}")
-    ResponseEntity<HttpStatus> updateCourse(@PathVariable(name = "id")
+    ResponseEntity<CourseDtoRequest> updateCourse(@PathVariable(name = "id")
                                             @Parameter(
                                                     name = "id",
                                                     description = "Идентификатор курса",

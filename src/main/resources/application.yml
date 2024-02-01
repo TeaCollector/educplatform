@@ -7,7 +7,7 @@ spring:
     name: educplatform-security
 
   config:
-    import: optional:file:.env[.properties]
+    import: optional:file:.env-local[.properties]
 
   datasource:
     username: ${POSTGRES_USERNAME}

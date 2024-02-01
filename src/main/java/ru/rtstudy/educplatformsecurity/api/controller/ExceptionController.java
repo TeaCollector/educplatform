@@ -65,7 +65,10 @@ public class ExceptionController {
             UserNotMentorException.class,
             MentorAnswerAlreadyExistsException.class,
             AlreadyMentorException.class,
-            NotEnoughScoreToAuthorException.class
+            NotEnoughScoreToAuthorException.class,
+            GradeNotFoundException.class,
+            NoCompletedTasksException.class,
+            NotCourseAuthorException.class
     })
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> mentorsException(RuntimeException ex, WebRequest request) {

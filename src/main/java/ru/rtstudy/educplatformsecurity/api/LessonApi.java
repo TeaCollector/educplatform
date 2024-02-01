@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +58,7 @@ public interface LessonApi {
             description = "Успешное изменение урока")
     )
     @PutMapping("{lesson_id}")
-    ResponseEntity<LessonDtoRequest> changeLesson(@PathVariable(name = "lesson_id")
+    ResponseEntity<LessonDtoResponse> changeLesson(@PathVariable(name = "lesson_id")
                                                   @Parameter(
                                                           name = "lesson_id",
                                                           description = "Идентификатор урока",
@@ -74,7 +75,7 @@ public interface LessonApi {
             description = "Успешное удаление урока")
     )
     @DeleteMapping("{lesson_id}")
-    ResponseEntity<HttpStatusCode> deleteLesson(@PathVariable(name = "lesson_id")
+    ResponseEntity<HttpStatus> deleteLesson(@PathVariable(name = "lesson_id")
                                                 @Parameter(
                                                         name = "lesson_id",
                                                         description = "Идентификатор урока",

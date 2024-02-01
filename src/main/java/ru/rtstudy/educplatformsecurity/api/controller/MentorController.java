@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import ru.rtstudy.educplatformsecurity.api.MentorApi;
+import ru.rtstudy.educplatformsecurity.api.responsebuilder.MentorResponseBuilder;
 import ru.rtstudy.educplatformsecurity.dto.request.MentorAnswerDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.GradeDtoResponse;
 import ru.rtstudy.educplatformsecurity.dto.response.GradeStudentDtoResponse;
@@ -19,47 +20,47 @@ import java.util.List;
 @PreAuthorize("hasRole('ROLE_MENTOR')")
 public class MentorController implements MentorApi {
 
-    private final MentorService mentorService;
+    private final MentorResponseBuilder responseBuilder;
 
     @Override
     public ResponseEntity<List<GradeDtoResponse>> getAllAnswersForMentorCourses() {
         return ResponseEntity
-                .status(HttpStatusCode.valueOf(200))
-                .body(mentorService.getAllAnswersForMentorCourses());
+                .status(HttpStatus.OK)
+                .body(responseBuilder.getAllAnswersForMentorCourses());
     }
 
     @Override
     public ResponseEntity<List<GradeStudentDtoResponse>> getAllStudentAnswersForCourse(Long id) {
         return ResponseEntity
-                .status(HttpStatusCode.valueOf(200))
-                .body(mentorService.getAllAnswersForCourse(id));
+                .status(HttpStatus.OK)
+                .body(responseBuilder.getAllAnswersForCourse(id));
     }
 
     @Override
     public ResponseEntity<List<GradeStudentDtoResponse>> getAllStudentAnswersForLesson(Long id) {
         return ResponseEntity
-                .status(HttpStatusCode.valueOf(200))
-                .body(mentorService.getAllAnswersForLesson(id));
+                .status(HttpStatus.OK)
+                .body(responseBuilder.getAllAnswersForLesson(id));
     }
 
     @Override
     public ResponseEntity<MentorAnswerDtoRequest> reviewStudentAnswer(Long id, MentorAnswerDtoRequest mentorAnswerDtoRequest) {
         return ResponseEntity
-                .status(HttpStatusCode.valueOf(201))
-                .body(mentorService.reviewStudentAnswer(id, mentorAnswerDtoRequest));
+                .status(HttpStatus.OK)
+                .body(responseBuilder.reviewStudentAnswer(id, mentorAnswerDtoRequest));
     }
 
     @Override
     public ResponseEntity<MentorAnswerDtoRequest> updateMentorAnswer(Long id, MentorAnswerDtoRequest mentorAnswerDtoRequest) {
         return ResponseEntity
-                .status(HttpStatusCode.valueOf(200))
-                .body(mentorService.updateMentorAnswer(id, mentorAnswerDtoRequest));
+                .status(HttpStatus.OK)
+                .body(responseBuilder.updateMentorAnswer(id, mentorAnswerDtoRequest));
     }
 
     @Override
     public ResponseEntity<HttpStatus> upgradeMentorToAuthor() {
-        mentorService.upgradeToAuthor();
         return ResponseEntity
-                .ok(HttpStatus.valueOf(201));
+                .status(HttpStatus.CREATED)
+                .body(responseBuilder.upgradeToAuthor());
     }
 }

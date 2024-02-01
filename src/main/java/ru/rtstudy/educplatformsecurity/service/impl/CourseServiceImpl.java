@@ -69,7 +69,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void updateCourse(Course course, Long courseId) {
+    public Course updateCourse(Course course, Long courseId) {
 
         Course toUpdate = courseRepository.findById(courseId)
                 .orElseThrow(() -> new CourseNotFoundException("Course was not found."));
@@ -88,6 +88,7 @@ public class CourseServiceImpl implements CourseService {
         } else {
             throw new NotCourseAuthorException("You are not course author.");
         }
+        return course;
     }
 
     @Override
