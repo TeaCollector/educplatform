@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - include:
+      relativeToChangelogFile: true
+      file: 001_create_table_users.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 002_create_table_tasks.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 003_create_table_difficult.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 004_create_table_categories.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 005_create_table_courses.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 006_create_table_lessons.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 007_create_table_users-courses.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 008_create_table_grades.yml
