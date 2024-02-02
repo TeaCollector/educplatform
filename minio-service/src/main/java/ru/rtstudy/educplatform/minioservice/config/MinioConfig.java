@@ -33,9 +33,7 @@ public class MinioConfig {
     private String bucketName;
 
     @Bean
-    public MinioAsyncClient minioClient() {
-        log.info("URL: {}. username: {}. password: {}", url, userName, password);
-
+    public MinioAsyncClient minioClient() {;
         MinioAsyncClient asyncClient = MinioAsyncClient.builder()
                 .endpoint(url)
                 .credentials(userName, password)
@@ -50,6 +48,7 @@ public class MinioConfig {
                                 .build()
                 );
             }
+            log.info("Minio client was created: {}, bucket: {}", userName, bucketName);
             return asyncClient;
         } catch (InsufficientDataException | InternalException | InvalidKeyException | IOException |
                  NoSuchAlgorithmException | XmlParserException | ExecutionException | InterruptedException e) {

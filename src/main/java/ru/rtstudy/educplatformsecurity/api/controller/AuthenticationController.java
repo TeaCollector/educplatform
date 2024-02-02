@@ -38,7 +38,7 @@ public class AuthenticationController implements AuthenticationApi {
         return responseBuilder.verificationRequest();
     }
     @Override
-    public Boolean verificationToDelete(String fileName) {
+    public Boolean deleteVerification(String fileName) {
         return responseBuilder.verificationToDelete(fileName);
     }
 }

@@ -54,5 +54,5 @@ public interface AuthenticationApi {
     @Hidden
     @Operation(summary = "Служебный метод для модуля MinIO")
     @GetMapping("check-for-delete")
-    Boolean verificationToDelete(@RequestParam(value = "file-name") String fileName);
+    Boolean deleteVerification(@RequestParam(value = "file-name") String fileName);
 }

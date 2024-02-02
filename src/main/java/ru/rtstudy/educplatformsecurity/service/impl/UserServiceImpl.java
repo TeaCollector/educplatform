@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailsService userDetailsService() {
-        log.info("{} searching user", util.findUserFromContext().getEmail());
         return email -> userRepository.findUserByEmail(email)
                 .orElseThrow(() -> {
                     log.info("{} was not found.", util.findUserFromContext().getEmail(), new UserNotMentorException("User not found."));

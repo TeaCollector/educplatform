@@ -3,6 +3,7 @@ package ru.rtstudy.educplatform.minioservice.service.impl;
 import io.minio.*;
 import io.minio.errors.InsufficientDataException;
 import io.minio.errors.InternalException;
+import io.minio.errors.MinioException;
 import io.minio.errors.XmlParserException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,16 +39,20 @@ public class MinioServiceImpl implements MinioService {
         return file
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(multipartFile -> {
+                    log.info("Uploading file name: {}", multipartFile.filename());
                     File temp = new File(createUUID(multipartFile));
+                    log.info("Change name to: {}", temp.getName());
                     try {
                         multipartFile.transferTo(temp).block();
                         UploadObjectArgs uploadObjectArgs = getUploadObjectArgs(multipartFile, temp);
+                        log.debug("File will upload to: {} bucket", uploadObjectArgs.bucket());
                         ObjectWriteResponse response = minioClient.uploadObject(uploadObjectArgs).get();
                         temp.delete();
                         return UploadResponse.builder()
                                 .objectName(response.object())
                                 .build();
                     } catch (Exception e) {
+                        log.error("Uploading was interrupt", new MinioException("File wasn't upload."));
                         throw new RuntimeException(e);
                     }
                 }).log();
@@ -56,6 +61,7 @@ public class MinioServiceImpl implements MinioService {
 
     public Mono<ByteArrayResource> download(String fileName) {
         return Mono.fromCallable(() -> {
+                    log.info("Downloading file: {}", fileName);
                     GetObjectArgs objectArgs = getObjectArgs(fileName);
                     InputStream response = minioClient
                             .getObject(objectArgs)
@@ -66,6 +72,7 @@ public class MinioServiceImpl implements MinioService {
     }
 
     public Mono<UploadResponse> putObject(FilePart file) {
+        log.info("Uploading file: {}", file.filename());
         return file.content()
                 .subscribeOn(Schedulers.boundedElastic())
                 .reduce(new InputStreamCollector(),
@@ -73,11 +80,13 @@ public class MinioServiceImpl implements MinioService {
                 .map(inputStreamCollector -> {
                     try {
                         PutObjectArgs args = getPutObjectArgs(file, inputStreamCollector);
+                        log.debug("File will upload to: {} bucket.", args.bucket());
                         ObjectWriteResponse response = minioClient.putObject(args).get();
                         return UploadResponse.builder()
                                 .objectName(response.object())
                                 .build();
                     } catch (Exception e) {
+                        log.error("File wasn't upload: {}", file.filename(), new MinioException("File wasn't upload."));
                         throw new RuntimeException(e);
                     }
                 }).log();
@@ -85,6 +94,7 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public boolean deleteFile(String fileName) {
+        log.info("Delete file: {}", fileName);
         try {
             minioClient.removeObject(RemoveObjectArgs.builder()
                     .bucket(bucketName)
@@ -93,6 +103,7 @@ public class MinioServiceImpl implements MinioService {
             return true;
         } catch (InsufficientDataException | InternalException | InvalidKeyException | IOException |
                  NoSuchAlgorithmException | XmlParserException e) {
+            log.error("File was not deleted: {}", fileName, new MinioException("File wasn't delete"));
             throw new RuntimeException(e);
         }
     }
@@ -130,7 +141,6 @@ public class MinioServiceImpl implements MinioService {
     }
 
     private String createUUID(FilePart file) {
-
         String uuid = UUID.randomUUID().toString().replace("-", "") + ".";
         uuid = file.filename().replaceFirst(".*\\.", uuid);
         return uuid;

@@ -9,7 +9,9 @@ import ru.rtstudy.educplatformsecurity.model.constant.Role;
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Schema(description = "User DTO Response")
-public record UserDtoResponse(@Schema(description = "email пользователя", example = "surok@gmail.com")
+public record UserDtoResponse(@Schema(description = "id пользователя", example = "1")
+                              Long id,
+                              @Schema(description = "email пользователя", example = "surok@gmail.com")
                               String email,
                               @Schema(description = "Имя пользователя", example = "Иван")
                               String firstName,

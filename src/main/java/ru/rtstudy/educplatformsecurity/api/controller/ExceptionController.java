@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import ru.rtstudy.educplatformsecurity.exception.*;
+import ru.rtstudy.educplatformsecurity.exception.ErrorMessage;
 import ru.rtstudy.educplatformsecurity.exception.exist.*;
 import ru.rtstudy.educplatformsecurity.exception.user.*;
 
@@ -20,7 +20,8 @@ public class ExceptionController {
             LessonNotFoundException.class,
             AnswersNotFoundException.class,
             TaskNotFoundException.class,
-            UserNotFoundException.class})
+            UserNotFoundException.class,
+            UserAlreadyExistsException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> resourceNotFoundException(RuntimeException ex, WebRequest request) {
         return ResponseEntity
