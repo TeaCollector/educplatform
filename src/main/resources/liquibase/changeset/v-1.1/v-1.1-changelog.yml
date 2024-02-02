@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - include:
+      relativeToChangelogFile: true
+      file: 009_insert_test_data_users.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 010_insert_test_data_courses.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 011_insert_test_data_user_courses.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 012_insert_test_data_tasks.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 013_insert_test_data_lesson.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 014_insert_test_data_grades.yml

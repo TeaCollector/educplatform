@@ -1,4 +1,7 @@
 databaseChangeLog:
-  - includeAll:
-      path: /changeset
-      relativeToChangeLogFile: true
+  - include:
+      relativeToChangelogFile: true
+      file: changeset/v-1.0/v-1.0-changelog.yml
+  - include:
+      relativeToChangelogFile: true
+      file: changeset/v-1.1/v-1.1-changelog.yml
