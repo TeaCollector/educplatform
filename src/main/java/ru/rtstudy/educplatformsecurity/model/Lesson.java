@@ -9,6 +9,7 @@ import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class Lesson {

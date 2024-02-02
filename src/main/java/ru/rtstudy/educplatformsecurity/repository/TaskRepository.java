@@ -12,7 +12,9 @@ import java.util.Optional;
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query("""
-            select new TaskDto(t.description) from Task t where t.id = :id
+            select new TaskDto(t.id, t.description) 
+            from Task t 
+            where t.id = :id
             """)
     Optional<TaskDto> getTaskById(@Param(value = "id") Long id);
 

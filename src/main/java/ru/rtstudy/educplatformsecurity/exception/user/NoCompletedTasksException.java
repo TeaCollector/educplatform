@@ -1,4 +1,4 @@
-package ru.rtstudy.educplatformsecurity.exception;
+package ru.rtstudy.educplatformsecurity.exception.user;
 
 public class NoCompletedTasksException extends RuntimeException {
     public NoCompletedTasksException(String message) {

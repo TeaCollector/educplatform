@@ -1,4 +1,4 @@
-package ru.rtstudy.educplatformsecurity.exception;
+package ru.rtstudy.educplatformsecurity.exception.exist;
 
 public class GradeNotFoundException extends RuntimeException {
     public GradeNotFoundException(String message) {
