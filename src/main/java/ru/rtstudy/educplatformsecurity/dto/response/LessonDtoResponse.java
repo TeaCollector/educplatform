@@ -14,7 +14,7 @@ public record LessonDtoResponse(
         Long lessonId,
         @Schema(description = "Название урока", example = "Буферный кэш")
         String title,
-        @Schema(description = "Название файла с материалам к уроку", example = "lesson1.mp4") //TODO сделать корректный пример
+        @Schema(description = "Название файла с материалам к уроку", example = "21c8bb28f626d28ffcf.mp4")
         String fileName,
         @Schema(description = "Описание урока", example = "На этом уроке вы узнаете что такое буферный кэш, его особенности и как его можно настраивать.")
         String description,

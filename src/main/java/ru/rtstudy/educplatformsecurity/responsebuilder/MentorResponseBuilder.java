@@ -1,4 +1,4 @@
-package ru.rtstudy.educplatformsecurity.api.responsebuilder;
+package ru.rtstudy.educplatformsecurity.responsebuilder;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package ru.rtstudy.educplatformsecurity.api.responsebuilder;
+package ru.rtstudy.educplatformsecurity.responsebuilder;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,6 @@ import ru.rtstudy.educplatformsecurity.dto.request.SignUpRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.TokenDto;
 import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
 import ru.rtstudy.educplatformsecurity.model.User;
-import ru.rtstudy.educplatformsecurity.service.CategoryService;
 import ru.rtstudy.educplatformsecurity.service.LessonService;
 import ru.rtstudy.educplatformsecurity.util.Util;
 
@@ -18,7 +17,6 @@ public class AuthenticationResponseBuilder {
 
     private final AuthenticationService authenticationService;
     private final LessonService lessonService;
-    private final CategoryService categoryService;
     private final Util util;
 
     public UserDtoResponse signup(SignUpRequest signUpRequest) {
