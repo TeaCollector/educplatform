@@ -1,4 +1,4 @@
-package ru.rtstudy.educplatformsecurity.exception.user;
+package ru.rtstudy.educplatformsecurity.exception.mentor;
 
 public class MentorAnswerAlreadyExistsException extends RuntimeException {
 

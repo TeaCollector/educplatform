@@ -1,4 +1,4 @@
-package ru.rtstudy.educplatformsecurity.exception.exist;
+package ru.rtstudy.educplatformsecurity.exception.entity;
 
 public class TaskNotFoundException extends RuntimeException {
 

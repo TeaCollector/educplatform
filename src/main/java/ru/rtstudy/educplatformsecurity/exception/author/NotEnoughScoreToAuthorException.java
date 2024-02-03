@@ -1,4 +1,4 @@
-package ru.rtstudy.educplatformsecurity.exception.user;
+package ru.rtstudy.educplatformsecurity.exception.author;
 
 public class NotEnoughScoreToAuthorException extends RuntimeException {
 

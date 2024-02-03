@@ -7,7 +7,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import ru.rtstudy.educplatformsecurity.exception.ErrorMessage;
-import ru.rtstudy.educplatformsecurity.exception.exist.*;
+import ru.rtstudy.educplatformsecurity.exception.author.NotCourseAuthorException;
+import ru.rtstudy.educplatformsecurity.exception.author.NotEnoughScoreToAuthorException;
+import ru.rtstudy.educplatformsecurity.exception.entity.*;
+import ru.rtstudy.educplatformsecurity.exception.mentor.MentorAnswerAlreadyExistsException;
+import ru.rtstudy.educplatformsecurity.exception.mentor.NoCompletedTasksException;
+import ru.rtstudy.educplatformsecurity.exception.mentor.NotEnoughScoreToMentorException;
+import ru.rtstudy.educplatformsecurity.exception.student.AlreadyMentorException;
+import ru.rtstudy.educplatformsecurity.exception.student.EnterOnCourseException;
+import ru.rtstudy.educplatformsecurity.exception.student.ResolveAllTaskException;
+import ru.rtstudy.educplatformsecurity.exception.student.UserNotMentorException;
 import ru.rtstudy.educplatformsecurity.exception.user.*;
 
 import java.time.LocalDateTime;

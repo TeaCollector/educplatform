@@ -1,4 +1,4 @@
-package ru.rtstudy.educplatformsecurity.exception.user;
+package ru.rtstudy.educplatformsecurity.exception.student;
 
 public class EnterOnCourseException extends RuntimeException {
     public EnterOnCourseException(String msg) {
