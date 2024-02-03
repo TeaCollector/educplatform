@@ -1,18 +1,19 @@
-#TODO: Не хватает профиля local
-server:
-  port: 8081
-
+spring:
+  profiles:
+    active: local
+---
 spring:
   application:
-    name: educplatform-security
+    name: educplatform
 
   config:
-    import: optional:file:.env-local[.properties]
+    activate:
+      on-profile: local
 
   datasource:
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
-    url: jdbc:postgresql://${POSTGRES_HOST}/${POSTGRES_DB}
+    username: java
+    password: java
+    url: jdbc:postgresql://localhost:5435/educplatform
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -30,4 +31,40 @@ spring:
 
 jwt:
   secretKey: gfjnkdjgf234234jn2340v8uUNdiFasd4vfeSDSkjvdfggdadg5t53461gradf
+
+server:
+  port: 8081
+---
+spring:
+  application:
+    name: educplatform
+
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    username: java
+    password: java
+    url: jdbc:postgresql://database:5435/educplatform
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        integrator_provider: ru.rtstudy.educplatformsecurity.config.ClassImportIntegratorProvider
+
+  liquibase:
+    change-log: classpath:liquibase/db.changelog-master.yml
+
+
+jwt:
+  secretKey: gfjnkdjgf234234jn2340v8uUNdiFasd4vfeSDSkjvdfggdadg5t53461gradf
+
+server:
+  port: 8081
 
