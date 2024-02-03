@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "Request to Sign In DTO")
 public class SignInRequest {
-    @Schema(description = "Электронная почта пользователя", example = "newuser@testmail.com")
+    @Schema(description = "Электронная почта пользователя", example = "surok@gmail.com")
     private String email;
     @Schema(description = "Пароль пользователя", example = "secretpassword")
     private String password;

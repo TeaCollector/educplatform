@@ -1,7 +1,6 @@
-package ru.rtstudy.educplatformsecurity.api.responsebuilder;
+package ru.rtstudy.educplatformsecurity.responsebuilder;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.web.server.Http2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.CourseMapper;
