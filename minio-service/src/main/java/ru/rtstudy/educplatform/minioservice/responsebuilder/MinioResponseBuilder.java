@@ -1,4 +1,4 @@
-package ru.rtstudy.educplatform.minioservice.api.responsebuilder;
+package ru.rtstudy.educplatform.minioservice.responsebuilder;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

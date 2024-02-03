@@ -1,4 +1,4 @@
-package ru.rtstudy.educplatform.minioservice.api.controller;
+package ru.rtstudy.educplatform.minioservice.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
