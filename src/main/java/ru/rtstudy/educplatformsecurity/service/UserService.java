@@ -11,7 +11,7 @@ public interface UserService {
 
     void changeUserRole(Long id, Role role);
 
-    User findUserById();
+    User findUser();
 
     UserUpdateDto updateUser(UserUpdateDto userUpdateDto);
 }

@@ -8,15 +8,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.auth.AuthenticationService;
 import ru.rtstudy.educplatformsecurity.auth.JwtService;
+import ru.rtstudy.educplatformsecurity.dto.mapper.impl.UserMapper;
 import ru.rtstudy.educplatformsecurity.dto.request.SignInRequest;
 import ru.rtstudy.educplatformsecurity.dto.request.SignUpRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.TokenDto;
 import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
-import ru.rtstudy.educplatformsecurity.exception.UserNotFoundException;
+import ru.rtstudy.educplatformsecurity.exception.entity.UserNotFoundException;
+import ru.rtstudy.educplatformsecurity.exception.user.UserAlreadyExistsException;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
 import ru.rtstudy.educplatformsecurity.repository.UserRepository;
 import ru.rtstudy.educplatformsecurity.util.Util;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,34 +31,40 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserMapper mapper;
     private final Util util;
 
     @Override
     public UserDtoResponse signUp(SignUpRequest request) {
-        User user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ROLE_STUDENT)
-                .build();
-        userRepository.save(user);
-
-        return UserDtoResponse.builder()
-                .email(request.getEmail())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .role(user.getRole())
-                .build();
+        log.info("{} trying to sign up.", request.getEmail());
+        Optional<User> userExists = userRepository.findUserByEmail(request.getEmail());
+        if (userExists.isEmpty()) {
+            User user = User.builder()
+                    .firstName(request.getFirstName())
+                    .lastName(request.getLastName())
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .role(Role.ROLE_STUDENT)
+                    .build();
+            user = userRepository.save(user);
+            return mapper.toDto(user);
+        } else {
+            log.error("User already exists.", new UserAlreadyExistsException("User already exists."));
+            throw new UserAlreadyExistsException("User already exists.");
+        }
     }
 
     @Override
     public TokenDto signIn(SignInRequest request) {
+        log.info("{} trying to sign in", request.getEmail());
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()))
                 .getPrincipal();
         User user = userRepository.findUserByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+                .orElseThrow(() -> {
+                    log.error("Invalid email or password: {}", request.getEmail(), new IllegalArgumentException("Invalid email or password"));
+                    return new IllegalArgumentException("Invalid email or password");
+                });
         String jwt = jwtService.generateToken(user);
         return TokenDto.builder()
                 .token(jwt)
@@ -63,16 +73,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public boolean hasCredentialToDelete(String fileName) {
+        log.info("{} verification to delete filename: {}", util.findUserFromContext().getEmail(), fileName);
         Long userId = util.findUserFromContext().getId();
-        boolean b = userRepository.hasCredential(fileName, userId);
-        log.info("FILE NAME IS: {} AND HAS CREDENTIAL: {}", fileName, b);
-        return b;
+        return userRepository.hasCredential(fileName, userId);
     }
 
     @Override
     public boolean isAuthor(Long userId) {
+        log.info("User by id: {} verification on author credential", userId);
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found."))
+                .orElseThrow(() -> {
+                    log.error("User by id: {} not found", userId);
+                    return new UserNotFoundException("User not found.");
+                })
                 .getRole()
                 .equals(Role.ROLE_AUTHOR);
     }

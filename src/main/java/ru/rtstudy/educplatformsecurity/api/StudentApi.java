@@ -16,7 +16,7 @@ import ru.rtstudy.educplatformsecurity.dto.request.StudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.response.AllStudentAnswers;
 
 import java.util.List;
-
+//TODO: Зачем тут интерфейс, если анатации можно навесить непосредсвтенно на функции
 @Tag(name = "Student Controller", description = "Student Controller API")
 @RequestMapping("api/v1/students")
 public interface StudentApi {

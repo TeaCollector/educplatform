@@ -1,6 +1,6 @@
 package ru.rtstudy.educplatformsecurity.api;
 
-import io.swagger.v3.oas.annotations.Operation;
+ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.rtstudy.educplatformsecurity.dto.request.UserUpdateDto;
 import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
-
+//TODO: Зачем тут интерфейс, если анатации можно навесить непосредсвтенно на функции
 @Tag(name = "User Controller", description = "User Controller API")
 @RequestMapping("api/v1/users")
 public interface UserApi {

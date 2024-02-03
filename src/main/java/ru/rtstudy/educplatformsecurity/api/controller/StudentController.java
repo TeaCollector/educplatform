@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.rtstudy.educplatformsecurity.api.StudentApi;
+import ru.rtstudy.educplatformsecurity.api.responsebuilder.StudentResponseBuilder;
 import ru.rtstudy.educplatformsecurity.dto.ChangeStudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.request.StudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.response.AllStudentAnswers;
@@ -17,43 +18,41 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentController implements StudentApi {
 
-    private final UserCourseService userCourseService;
-    private final GradeService gradeService;
+    private final StudentResponseBuilder responseBuilder;
 
     @Override
     public ResponseEntity<HttpStatus> enterOnCourse(Long courseId) {
-        userCourseService.enterOnCourse(courseId);
         return ResponseEntity
-                .ok(HttpStatus.valueOf(201));
+                .status(HttpStatus.CREATED)
+                .body(responseBuilder.enterOnCourse(courseId));
     }
 
     @Override
     public ResponseEntity<HttpStatus> finishCourse(Long courseId) {
-        gradeService.finishCourse(courseId);
         return ResponseEntity
-                .ok(HttpStatus.valueOf(201));
+                .status(HttpStatus.CREATED)
+                .body(responseBuilder.finishCourse(courseId));
     }
 
     @Override
     public ResponseEntity<StudentAnswerDto> sendAnswer(StudentAnswerDto studentAnswerDto) {
-        gradeService.sendAnswer(studentAnswerDto);
         return ResponseEntity
                 .status(HttpStatus.valueOf(201))
-                .body(studentAnswerDto);
+                .body(responseBuilder.sendAnswer(studentAnswerDto));
     }
 
     @Override
     public ResponseEntity<List<AllStudentAnswers>> receiveAllStudentsAnswer() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(gradeService.findAllStudentAnswer());
+                .body(responseBuilder.findAllStudentAnswer());
     }
 
     @Override
     public ResponseEntity<List<AllStudentAnswers>> receiveAllStudentsAnswerForCourse(Long courseId) {
         return ResponseEntity
-                .status(HttpStatus.valueOf(200))
-                .body(gradeService.findAllStudentsAnswerForCourse(courseId));
+                .status(HttpStatus.OK)
+                .body(responseBuilder.findAllStudentsAnswerForCourse(courseId));
 
     }
 
@@ -61,13 +60,13 @@ public class StudentController implements StudentApi {
     public ResponseEntity<ChangeStudentAnswerDto> changeAnswer(Long id, ChangeStudentAnswerDto studentsAnswerDto) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(gradeService.changeAnswer(id, studentsAnswerDto));
+                .body(responseBuilder.changeAnswer(id, studentsAnswerDto));
     }
 
     @Override
     public ResponseEntity<HttpStatus> upgradeToMentor(Long courseId) {
-        userCourseService.upgradeToMentor(courseId);
         return ResponseEntity
-                .ok(HttpStatus.valueOf(201));
+                .status(HttpStatus.CREATED)
+                .body(responseBuilder.upgradeToMentor(courseId));
     }
 }

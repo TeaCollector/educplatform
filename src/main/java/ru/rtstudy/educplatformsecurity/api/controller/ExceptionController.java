@@ -6,7 +6,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import ru.rtstudy.educplatformsecurity.exception.*;
+import ru.rtstudy.educplatformsecurity.exception.ErrorMessage;
+import ru.rtstudy.educplatformsecurity.exception.author.NotCourseAuthorException;
+import ru.rtstudy.educplatformsecurity.exception.author.NotEnoughScoreToAuthorException;
+import ru.rtstudy.educplatformsecurity.exception.entity.*;
+import ru.rtstudy.educplatformsecurity.exception.mentor.MentorAnswerAlreadyExistsException;
+import ru.rtstudy.educplatformsecurity.exception.mentor.NoCompletedTasksException;
+import ru.rtstudy.educplatformsecurity.exception.mentor.NotEnoughScoreToMentorException;
+import ru.rtstudy.educplatformsecurity.exception.student.AlreadyMentorException;
+import ru.rtstudy.educplatformsecurity.exception.student.EnterOnCourseException;
+import ru.rtstudy.educplatformsecurity.exception.student.ResolveAllTaskException;
+import ru.rtstudy.educplatformsecurity.exception.student.UserNotMentorException;
+import ru.rtstudy.educplatformsecurity.exception.user.*;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +29,8 @@ public class ExceptionController {
             LessonNotFoundException.class,
             AnswersNotFoundException.class,
             TaskNotFoundException.class,
-            UserNotFoundException.class})
+            UserNotFoundException.class,
+            UserAlreadyExistsException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> resourceNotFoundException(RuntimeException ex, WebRequest request) {
         return ResponseEntity
@@ -65,7 +77,10 @@ public class ExceptionController {
             UserNotMentorException.class,
             MentorAnswerAlreadyExistsException.class,
             AlreadyMentorException.class,
-            NotEnoughScoreToAuthorException.class
+            NotEnoughScoreToAuthorException.class,
+            GradeNotFoundException.class,
+            NoCompletedTasksException.class,
+            NotCourseAuthorException.class
     })
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> mentorsException(RuntimeException ex, WebRequest request) {

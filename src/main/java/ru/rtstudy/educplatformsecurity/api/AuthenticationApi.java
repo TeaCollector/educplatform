@@ -14,6 +14,7 @@ import ru.rtstudy.educplatformsecurity.dto.request.SignUpRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.TokenDto;
 import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
 
+//TODO: Зачем тут интерфейс, если анатации можно навесить непосредсвтенно на функции
 @Tag(name = "Authentication Controller", description = "Authentication Controller API")
 @RequestMapping("/api/v1/auth")
 public interface AuthenticationApi {
@@ -43,13 +44,15 @@ public interface AuthenticationApi {
     @PostMapping("signin")
     ResponseEntity<TokenDto> signIn(@RequestBody SignInRequest request);
 
+    // TODO: Переименовать функцию forAuthentication()
     @Hidden
     @Operation(summary = "Служебный метод для модуля MinIO")
     @GetMapping("check")
-    Boolean forAuthentication();
+    Boolean verification();
 
+    // TODO: Переименовать функцию forAuthenticationToDelete()
     @Hidden
     @Operation(summary = "Служебный метод для модуля MinIO")
     @GetMapping("check-for-delete")
-    Boolean forAuthenticationToDelete(@RequestParam(value = "file-name") String fileName);
+    Boolean deleteVerification(@RequestParam(value = "file-name") String fileName);
 }

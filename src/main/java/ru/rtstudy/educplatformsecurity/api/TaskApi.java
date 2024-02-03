@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rtstudy.educplatformsecurity.dto.response.TaskDto;
-
+//TODO: Зачем тут интерфейс, если анатации можно навесить непосредсвтенно на функции
 @Tag(name = "Task Controller", description = "Task Controller API")
 @RequestMapping("api/v1/tasks")
 public interface TaskApi {
