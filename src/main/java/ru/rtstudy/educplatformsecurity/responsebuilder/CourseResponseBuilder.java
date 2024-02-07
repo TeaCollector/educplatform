@@ -2,6 +2,7 @@ package ru.rtstudy.educplatformsecurity.responsebuilder;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.CourseMapper;
 import ru.rtstudy.educplatformsecurity.dto.request.CourseDtoRequest;
@@ -20,27 +21,37 @@ public class CourseResponseBuilder {
     private final CourseMapper mapper;
 
 
-    public CourseLongDescriptionDto findCourseById(Long id) {
-        return courseService.findCourseById(id);
+    public ResponseEntity<CourseLongDescriptionDto> findCourseById(Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(courseService.findCourseById(id));
     }
 
-    public CourseDtoRequest updateCourse(Long id, CourseDtoRequest courseDtoRequest) {
+    public ResponseEntity<CourseDtoRequest> updateCourse(Long id, CourseDtoRequest courseDtoRequest) {
         Course course = mapper.toEntity(courseDtoRequest);
         CourseDtoRequest courseDto = mapper.toDto(courseService.updateCourse(course, id));
-        return courseDto;
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(courseDto);
     }
 
-    public List<LessonDtoShortDescription> getAllLessonByCourseId(Long courseId) {
-        return courseService.getAllLessonByCourseId(courseId);
+    public ResponseEntity<List<LessonDtoShortDescription>> getAllLessonByCourseId(Long courseId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(courseService.getAllLessonByCourseId(courseId));
     }
 
-    public CourseDtoRequest createCourse(CourseDtoRequest dtoRequest) {
+    public ResponseEntity<CourseDtoRequest> createCourse(CourseDtoRequest dtoRequest) {
         Course course = mapper.toEntity(dtoRequest);
-        return mapper.toDto(courseService.createCourse(course));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(mapper.toDto(courseService.createCourse(course)));
     }
 
-    public HttpStatus deleteCourse(Long id) {
+    public ResponseEntity<HttpStatus> deleteCourse(Long id) {
         courseService.deleteCourse(id);
-        return HttpStatus.NO_CONTENT;
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body(HttpStatus.NO_CONTENT);
     }
 }

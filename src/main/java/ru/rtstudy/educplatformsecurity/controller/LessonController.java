@@ -24,18 +24,14 @@ public class LessonController {
     @GetMapping("{lesson_id}")
     public ResponseEntity<LessonDtoResponse> getLessonById(@PathVariable(name = "lesson_id")
                                                            @Parameter(name = "lesson_id", description = "Идентификатор урока") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.findLessonById(id));
+        return responseBuilder.findLessonById(id);
     }
 
     @Operation(summary = "Создать новый урок")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PostMapping
     public ResponseEntity<LessonDtoResponse> createLesson(@RequestBody LessonDtoRequest lessonDtoRequest) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(responseBuilder.createLesson(lessonDtoRequest));
+        return responseBuilder.createLesson(lessonDtoRequest);
     }
 
     @Operation(summary = "Изменить информацию об уроке по его идентификатору")
@@ -44,9 +40,7 @@ public class LessonController {
     public ResponseEntity<LessonDtoResponse> changeLesson(@PathVariable(name = "lesson_id")
                                                           @Parameter(name = "lesson_id", description = "Идентификатор урока") Long lessonId,
                                                           @RequestBody LessonDtoRequest lessonDtoRequest) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.updateLesson(lessonDtoRequest, lessonId));
+        return responseBuilder.updateLesson(lessonDtoRequest, lessonId);
     }
 
     @Operation(summary = "Удалить урок по его идентификатору")
@@ -54,8 +48,6 @@ public class LessonController {
     @DeleteMapping("{lesson_id}")
     public ResponseEntity<HttpStatus> deleteLesson(@PathVariable(name = "lesson_id")
                                                    @Parameter(name = "lesson_id", description = "Идентификатор урока") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .body(responseBuilder.deleteLesson(id));
+        return responseBuilder.deleteLesson(id);
     }
 }

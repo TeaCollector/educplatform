@@ -27,9 +27,7 @@ public class CourseController {
     @GetMapping("{id}")
     public ResponseEntity<CourseLongDescriptionDto> getCourse(@PathVariable(name = "id")
                                                               @Parameter(name = "id", description = "Идентификатор курса") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.findCourseById(id));
+        return responseBuilder.findCourseById(id);
     }
 
     @Operation(summary = "Изменить информацию о курсе по его идентификатору")
@@ -38,27 +36,21 @@ public class CourseController {
     public ResponseEntity<CourseDtoRequest> updateCourse(@PathVariable(name = "id")
                                                          @Parameter(name = "id", description = "Идентификатор курса") Long id,
                                                          @RequestBody CourseDtoRequest courseDtoRequest) {
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(responseBuilder.updateCourse(id, courseDtoRequest));
+        return responseBuilder.updateCourse(id, courseDtoRequest);
     }
 
     @Operation(summary = "Получить краткое описание всех уроков курса")
     @GetMapping("lessons/{id}")
     public ResponseEntity<List<LessonDtoShortDescription>> getAllLessonByCourseId(@PathVariable(name = "id")
                                                                                   @Parameter(name = "id", description = "Идентификатор курса") Long courseId) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.getAllLessonByCourseId(courseId));
+        return responseBuilder.getAllLessonByCourseId(courseId);
     }
 
     @Operation(summary = "Создать новый курс")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PostMapping
     public ResponseEntity<CourseDtoRequest> createCourse(@RequestBody CourseDtoRequest courseDtoRequest) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.createCourse(courseDtoRequest));
+        return responseBuilder.createCourse(courseDtoRequest);
     }
 
     @Operation(summary = "Удалить курс по его идентификатору")
@@ -66,8 +58,6 @@ public class CourseController {
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteCourse(@PathVariable(name = "id")
                                                    @Parameter(name = "id", description = "Идентификатор курса") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .body(responseBuilder.deleteCourse(id));
+        return responseBuilder.deleteCourse(id);
     }
 }

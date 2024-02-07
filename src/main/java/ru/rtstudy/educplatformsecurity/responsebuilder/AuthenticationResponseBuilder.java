@@ -1,6 +1,8 @@
 package ru.rtstudy.educplatformsecurity.responsebuilder;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.auth.AuthenticationService;
 import ru.rtstudy.educplatformsecurity.dto.request.SignInRequest;
@@ -19,12 +21,16 @@ public class AuthenticationResponseBuilder {
     private final LessonService lessonService;
     private final Util util;
 
-    public UserDtoResponse signup(SignUpRequest signUpRequest) {
-        return authenticationService.signUp(signUpRequest);
+    public ResponseEntity<UserDtoResponse> signup(SignUpRequest signUpRequest) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(authenticationService.signUp(signUpRequest));
     }
 
-    public TokenDto signIn(SignInRequest signInRequest) {
-        return authenticationService.signIn(signInRequest);
+    public ResponseEntity<TokenDto> signIn(SignInRequest signInRequest) {
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(authenticationService.signIn(signInRequest));
     }
 
     public Boolean verificationRequest() {

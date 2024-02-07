@@ -2,6 +2,7 @@ package ru.rtstudy.educplatformsecurity.responsebuilder;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.dto.ChangeStudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.request.StudentAnswerDto;
@@ -18,35 +19,49 @@ public class StudentResponseBuilder {
     private final UserCourseService userCourseService;
     private final GradeService gradeService;
 
-    public HttpStatus enterOnCourse(Long courseId) {
+    public ResponseEntity<HttpStatus> enterOnCourse(Long courseId) {
         userCourseService.enterOnCourse(courseId);
-        return HttpStatus.CREATED;
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(HttpStatus.CREATED);
     }
 
-    public HttpStatus finishCourse(Long courseId) {
+    public ResponseEntity<HttpStatus> finishCourse(Long courseId) {
         gradeService.finishCourse(courseId);
-        return HttpStatus.CREATED;
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(HttpStatus.CREATED);
     }
 
-    public StudentAnswerDto sendAnswer(StudentAnswerDto studentAnswerDto) {
-        return gradeService.sendAnswer(studentAnswerDto);
+    public ResponseEntity<StudentAnswerDto> sendAnswer(StudentAnswerDto studentAnswerDto) {
+        return ResponseEntity
+                .status(HttpStatus.valueOf(201))
+                .body(gradeService.sendAnswer(studentAnswerDto));
     }
 
 
-    public List<AllStudentAnswers> findAllStudentAnswer() {
-        return gradeService.findAllStudentAnswer();
+    public ResponseEntity<List<AllStudentAnswers>> findAllStudentAnswer() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(gradeService.findAllStudentAnswer());
     }
 
-    public List<AllStudentAnswers> findAllStudentsAnswerForCourse(Long courseId) {
-       return gradeService.findAllStudentsAnswerForCourse(courseId);
+    public ResponseEntity<List<AllStudentAnswers>> findAllStudentsAnswerForCourse(Long courseId) {
+       return ResponseEntity
+               .status(HttpStatus.OK)
+               .body(gradeService.findAllStudentsAnswerForCourse(courseId));
     }
 
-    public ChangeStudentAnswerDto changeAnswer(Long id, ChangeStudentAnswerDto studentsAnswerDto) {
-        return gradeService.changeAnswer(id, studentsAnswerDto);
+    public ResponseEntity<ChangeStudentAnswerDto> changeAnswer(Long id, ChangeStudentAnswerDto studentsAnswerDto) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(gradeService.changeAnswer(id, studentsAnswerDto));
     }
 
-    public HttpStatus upgradeToMentor(Long courseId) {
+    public ResponseEntity<HttpStatus> upgradeToMentor(Long courseId) {
         userCourseService.upgradeToMentor(courseId);
-        return HttpStatus.CREATED;
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(HttpStatus.CREATED);
     }
 }

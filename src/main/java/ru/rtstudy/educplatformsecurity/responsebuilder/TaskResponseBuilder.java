@@ -2,6 +2,7 @@ package ru.rtstudy.educplatformsecurity.responsebuilder;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.TaskMapper;
 import ru.rtstudy.educplatformsecurity.dto.response.TaskDto;
@@ -16,21 +17,29 @@ public class TaskResponseBuilder {
     private final TaskMapper mapper;
 
 
-    public TaskDto getTask(Long id) {
-        return taskService.getTask(id);
+    public ResponseEntity<TaskDto> getTask(Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(taskService.getTask(id));
     }
 
-    public TaskDto createTask(TaskDto taskDto) {
-        return mapper.toDto(taskService.createTask(taskDto));
+    public ResponseEntity<TaskDto> createTask(TaskDto taskDto) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(mapper.toDto(taskService.createTask(taskDto)));
     }
 
-    public TaskDto updateTask(Long id, TaskDto taskDto) {
+    public ResponseEntity<TaskDto> updateTask(Long id, TaskDto taskDto) {
         Task task = mapper.toEntity(taskDto);
-        return mapper.toDto(taskService.updateTask(id, task));
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(mapper.toDto(taskService.updateTask(id, task)));
     }
 
-    public HttpStatus deleteTask(Long taskId) {
+    public ResponseEntity<HttpStatus> deleteTask(Long taskId) {
         taskService.deleteTask(taskId);
-        return HttpStatus.NO_CONTENT;
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body(HttpStatus.NO_CONTENT);
     }
 }

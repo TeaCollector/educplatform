@@ -27,8 +27,6 @@ public class DifficultController {
     @GetMapping("{id}")
     public ResponseEntity<List<CourseShortDescriptionDto>> getCourseByDifficult(@PathVariable(name = "id")
                                                                                 @Parameter(name = "id", description = "Идентификатор уровня сложности") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.getCoursesByDifficultId(id));
+        return responseBuilder.getCoursesByDifficultId(id);
     }
 }

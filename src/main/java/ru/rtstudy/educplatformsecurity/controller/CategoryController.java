@@ -26,17 +26,13 @@ public class CategoryController {
     @Operation(summary = "Получить список всех категорий")
     @GetMapping
     public ResponseEntity<List<String>> getAllAvailableCategories() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.getAllCategories());
+        return responseBuilder.getAllCategories();
     }
 
     @Operation(summary = "Получить список всех курсов по идентификатору категории")
     @GetMapping("/{id}")
     public ResponseEntity<List<CourseShortDescriptionDto>> getCoursesByCategoryId(@PathVariable(name = "id")
                                                                                   @Parameter(name = "id", description = "Идентификатор категории") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.getCourseByCategory(id));
+        return responseBuilder.getCourseByCategory(id);
     }
 }

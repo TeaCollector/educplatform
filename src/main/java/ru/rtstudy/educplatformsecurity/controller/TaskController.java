@@ -23,18 +23,14 @@ public class TaskController {
     @GetMapping("{task_id}")
     public ResponseEntity<TaskDto> getTask(@PathVariable(name = "task_id")
                                            @Parameter(name = "task_id", description = "Идентификатор задания") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.getTask(id));
+        return responseBuilder.getTask(id);
     }
 
     @Operation(summary = "Создать новое задание")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PostMapping
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(responseBuilder.createTask(taskDto));
+        return responseBuilder.createTask(taskDto);
     }
 
     @Operation(summary = "Изменить задание по его идентификатору")
@@ -43,9 +39,7 @@ public class TaskController {
     public ResponseEntity<TaskDto> updateTask(@PathVariable(name = "task_id")
                                               @Parameter(name = "task_id", description = "Идентификатор задания") Long id,
                                               @RequestBody TaskDto taskDto) {
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(responseBuilder.updateTask(id, taskDto));
+        return responseBuilder.updateTask(id, taskDto);
     }
 
     @Operation(summary = "Удалить задание по его идентификатору")
@@ -53,8 +47,6 @@ public class TaskController {
     @DeleteMapping("{task_id}")
     public ResponseEntity<HttpStatus> deleteTask(@PathVariable(name = "task_id")
                                                  @Parameter(name = "task_id", description = "Идентификатор задания") Long taskId) {
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .body(responseBuilder.deleteTask(taskId));
+        return responseBuilder.deleteTask(taskId);
     }
 }
