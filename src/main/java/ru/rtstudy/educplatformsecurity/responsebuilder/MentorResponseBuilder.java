@@ -2,6 +2,7 @@ package ru.rtstudy.educplatformsecurity.responsebuilder;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.dto.request.MentorAnswerDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.GradeDtoResponse;
@@ -16,28 +17,40 @@ public class MentorResponseBuilder {
 
     private final MentorService mentorService;
 
-    public List<GradeDtoResponse> getAllAnswersForMentorCourses() {
-        return mentorService.getAllAnswersForMentorCourses();
+    public ResponseEntity<List<GradeDtoResponse>> getAllAnswersForMentorCourses() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(mentorService.getAllAnswersForMentorCourses());
     }
 
-    public List<GradeStudentDtoResponse> getAllAnswersForCourse(Long id) {
-        return mentorService.getAllAnswersForCourse(id);
+    public ResponseEntity<List<GradeStudentDtoResponse>> getAllAnswersForCourse(Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(mentorService.getAllAnswersForCourse(id));
     }
 
-    public List<GradeStudentDtoResponse> getAllAnswersForLesson(Long id) {
-        return mentorService.getAllAnswersForLesson(id);
+    public ResponseEntity<List<GradeStudentDtoResponse>> getAllAnswersForLesson(Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(mentorService.getAllAnswersForLesson(id));
     }
 
-    public MentorAnswerDtoRequest reviewStudentAnswer(Long id, MentorAnswerDtoRequest mentorAnswerDtoRequest) {
-        return mentorService.reviewStudentAnswer(id, mentorAnswerDtoRequest);
+    public ResponseEntity<MentorAnswerDtoRequest> reviewStudentAnswer(Long id, MentorAnswerDtoRequest mentorAnswerDtoRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(mentorService.reviewStudentAnswer(id, mentorAnswerDtoRequest));
     }
 
-    public MentorAnswerDtoRequest updateMentorAnswer(Long id, MentorAnswerDtoRequest mentorAnswerDtoRequest) {
-        return mentorService.updateMentorAnswer(id, mentorAnswerDtoRequest);
+    public ResponseEntity<MentorAnswerDtoRequest> updateMentorAnswer(Long id, MentorAnswerDtoRequest mentorAnswerDtoRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(mentorService.updateMentorAnswer(id, mentorAnswerDtoRequest));
     }
 
-    public HttpStatus upgradeToAuthor() {
+    public ResponseEntity<HttpStatus> upgradeToAuthor() {
         mentorService.upgradeToAuthor();
-        return HttpStatus.CREATED;
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(HttpStatus.CREATED);
     }
 }

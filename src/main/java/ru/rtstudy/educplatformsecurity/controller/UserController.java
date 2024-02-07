@@ -21,17 +21,13 @@ public class UserController {
     @Operation(summary = "Получить информацию о пользователе")
     @GetMapping
     public ResponseEntity<UserDtoResponse> getUserInfo() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.findUser());
+        return responseBuilder.findUser();
     }
 
     @Operation(summary = "Изменить информацию о пользователе")
     @PutMapping
     public ResponseEntity<UserUpdateDto> updateUser(@RequestBody UserUpdateDto userUpdateDto) {
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(responseBuilder.updateUser(userUpdateDto));
+        return responseBuilder.updateUser(userUpdateDto);
 
     }
 }

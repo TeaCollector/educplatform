@@ -26,17 +26,13 @@ public class AuthenticationController {
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("signup")
     public ResponseEntity<UserDtoResponse> signup(@RequestBody SignUpRequest request) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(responseBuilder.signup(request));
+        return responseBuilder.signup(request);
     }
 
     @Operation(summary = "Авторизация пользователя")
     @PostMapping("signin")
     public ResponseEntity<TokenDto> signIn(@RequestBody SignInRequest request) {
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(responseBuilder.signIn(request));
+        return responseBuilder.signIn(request);
     }
 
     @Hidden

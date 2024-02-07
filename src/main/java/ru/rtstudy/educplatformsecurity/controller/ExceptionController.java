@@ -1,5 +1,6 @@
 package ru.rtstudy.educplatformsecurity.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,7 +21,9 @@ import ru.rtstudy.educplatformsecurity.exception.student.UserNotMentorException;
 import ru.rtstudy.educplatformsecurity.exception.user.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
+@Slf4j
 @RestControllerAdvice
 public class ExceptionController {
 
@@ -33,6 +36,7 @@ public class ExceptionController {
             UserAlreadyExistsException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> resourceNotFoundException(RuntimeException ex, WebRequest request) {
+        log.error("EXCEPTION CATCHED: {}", ex.getMessage());
         return ResponseEntity
                 .ok(ErrorMessage.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())

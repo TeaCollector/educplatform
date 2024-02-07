@@ -26,43 +26,33 @@ public class StudentController {
     @PostMapping("start/{course_id}")
     public ResponseEntity<HttpStatus> enterOnCourse(@PathVariable(name = "course_id")
                                                     @Parameter(name = "course_id", description = "Идентификатор курса") Long courseId) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(responseBuilder.enterOnCourse(courseId));
+        return responseBuilder.enterOnCourse(courseId);
     }
 
     @Operation(summary = "Закончить выбранный курс")
     @PostMapping("finish-course/{course_id}")
     public ResponseEntity<HttpStatus> finishCourse(@PathVariable(name = "course_id")
                                                    @Parameter(name = "course_id", description = "Идентификатор курса") Long courseId) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(responseBuilder.finishCourse(courseId));
+        return responseBuilder.finishCourse(courseId);
     }
 
     @Operation(summary = "Отправить ответ на указанной урок для проверки")
     @PostMapping
     public ResponseEntity<StudentAnswerDto> sendAnswer(@RequestBody StudentAnswerDto studentAnswerDto) {
-        return ResponseEntity
-                .status(HttpStatus.valueOf(201))
-                .body(responseBuilder.sendAnswer(studentAnswerDto));
+        return responseBuilder.sendAnswer(studentAnswerDto);
     }
 
     @Operation(summary = "Получить все оценки и все свои ответы с комментариями преподавателя на сданные задания")
     @GetMapping
     public ResponseEntity<List<AllStudentAnswers>> receiveAllStudentsAnswer() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.findAllStudentAnswer());
+        return responseBuilder.findAllStudentAnswer();
     }
 
     @Operation(summary = "Получить все оценки и все свои ответы с комментариями преподавателя за каждый урок курса по его идентификатору")
     @GetMapping("course/{course_id}")
     public ResponseEntity<List<AllStudentAnswers>> receiveAllStudentsAnswerForCourse(@PathVariable(name = "course_id")
                                                                                      @Parameter(name = "course_id", description = "Идентификатор курса") Long courseId) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.findAllStudentsAnswerForCourse(courseId));
+        return responseBuilder.findAllStudentsAnswerForCourse(courseId);
 
     }
 
@@ -71,17 +61,13 @@ public class StudentController {
     public ResponseEntity<ChangeStudentAnswerDto> changeAnswer(@PathVariable(name = "id")
                                                                @Parameter(name = "id", description = "Идентификатор урока, к которому надо изменить ответ") Long id,
                                                                @RequestBody ChangeStudentAnswerDto studentsAnswerDto) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.changeAnswer(id, studentsAnswerDto));
+        return responseBuilder.changeAnswer(id, studentsAnswerDto);
     }
 
     @Operation(summary = "Запрос на получение прав ментора на курс, получить возможность проверять ответы пользователей (при наличии среднего балла 8.0 за задания курса)")
     @PostMapping("upgrade-to-mentor/{course_id}")
     public ResponseEntity<HttpStatus> upgradeToMentor(@PathVariable(name = "course_id")
                                                       @Parameter(name = "course_id", description = "Идентификатор курса") Long courseId) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(responseBuilder.upgradeToMentor(courseId));
+        return responseBuilder.upgradeToMentor(courseId);
     }
 }

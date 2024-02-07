@@ -27,27 +27,21 @@ public class MentorController {
     @Operation(summary = "Получить ответы всех студентов, за все курсы, которые ты можешь проверять")
     @GetMapping
     public ResponseEntity<List<GradeDtoResponse>> getAllAnswersForMentorCourses() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.getAllAnswersForMentorCourses());
+        return responseBuilder.getAllAnswersForMentorCourses();
     }
 
     @Operation(summary = "Получить ответы всех студентов за определённый курс по его идентификатору")
     @GetMapping("/course/{course_id}")
     public ResponseEntity<List<GradeStudentDtoResponse>> getAllStudentAnswersForCourse(@PathVariable(name = "course_id")
                                                                                        @Parameter(name = "course_id", description = "Идентификатор курса") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.getAllAnswersForCourse(id));
+        return responseBuilder.getAllAnswersForCourse(id);
     }
 
     @Operation(summary = "Получить ответы всех студентов за определённый урок по его идентификатору")
     @GetMapping("/lessons/{lesson_id}")
     public ResponseEntity<List<GradeStudentDtoResponse>> getAllStudentAnswersForLesson(@PathVariable(name = "lesson_id")
                                                                                        @Parameter(name = "lesson_id", description = "Идентификатор урока") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.getAllAnswersForLesson(id));
+        return responseBuilder.getAllAnswersForLesson(id);
     }
 
     @Operation(summary = "Оценить полученный ответ студента по идентификатору ответа")
@@ -55,9 +49,7 @@ public class MentorController {
     public ResponseEntity<MentorAnswerDtoRequest> reviewStudentAnswer(@PathVariable(name = "grade_id")
                                                                       @Parameter(name = "grade_id", description = "Идентификатор ответа студента") Long id,
                                                                       @RequestBody MentorAnswerDtoRequest mentorAnswerDtoRequest) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.reviewStudentAnswer(id, mentorAnswerDtoRequest));
+        return responseBuilder.reviewStudentAnswer(id, mentorAnswerDtoRequest);
     }
 
     @Operation(summary = "Изменить опубликованную оценку и комментарий ментора по идентификатору ответа")
@@ -65,16 +57,12 @@ public class MentorController {
     public ResponseEntity<MentorAnswerDtoRequest> updateMentorAnswer(@PathVariable(name = "grade_id")
                                                                      @Parameter(name = "grade_id", description = "Идентификатор ответа студента") Long id,
                                                                      @RequestBody MentorAnswerDtoRequest mentorAnswerDtoRequest) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseBuilder.updateMentorAnswer(id, mentorAnswerDtoRequest));
+        return responseBuilder.updateMentorAnswer(id, mentorAnswerDtoRequest);
     }
 
     @Operation(summary = "Запрос на получение прав автора, получить возможность создавать свои курсы (при наличии 100 и более проверенных заданий)")
     @PostMapping("/upgrade-to-author")
     public ResponseEntity<HttpStatus> upgradeMentorToAuthor() {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(responseBuilder.upgradeToAuthor());
+        return responseBuilder.upgradeToAuthor();
     }
 }
