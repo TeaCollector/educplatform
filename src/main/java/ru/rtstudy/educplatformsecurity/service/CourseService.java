@@ -6,6 +6,7 @@ import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoShortDescription;
 import ru.rtstudy.educplatformsecurity.model.Course;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CourseService {
 
@@ -22,4 +23,8 @@ public interface CourseService {
     boolean isAuthor(Long courseId);
 
     List<LessonDtoShortDescription> getAllLessonByCourseId(Long courseId);
+
+    Optional<Course> findByTitle(String title);
+
+    Optional<Course> findById(Long courseId);
 }

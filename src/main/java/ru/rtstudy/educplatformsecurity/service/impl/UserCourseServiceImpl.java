@@ -11,8 +11,8 @@ import ru.rtstudy.educplatformsecurity.model.Grade;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.model.UserCourse;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
-import ru.rtstudy.educplatformsecurity.repository.CourseRepository;
 import ru.rtstudy.educplatformsecurity.repository.UserCourseRepository;
+import ru.rtstudy.educplatformsecurity.service.CourseService;
 import ru.rtstudy.educplatformsecurity.service.GradeService;
 import ru.rtstudy.educplatformsecurity.service.UserCourseService;
 import ru.rtstudy.educplatformsecurity.service.UserService;
@@ -27,11 +27,12 @@ import java.util.List;
 @Transactional
 public class UserCourseServiceImpl implements UserCourseService {
 
-    private final int THRESHOLD_TO_BECOME_MENTOR = 8;
-    private final CourseRepository courseRepository;
     private final UserCourseRepository userCourseRepository;
+    private final CourseService courseService;
     private final GradeService gradeService;
     private final UserService userService;
+
+    private final int THRESHOLD_TO_BECOME_MENTOR = 8;
     private final Util util;
 
     @Override
@@ -40,7 +41,7 @@ public class UserCourseServiceImpl implements UserCourseService {
         UserCourse userCourse = UserCourse.builder()
                 .user(util.findUserFromContext())
                 .beginCourse(LocalDateTime.now())
-                .course(courseRepository
+                .course(courseService
                         .findById(id)
                         .orElseThrow(() -> {
                             log.error("Course was not found: {}", id, new CourseNotFoundException("Course was not found."));
@@ -73,5 +74,15 @@ public class UserCourseServiceImpl implements UserCourseService {
             log.error("Student: {}, don't have enough score to became mentor: {}", user.getEmail(), averageValue, new NotEnoughScoreToMentorException("You don't have enough score to became a mentor."));
             throw new NotEnoughScoreToMentorException("You don't have enough score to became a mentor.");
         }
+    }
+
+    @Override
+    public boolean onCourse(Long courseId, Long userId) {
+        return userCourseRepository.onCourse(courseId, userId);
+    }
+
+    @Override
+    public void finishCourse(Long userId, Long courseId) {
+        userCourseRepository.finishCourse(userId, courseId);
     }
 }

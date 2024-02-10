@@ -11,7 +11,9 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("""
-            select c from Category c where c.title = :title
+            select c 
+            from Category c 
+            where c.title = :title
             """)
     Category getCategoryByName(String title);
 

@@ -54,4 +54,9 @@ public class CategoryServiceImpl implements CategoryService {
                     return new CourseNotFoundException("Courses not found.");
                 });
     }
+
+    @Override
+    public Category getCategoryByName(String categoryName) {
+        return categoryRepository.getCategoryByName(categoryName);
+    }
 }

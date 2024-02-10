@@ -7,20 +7,21 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoShortDescription;
+import ru.rtstudy.educplatformsecurity.exception.author.NotCourseAuthorException;
 import ru.rtstudy.educplatformsecurity.exception.entity.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.entity.DifficultNotExistsException;
-import ru.rtstudy.educplatformsecurity.exception.author.NotCourseAuthorException;
 import ru.rtstudy.educplatformsecurity.model.Category;
 import ru.rtstudy.educplatformsecurity.model.Course;
 import ru.rtstudy.educplatformsecurity.model.Difficult;
 import ru.rtstudy.educplatformsecurity.model.User;
-import ru.rtstudy.educplatformsecurity.repository.CategoryRepository;
 import ru.rtstudy.educplatformsecurity.repository.CourseRepository;
-import ru.rtstudy.educplatformsecurity.repository.DifficultRepository;
+import ru.rtstudy.educplatformsecurity.service.CategoryService;
 import ru.rtstudy.educplatformsecurity.service.CourseService;
+import ru.rtstudy.educplatformsecurity.service.DifficultService;
 import ru.rtstudy.educplatformsecurity.util.Util;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -29,14 +30,15 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
-    private final CategoryRepository categoryRepository;
-    private final DifficultRepository difficultRepository;
+
+    private final CategoryService categoryService;
+    private final DifficultService difficultService;
     private final Util util;
 
     @Override
     public List<CourseShortDescriptionDto> getCoursesByDifficultId(Long id) {
         log.info("{} trying to get courses by difficult: {}", util.findUserFromContext().getEmail(), id);
-        difficultRepository.findById(id)
+        difficultService.findById(id)
                 .orElseThrow(() -> {
                     log.error("Difficult: {} not exists", id);
                     return new DifficultNotExistsException("Difficult not exists.");
@@ -68,11 +70,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course createCourse(Course course) {
         log.info("{} trying to create course: {}", util.findUserFromContext().getEmail(), course);
-        Category category = categoryRepository.getCategoryByName(course.getCategory().getTitle());
+        Category category = categoryService.getCategoryByName(course.getCategory().getTitle());
         log.debug("Category: {} was find.", category);
         course.setCategory(category);
 
-        Difficult difficult = difficultRepository.getDifficultByDifficultName(course.getDifficult().getDifficultLevel());
+        Difficult difficult = difficultService.getDifficultByDifficultName(course.getDifficult().getDifficultLevel());
         course.setDifficult(difficult);
         log.debug("Difficult: {} was find.", difficult);
 
@@ -97,10 +99,10 @@ public class CourseServiceImpl implements CourseService {
             toUpdate.setDescription(course.getDescription());
 
             if (!course.getCategory().getTitle().equals(toUpdate.getCategory().getTitle())) {
-                toUpdate.setCategory(categoryRepository.getCategoryByName(course.getCategory().getTitle()));
+                toUpdate.setCategory(categoryService.getCategoryByName(course.getCategory().getTitle()));
             }
             if (!course.getDifficult().getDifficultLevel().name().equals(toUpdate.getDifficult().getDifficultLevel().name())) {
-                toUpdate.setDifficult(difficultRepository.getDifficultByDifficultName(course.getDifficult().getDifficultLevel()));
+                toUpdate.setDifficult(difficultService.getDifficultByDifficultName(course.getDifficult().getDifficultLevel()));
             }
         } else {
             log.error("{} trying to update another course.", util.findUserFromContext().getEmail(), new NotCourseAuthorException("You are not course author."));
@@ -142,5 +144,15 @@ public class CourseServiceImpl implements CourseService {
                     log.warn("Course was not found: {}", courseId, new CourseNotFoundException("Course was not found."));
                     return new CourseNotFoundException("Course was not found.");
                 });
+    }
+
+    @Override
+    public Optional<Course> findByTitle(String title) {
+        return courseRepository.findByTitle(title);
+    }
+
+    @Override
+    public Optional<Course> findById(Long courseId) {
+        return courseRepository.findById(courseId);
     }
 }

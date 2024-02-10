@@ -4,6 +4,8 @@ import ru.rtstudy.educplatformsecurity.dto.request.LessonDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoResponse;
 import ru.rtstudy.educplatformsecurity.model.Lesson;
 
+import java.util.Optional;
+
 public interface LessonService {
 
     LessonDtoResponse findLessonById(Long id);
@@ -15,4 +17,6 @@ public interface LessonService {
     Lesson createLesson(LessonDtoRequest lesson);
 
     void deleteFile(String fileName);
+
+    Optional<Lesson> findById(Long lessonId);
 }
