@@ -17,8 +17,8 @@ import ru.rtstudy.educplatformsecurity.model.Grade;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.model.UserCourse;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
-import ru.rtstudy.educplatformsecurity.repository.GradeRepository;
 import ru.rtstudy.educplatformsecurity.repository.UserCourseRepository;
+import ru.rtstudy.educplatformsecurity.service.GradeService;
 import ru.rtstudy.educplatformsecurity.service.MentorService;
 import ru.rtstudy.educplatformsecurity.service.UserService;
 import ru.rtstudy.educplatformsecurity.util.Util;
@@ -32,9 +32,10 @@ import java.util.List;
 public class MentorServiceImpl implements MentorService {
 
     private final UserCourseRepository userCourseRepository;
-    private final GradeRepository gradeRepository;
-    private final Util util;
+
+    private final GradeService gradeService;
     private final UserService userService;
+    private final Util util;
 
     @Override
     public List<Course> getAllCoursesForMentor() {
@@ -54,13 +55,13 @@ public class MentorServiceImpl implements MentorService {
     public List<GradeDtoResponse> getAllAnswersForMentorCourses() {
         List<Course> mentorCourses = getAllCoursesForMentor();
         return mentorCourses.stream()
-                .flatMap(course -> gradeRepository.findAllGradesByCourseId(course.getId())
+                .flatMap(course -> gradeService.findAllGradesByCourseId(course.getId())
                         .orElseThrow(() -> {
                             log.error("Not completed task.", new NoCompletedTasksException("There are no completed tasks"));
                             return new NoCompletedTasksException("There are no completed tasks");
                         })
                         .stream())
-                .map(grade -> gradeRepository.getGradeById(grade.getId())
+                .map(grade -> gradeService.getGradeById(grade.getId())
                         .orElseThrow(() -> {
                             log.error("Grade was not found", new GradeNotFoundException("Grade not found"));
                             return new GradeNotFoundException("Grade not found");
@@ -74,7 +75,7 @@ public class MentorServiceImpl implements MentorService {
         log.info("{} get all answers for course: {}", mentor.getEmail(), courseId);
         boolean isMentorForCourse = userCourseRepository.isMentorForCourse(mentor.getId(), courseId);
         if (isMentorForCourse) {
-            return gradeRepository.findAllStudentsAnswersByCourseId(courseId)
+            return gradeService.findAllStudentsAnswersByCourseId(courseId)
                     .orElseThrow(() -> {
                         log.error("No completed task was not found", new NoCompletedTasksException("There are no completed tasks"));
                         return new NoCompletedTasksException("There are no completed tasks");
@@ -91,7 +92,7 @@ public class MentorServiceImpl implements MentorService {
         log.info("{} get all answers for lesson: {}", mentor.getEmail(), lessonId);
         boolean isMentorForLesson = userCourseRepository.isMentorForLesson(mentor.getId(), lessonId);
         if (isMentorForLesson) {
-            return gradeRepository.findAllStudentsAnswersByLessonId(lessonId)
+            return gradeService.findAllStudentsAnswersByLessonId(lessonId)
                     .orElseThrow(() -> {
                         log.error("Not any task was completed", new NoCompletedTasksException("There are no completed tasks"));
                         return new NoCompletedTasksException("There are no completed tasks");
@@ -107,7 +108,7 @@ public class MentorServiceImpl implements MentorService {
     public MentorAnswerDtoRequest reviewStudentAnswer(Long id, MentorAnswerDtoRequest mentorAnswerDtoRequest) {
         User mentor = util.findUserFromContext();
         log.info("{} review students answer: {}", mentor.getEmail(), id);
-        Grade gradeToUpdate = gradeRepository.getReferenceById(id);
+        Grade gradeToUpdate = gradeService.getReferenceById(id);
         boolean isMentorForLesson = userCourseRepository.isMentorForLesson(mentor.getId(), gradeToUpdate.getLesson().getId());
         if (!isMentorForLesson) {
             log.error("{} is not mentor for this course: {}.", mentor.getEmail(), gradeToUpdate.getLesson().getCourse(), new UserNotMentorException("User is not a mentor for this course lesson"));
@@ -117,7 +118,7 @@ public class MentorServiceImpl implements MentorService {
             log.error("Mentors for this grade is: {}", gradeToUpdate.getMentor().getEmail());
             throw new MentorAnswerAlreadyExistsException("This task is already reviewed");
         }
-        gradeRepository.addMentorReview(id, mentorAnswerDtoRequest.grade(), mentorAnswerDtoRequest.rework(), mentorAnswerDtoRequest.mentorAnswer(), mentor);
+        gradeService.addMentorReview(id, mentorAnswerDtoRequest.grade(), mentorAnswerDtoRequest.rework(), mentorAnswerDtoRequest.mentorAnswer(), mentor);
         return mentorAnswerDtoRequest;
     }
 
@@ -125,10 +126,10 @@ public class MentorServiceImpl implements MentorService {
     public MentorAnswerDtoRequest updateMentorAnswer(Long id, MentorAnswerDtoRequest mentorAnswerDtoRequest) {
         User mentor = util.findUserFromContext();
         log.info("{} update his answer for grade: {}", mentor.getEmail(), id);
-        Grade gradeToUpdate = gradeRepository.getReferenceById(id);
+        Grade gradeToUpdate = gradeService.getReferenceById(id);
         boolean isMentorForLesson = userCourseRepository.isMentorForLesson(mentor.getId(), gradeToUpdate.getLesson().getId());
         if ((isMentorForLesson) && (gradeToUpdate.getMentor() != null) && (gradeToUpdate.getMentor().getId().equals(mentor.getId()))) {
-            gradeRepository.updateMentorReview(id, mentorAnswerDtoRequest.grade(), mentorAnswerDtoRequest.rework(), mentorAnswerDtoRequest.mentorAnswer());
+            gradeService.updateMentorReview(id, mentorAnswerDtoRequest.grade(), mentorAnswerDtoRequest.rework(), mentorAnswerDtoRequest.mentorAnswer());
             return mentorAnswerDtoRequest;
         } else {
             log.error("{} is not mentor. The mentor is: {}", mentor.getEmail(), gradeToUpdate.getMentor().getEmail());
@@ -140,7 +141,7 @@ public class MentorServiceImpl implements MentorService {
     public void upgradeToAuthor() {
         User mentor = util.findUserFromContext();
         log.info("{} upgrade to author", mentor.getEmail());
-        if (gradeRepository.countAllAnswersByMentorUserId(mentor.getId()) >= 100) {
+        if (gradeService.countAllAnswersByMentorUserId(mentor.getId()) >= 100) {
             userService.changeUserRole(mentor.getId(), Role.ROLE_AUTHOR);
         } else {
             log.error("{} don't have enough reviewed task", mentor.getEmail(), new NotEnoughScoreToAuthorException("Not enough reviewed tasks to become author"));

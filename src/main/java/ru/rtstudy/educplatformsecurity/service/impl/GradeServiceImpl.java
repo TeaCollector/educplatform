@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.dto.ChangeStudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.request.StudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.response.AllStudentAnswers;
+import ru.rtstudy.educplatformsecurity.dto.response.GradeDtoResponse;
+import ru.rtstudy.educplatformsecurity.dto.response.GradeStudentDtoResponse;
 import ru.rtstudy.educplatformsecurity.exception.entity.AnswersNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.entity.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.entity.GradeNotFoundException;
@@ -17,13 +19,14 @@ import ru.rtstudy.educplatformsecurity.model.Grade;
 import ru.rtstudy.educplatformsecurity.model.Lesson;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.repository.GradeRepository;
-import ru.rtstudy.educplatformsecurity.repository.LessonRepository;
-import ru.rtstudy.educplatformsecurity.repository.UserCourseRepository;
 import ru.rtstudy.educplatformsecurity.service.GradeService;
+import ru.rtstudy.educplatformsecurity.service.LessonService;
+import ru.rtstudy.educplatformsecurity.service.UserCourseService;
 import ru.rtstudy.educplatformsecurity.util.Util;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -32,8 +35,9 @@ import java.util.List;
 public class GradeServiceImpl implements GradeService {
 
     private final GradeRepository gradeRepository;
-    private final LessonRepository lessonRepository;
-    private final UserCourseRepository userCourseRepository;
+
+    private final LessonService lessonService;
+    private final UserCourseService userCourseService;
     private final Util util;
 
     @Override
@@ -41,12 +45,12 @@ public class GradeServiceImpl implements GradeService {
     public StudentAnswerDto sendAnswer(StudentAnswerDto studentAnswerDto) {
         User user = util.findUserFromContext();
         log.info("{} send answer on task: {}", user.getEmail(), studentAnswerDto);
-        Lesson lesson = lessonRepository.findById(studentAnswerDto.lessonId())
+        Lesson lesson = lessonService.findById(studentAnswerDto.lessonId())
                 .orElseThrow(() -> {
                     log.error("Lesson was not found:{}", studentAnswerDto.lessonId(), new LessonNotFoundException("Lesson not found."));
                     return new LessonNotFoundException("Lesson not found.");
                 });
-        boolean onCourse = userCourseRepository.onCourse(lesson.getCourse().getId(), user.getId());
+        boolean onCourse = userCourseService.onCourse(lesson.getCourse().getId(), user.getId());
         if (onCourse) {
             Grade grade = Grade.builder()
                     .lesson(lesson)
@@ -107,7 +111,7 @@ public class GradeServiceImpl implements GradeService {
         log.debug("{} receive grades: {}", user.getEmail(), gradesIds);
 
         if (new HashSet<>(gradesIds).containsAll(lessonsIds)) {
-            userCourseRepository.finishCourse(user.getId(), courseId);
+            userCourseService.finishCourse(user.getId(), courseId);
         } else {
             log.error("{} not resolve all task on course: {}", user.getEmail(), courseId);
             throw new ResolveAllTaskException("Please resolve all task in course and try again.");
@@ -132,6 +136,46 @@ public class GradeServiceImpl implements GradeService {
                     log.error("Grades by lessonIds: {} was not found.", lessonIds, new GradeNotFoundException("Grade was not found."));
                     return new GradeNotFoundException("Grade was not found.");
                 });
+    }
+
+    @Override
+    public Optional<List<Grade>> findAllGradesByCourseId(Long courseId) {
+        return gradeRepository.findAllGradesByCourseId(courseId);
+    }
+
+    @Override
+    public Optional<GradeDtoResponse> getGradeById(Long gradeId) {
+        return gradeRepository.getGradeById(gradeId);
+    }
+
+    @Override
+    public Optional<List<GradeStudentDtoResponse>> findAllStudentsAnswersByCourseId(Long courseId) {
+        return gradeRepository.findAllStudentsAnswersByCourseId(courseId);
+    }
+
+    @Override
+    public Optional<List<GradeStudentDtoResponse>> findAllStudentsAnswersByLessonId(Long lessonId) {
+        return gradeRepository.findAllStudentsAnswersByLessonId(lessonId);
+    }
+
+    @Override
+    public Grade getReferenceById(Long gradeId) {
+        return gradeRepository.getReferenceById(gradeId);
+    }
+
+    @Override
+    public void addMentorReview(Long gradeId, Byte grade, Boolean rework, String mentorAnswer, User mentor) {
+        gradeRepository.addMentorReview(gradeId, grade, rework, mentorAnswer, mentor);
+    }
+
+    @Override
+    public void updateMentorReview(Long gradId, Byte grade, Boolean rework, String mentorAnswer) {
+        gradeRepository.updateMentorReview(gradId, grade, rework, mentorAnswer);
+    }
+
+    @Override
+    public int countAllAnswersByMentorUserId(Long mentorId) {
+        return gradeRepository.countAllAnswersByMentorUserId(mentorId);
     }
 }
 

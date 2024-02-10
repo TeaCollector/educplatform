@@ -19,6 +19,8 @@ import ru.rtstudy.educplatformsecurity.service.CourseService;
 import ru.rtstudy.educplatformsecurity.service.LessonService;
 import ru.rtstudy.educplatformsecurity.util.Util;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -26,7 +28,6 @@ import ru.rtstudy.educplatformsecurity.util.Util;
 public class LessonServiceImpl implements LessonService {
 
     private final LessonRepository lessonRepository;
-    private final CourseRepository courseRepository;
     private final CourseService courseService;
     private final Util util;
 
@@ -62,7 +63,7 @@ public class LessonServiceImpl implements LessonService {
             lesson.setDescription(lessonDtoRequest.description());
             lesson.setFileName(lessonDtoRequest.fileName());
             if (!lessonDtoRequest.courseName().equals(lesson.getCourse().getTitle())) {
-                Course course = courseRepository.findByTitle(lessonDtoRequest.courseName())
+                Course course = courseService.findByTitle(lessonDtoRequest.courseName())
                         .orElseThrow(() -> {
                             log.info("Course not found by title: {}", lessonDtoRequest.title());
                             return new CourseNotFoundException("Course not found.");
@@ -79,7 +80,7 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Lesson createLesson(LessonDtoRequest lessonDtoRequest) {
         log.info("{} create lesson: {}", util.findUserFromContext().getEmail(), lessonDtoRequest);
-        Course course = courseRepository.findByTitle(lessonDtoRequest.courseName())
+        Course course = courseService.findByTitle(lessonDtoRequest.courseName())
                 .orElseThrow(() -> {
                     log.error("Course not found by title: {}", lessonDtoRequest.courseName(), new CourseNotFoundException("Course not found."));
                     return new CourseNotFoundException("Course not found.");
@@ -101,6 +102,12 @@ public class LessonServiceImpl implements LessonService {
         log.info("{} delete file: {}", util.findUserFromContext().getEmail(), fileName);
         lessonRepository.deleteFile(fileName);
         log.debug("{} delete file: {}", util.findUserFromContext().getEmail(), fileName);
+    }
+
+    @Override
+    public Optional<Lesson> findById(Long lessonId) {
+        return lessonRepository.findById(lessonId);
+
     }
 
     @Override
