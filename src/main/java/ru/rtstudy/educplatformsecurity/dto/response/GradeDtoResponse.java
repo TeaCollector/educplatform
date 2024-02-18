@@ -1,8 +1,10 @@
 package ru.rtstudy.educplatformsecurity.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 
 @Schema(description = "Grade DTO")
+@Builder(toBuilder = true)
 public record GradeDtoResponse(
         @Schema(description = "Идентификатор урока, к которому выполнено задание", example = "1")
         Long lessonId,

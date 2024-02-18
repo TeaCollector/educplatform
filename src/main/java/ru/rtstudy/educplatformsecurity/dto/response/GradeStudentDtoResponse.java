@@ -1,8 +1,10 @@
 package ru.rtstudy.educplatformsecurity.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 
 @Schema(description = "Grade with Student Info DTO")
+@Builder(toBuilder = true)
 public record GradeStudentDtoResponse(
         @Schema(description = "Имя пользователя, выполнившего задание", example = "Пример")
         String firstName,
