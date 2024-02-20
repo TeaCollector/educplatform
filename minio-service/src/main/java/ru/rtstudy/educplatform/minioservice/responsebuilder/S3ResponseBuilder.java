@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import ru.rtstudy.educplatform.minioservice.dto.UploadResponse;
 import ru.rtstudy.educplatform.minioservice.exception.NotAuthorException;
 import ru.rtstudy.educplatform.minioservice.exception.NotSupportedExtension;
-import ru.rtstudy.educplatform.minioservice.service.MinioService;
+import ru.rtstudy.educplatform.minioservice.service.S3Service;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,16 +21,16 @@ import java.util.regex.Pattern;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MinioResponseBuilder {
+public class S3ResponseBuilder {
 
-    private final MinioService minioService;
+    private final S3Service s3Service;
     private final WebClient webClient;
 
     public Mono<UploadResponse> upload(String token, Mono<FilePart> files) {
         return authenticationRequest(token)
                 .flatMap(authRequest -> {
                     if (authRequest) {
-                        return minioService.uploadFile(files);
+                        return s3Service.uploadFile(files);
                     } else {
                         log.error("Not author", new NotAuthorException("You not author."));
                         return Mono.error(new NotAuthorException("You not author."));
@@ -42,7 +42,7 @@ public class MinioResponseBuilder {
         return authenticationRequest(token)
                 .flatMap(authRequest -> {
                             if (authRequest) {
-                                return minioService.putObject(files);
+                                return s3Service.putObject(files);
                             } else {
                                 log.error("Not author", new NotAuthorException("You not author."));
                                 return Mono.error(new NotAuthorException("You not author."));
@@ -55,7 +55,7 @@ public class MinioResponseBuilder {
         return authenticationRequestToDeleteFile(token, fileName)
                 .flatMap(isAuthor -> {
                     if (isAuthor) {
-                        minioService.deleteFile(fileName);
+                        s3Service.deleteFile(fileName);
                         return Mono.just(HttpStatus.valueOf(204));
                     } else {
                         log.error("Not author", new NotAuthorException("You not author."));
@@ -68,9 +68,9 @@ public class MinioResponseBuilder {
         if (authenticationRequest(token).block()) {
             String contentType = extractContentType(fileName);
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_TYPE,contentType)
+                    .header(HttpHeaders.CONTENT_TYPE, contentType)
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
-                    .body(minioService.download(fileName));
+                    .body(s3Service.download(fileName));
         } else {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)

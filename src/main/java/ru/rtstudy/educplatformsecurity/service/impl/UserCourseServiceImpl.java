@@ -2,6 +2,7 @@ package ru.rtstudy.educplatformsecurity.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.exception.student.AlreadyMentorException;
@@ -22,18 +23,26 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 @Transactional
 public class UserCourseServiceImpl implements UserCourseService {
 
     private final UserCourseRepository userCourseRepository;
+
     private final CourseService courseService;
     private final GradeService gradeService;
     private final UserService userService;
 
     private final int THRESHOLD_TO_BECOME_MENTOR = 8;
     private final Util util;
+
+    public UserCourseServiceImpl(UserCourseRepository userCourseRepository, CourseService courseService, @Lazy GradeService gradeService, UserService userService, Util util) {
+        this.userCourseRepository = userCourseRepository;
+        this.courseService = courseService;
+        this.gradeService = gradeService;
+        this.userService = userService;
+        this.util = util;
+    }
 
     @Override
     public void enterOnCourse(Long id) {

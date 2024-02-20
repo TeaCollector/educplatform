@@ -1,6 +1,38 @@
 spring:
   profiles:
-    active: dev
+    active: local
+---
+spring:
+  application:
+    name: educplatform
+
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    username: ${USERNAME}
+    password: ${PASSWORD}
+    url: jdbc:postgresql://${HOST}:${PORT}/${DATABASE}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        integrator_provider: ru.rtstudy.educplatformsecurity.config.ClassImportIntegratorProvider
+
+  liquibase:
+    change-log: classpath:liquibase/db.changelog-master.yml
+
+jwt:
+  secretKey: gfjnkdjgf234234jn2340v8uUNdiFasd4vfeSDSkjvdfggdadg5t53461gradf
+
+server:
+  port: 8081
 ---
 spring:
   application:
@@ -34,37 +66,3 @@ jwt:
 
 server:
   port: 8081
----
-spring:
-  application:
-    name: educplatform
-
-  config:
-    activate:
-      on-profile: dev
-
-  datasource:
-    username: java
-    password: java
-    url: jdbc:postgresql://database:5435/educplatform
-    driver-class-name: org.postgresql.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        integrator_provider: ru.rtstudy.educplatformsecurity.config.ClassImportIntegratorProvider
-
-  liquibase:
-    change-log: classpath:liquibase/db.changelog-master.yml
-
-
-jwt:
-  secretKey: gfjnkdjgf234234jn2340v8uUNdiFasd4vfeSDSkjvdfggdadg5t53461gradf
-
-server:
-  port: 8081
-
