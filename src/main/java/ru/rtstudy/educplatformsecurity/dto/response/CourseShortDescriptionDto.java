@@ -13,6 +13,8 @@ import lombok.Setter;
 @Schema(description = "Course With Full Description DTO")
 public class CourseShortDescriptionDto {
 
+    @Schema(description = "Идентификатор курса", example = "1")
+    private Long id;
     @Schema(description = "Название курса", example = "PostgreSQL для профи")
     private String title;
     @Schema(description = "Краткое описание курса",

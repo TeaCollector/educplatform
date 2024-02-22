@@ -22,15 +22,6 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
             """)
     boolean isMentorForCourse(Long userId, Long courseId);
 
-    @Modifying
-    @Query("""
-            update UserCourse us
-            set us.mentorCourse = true
-            where us.user.id = :userId
-            and us.course.id = :courseId
-            """)
-    void upgradeToMentor(Long userId, Long courseId);
-
     @Query("""
             select count(us) > 0
             from UserCourse us
@@ -45,7 +36,7 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
     @Modifying
     @Query("""
             update UserCourse us
-            set us.endCourse = true, us.finishCourse = current_timestamp 
+            set us.endCourse = true, us.finishCourse = current_timestamp
             where us.user.id = :userId
             and us.course.id = :courseId
             """)
