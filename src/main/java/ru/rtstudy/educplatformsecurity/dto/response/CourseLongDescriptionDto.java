@@ -14,6 +14,8 @@ import ru.rtstudy.educplatformsecurity.model.constant.DifficultLevel;
 @Schema(description = "Course With Full Description DTO")
 public class CourseLongDescriptionDto {
 
+    @Schema(description = "Идентификатор курса", example = "1")
+    private Long id;
     @Schema(description = "Название курса", example = "PostgreSQL для профи")
     private String title;
     @Schema(description = "Краткое описание курса",
