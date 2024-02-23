@@ -38,7 +38,8 @@ public class ExceptionController {
     public ResponseEntity<ErrorMessage> resourceNotFoundException(RuntimeException ex, WebRequest request) {
         log.error("EXCEPTION CATCHED: {}", ex.getMessage());
         return ResponseEntity
-                .ok(ErrorMessage.builder()
+                .status(HttpStatus.NOT_FOUND)
+                .body(ErrorMessage.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())
                         .description(ex.getMessage())
                         .currentTime(LocalDateTime.now())
@@ -53,7 +54,8 @@ public class ExceptionController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public ResponseEntity<ErrorMessage> resourceNotExistsException(RuntimeException ex, WebRequest request) {
         return ResponseEntity
-                .ok(ErrorMessage.builder()
+                .status(HttpStatus.NO_CONTENT)
+                .body(ErrorMessage.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())
                         .description(ex.getMessage())
                         .currentTime(LocalDateTime.now())
@@ -64,12 +66,14 @@ public class ExceptionController {
     @ExceptionHandler(value = {
             NotEnoughScoreToMentorException.class,
             ResolveAllTaskException.class,
-            EnterOnCourseException.class
+            EnterOnCourseException.class,
+            UserNotEnterOnAnyCourseException.class
     })
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> studentsException(RuntimeException ex, WebRequest request) {
         return ResponseEntity
-                .ok(ErrorMessage.builder()
+                .status(HttpStatus.NOT_FOUND)
+                .body(ErrorMessage.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())
                         .description(ex.getMessage())
                         .currentTime(LocalDateTime.now())
@@ -89,7 +93,8 @@ public class ExceptionController {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> mentorsException(RuntimeException ex, WebRequest request) {
         return ResponseEntity
-                .ok(ErrorMessage.builder()
+                .status(HttpStatus.NOT_FOUND)
+                .body(ErrorMessage.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())
                         .description(ex.getMessage())
                         .currentTime(LocalDateTime.now())

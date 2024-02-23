@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.exception.student.AlreadyMentorException;
 import ru.rtstudy.educplatformsecurity.exception.entity.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.mentor.NotEnoughScoreToMentorException;
+import ru.rtstudy.educplatformsecurity.exception.user.UserNotEnterOnAnyCourseException;
 import ru.rtstudy.educplatformsecurity.model.Grade;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.model.UserCourse;
@@ -32,11 +34,13 @@ public class UserCourseServiceImpl implements UserCourseService {
     private final CourseService courseService;
     private final GradeService gradeService;
     private final UserService userService;
-
-    private final int THRESHOLD_TO_BECOME_MENTOR = 8;
     private final Util util;
 
-    public UserCourseServiceImpl(UserCourseRepository userCourseRepository, CourseService courseService, @Lazy GradeService gradeService, UserService userService, Util util) {
+    private final int THRESHOLD_TO_BECOME_MENTOR = 8;
+
+    public UserCourseServiceImpl(UserCourseRepository userCourseRepository,
+                                 CourseService courseService, @Lazy GradeService gradeService,
+                                 @Lazy UserService userService, Util util) {
         this.userCourseRepository = userCourseRepository;
         this.courseService = courseService;
         this.gradeService = gradeService;
@@ -93,5 +97,12 @@ public class UserCourseServiceImpl implements UserCourseService {
     @Override
     public void finishCourse(Long userId, Long courseId) {
         userCourseRepository.finishCourse(userId, courseId);
+    }
+
+    @Override
+    public List<CourseShortDescriptionDto> getAllStartedCourse(Long userId) {
+        return userCourseRepository
+                .getAllStartedCourse(userId)
+                .orElseThrow(() -> new UserNotEnterOnAnyCourseException("You are not enter on any course."));
     }
 }

@@ -40,7 +40,10 @@ public class MinioConfig {
                 .build();
 
         try {
-            if (!asyncClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build()).get()) {
+            if (!asyncClient.bucketExists(BucketExistsArgs.builder()
+                    .bucket(bucketName)
+                    .build())
+                    .get()) {
                 asyncClient.makeBucket(
                         MakeBucketArgs
                                 .builder()

@@ -6,13 +6,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.dto.request.UserUpdateDto;
+import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.exception.entity.UserNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.student.UserNotMentorException;
+import ru.rtstudy.educplatformsecurity.exception.user.UserNotEnterOnAnyCourseException;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.model.constant.Role;
 import ru.rtstudy.educplatformsecurity.repository.UserRepository;
+import ru.rtstudy.educplatformsecurity.service.UserCourseService;
 import ru.rtstudy.educplatformsecurity.service.UserService;
 import ru.rtstudy.educplatformsecurity.util.Util;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -20,6 +25,7 @@ import ru.rtstudy.educplatformsecurity.util.Util;
 @Transactional
 public class UserServiceImpl implements UserService {
 
+    private final UserCourseService userCourseService;
     private final UserRepository userRepository;
     private final Util util;
 
@@ -61,5 +67,17 @@ public class UserServiceImpl implements UserService {
         userRepository.saveAndFlush(user);
         log.info("{} was upgraded to: {} {}", util.findUserFromContext().getEmail(), user.getFirstName(), user.getLastName());
         return userUpdateDto;
+    }
+
+    @Override
+    public List<CourseShortDescriptionDto> getAllStartedCourse() {
+        User user = util.findUserFromContext();
+        log.info("{} change trying to get his started courses.", user.getEmail());
+        List<CourseShortDescriptionDto> allStartedCourse = userCourseService.getAllStartedCourse(user.getId());
+        if (allStartedCourse.isEmpty()) {
+            log.error("{} not enter on any course", user.getEmail(), new UserNotEnterOnAnyCourseException("User not enter on any course."));
+            throw new UserNotEnterOnAnyCourseException("You are not enter on any course.");
+        }
+        return allStartedCourse;
     }
 }

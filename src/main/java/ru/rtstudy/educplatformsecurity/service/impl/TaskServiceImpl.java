@@ -44,7 +44,7 @@ public class TaskServiceImpl implements TaskService {
                 .build();
 
         task = taskRepository.save(task);
-        Lesson lesson = taskRepository.getLessonById(taskDto.lessonId())
+        Lesson lesson = taskRepository.getLessonById(taskDto.id())
                 .orElseThrow(() -> {
                     log.error("Lesson by task id: {} was not found", new LessonNotFoundException("Lesson was not found."));
                     return new LessonNotFoundException("Lesson was not found.");

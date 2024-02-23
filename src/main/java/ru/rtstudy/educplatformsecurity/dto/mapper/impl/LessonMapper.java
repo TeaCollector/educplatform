@@ -10,7 +10,7 @@ public interface LessonMapper extends Mappable<Lesson, LessonDtoResponse> {
 
     default LessonDtoResponse fromEntityToResponse(Lesson lesson) {
         return LessonDtoResponse.builder()
-                .lessonId(lesson.getId())
+                .id(lesson.getId())
                 .courseName(lesson.getCourse().getTitle())
                 .fileName(lesson.getFileName())
                 .title(lesson.getTitle())
