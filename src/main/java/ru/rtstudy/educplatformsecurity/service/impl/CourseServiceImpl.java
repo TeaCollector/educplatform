@@ -2,6 +2,7 @@ package ru.rtstudy.educplatformsecurity.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
@@ -10,16 +11,15 @@ import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoShortDescription;
 import ru.rtstudy.educplatformsecurity.exception.author.NotCourseAuthorException;
 import ru.rtstudy.educplatformsecurity.exception.entity.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.entity.DifficultNotExistsException;
-import ru.rtstudy.educplatformsecurity.model.Category;
-import ru.rtstudy.educplatformsecurity.model.Course;
-import ru.rtstudy.educplatformsecurity.model.Difficult;
-import ru.rtstudy.educplatformsecurity.model.User;
+import ru.rtstudy.educplatformsecurity.model.*;
 import ru.rtstudy.educplatformsecurity.repository.CourseRepository;
 import ru.rtstudy.educplatformsecurity.service.CategoryService;
 import ru.rtstudy.educplatformsecurity.service.CourseService;
 import ru.rtstudy.educplatformsecurity.service.DifficultService;
+import ru.rtstudy.educplatformsecurity.service.UserCourseService;
 import ru.rtstudy.educplatformsecurity.util.Util;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +31,7 @@ public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
 
+    private final UserCourseService userCourseService;
     private final CategoryService categoryService;
     private final DifficultService difficultService;
     private final Util util;
@@ -38,6 +39,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseShortDescriptionDto> getCoursesByDifficultId(Long id) {
         log.info("{} trying to get courses by difficult: {}", util.findUserFromContext().getEmail(), id);
+        Pageable pageable = Pageable.ofSize(5);
         difficultService.findById(id)
                 .orElseThrow(() -> {
                     log.error("Difficult: {} not exists", id);
@@ -81,7 +83,11 @@ public class CourseServiceImpl implements CourseService {
         User user = util.findUserFromContext();
         course.setCourseAuthor(user);
         log.info("Course was correct created: {}", course);
-        return courseRepository.save(course);
+
+        course = courseRepository.save(course);
+
+        userCourseService.makeCourseMentor(user, course);
+        return course;
     }
 
     @Override

@@ -9,14 +9,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import ru.rtstudy.educplatform.minioservice.dto.UploadResponse;
-import ru.rtstudy.educplatform.minioservice.service.MinioService;
+import ru.rtstudy.educplatform.minioservice.service.S3Service;
 import ru.rtstudy.educplatform.minioservice.util.InputStreamCollector;
 
 import java.io.File;
@@ -24,12 +22,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.UUID;
+
+import static ru.rtstudy.educplatform.minioservice.util.Util.createUUID;
+import static ru.rtstudy.educplatform.minioservice.util.Util.getMediaType;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MinioServiceImpl implements MinioService {
+public class S3MinioServiceImpl implements S3Service {
 
     private final MinioAsyncClient minioClient;
     @Value("${spring.minio.bucket}")
@@ -124,12 +124,6 @@ public class MinioServiceImpl implements MinioService {
                 .build();
     }
 
-    private String getMediaType(HttpHeaders headers) {
-        return headers.getContentType() == null ?
-                MediaType.APPLICATION_OCTET_STREAM_VALUE :
-                headers.getContentType().toString();
-    }
-
     private PutObjectArgs getPutObjectArgs(FilePart file, InputStreamCollector inputStreamCollector) throws IOException {
         PutObjectArgs args = PutObjectArgs.builder()
                 .object(createUUID(file))
@@ -138,11 +132,5 @@ public class MinioServiceImpl implements MinioService {
                 .stream(inputStreamCollector.getStream(), inputStreamCollector.getStream().available(), -1)
                 .build();
         return args;
-    }
-
-    private String createUUID(FilePart file) {
-        String uuid = UUID.randomUUID().toString().replace("-", "") + ".";
-        uuid = file.filename().replaceFirst(".*\\.", uuid);
-        return uuid;
     }
 }

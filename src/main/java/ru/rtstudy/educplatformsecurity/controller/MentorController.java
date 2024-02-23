@@ -53,7 +53,7 @@ public class MentorController {
     }
 
     @Operation(summary = "Изменить опубликованную оценку и комментарий ментора по идентификатору ответа")
-    @PatchMapping("/grades/{grade_id}")
+    @PutMapping("/grades/change/{grade_id}")
     public ResponseEntity<MentorAnswerDtoRequest> updateMentorAnswer(@PathVariable(name = "grade_id")
                                                                      @Parameter(name = "grade_id", description = "Идентификатор ответа студента") Long id,
                                                                      @RequestBody MentorAnswerDtoRequest mentorAnswerDtoRequest) {

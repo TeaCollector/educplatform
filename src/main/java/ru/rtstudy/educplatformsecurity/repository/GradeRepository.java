@@ -1,5 +1,6 @@
 package ru.rtstudy.educplatformsecurity.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,7 +24,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     Optional<List<Grade>> findAllGradesByCourseId(Long courseId);
 
     @Query("""
-            select new GradeStudentDtoResponse(s.firstName, s.lastName, g.id, l.title, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
+            select new GradeStudentDtoResponse(g.id, s.firstName, s.lastName, l.title, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
             from Grade g
             join g.lesson l
             join g.student s
@@ -33,7 +34,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     Optional<List<GradeStudentDtoResponse>> findAllStudentsAnswersByLessonId(Long lessonId);
 
     @Query("""
-            select new GradeStudentDtoResponse(s.firstName, s.lastName, g.id, l.title, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
+            select new GradeStudentDtoResponse(g.id, s.firstName, s.lastName, l.title, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
             from Grade g
             join g.lesson l
             join g.student s

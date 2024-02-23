@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MinioResponseBuilderTest {
+class S3ResponseBuilderTest {
 
     @Test
     void upload() {

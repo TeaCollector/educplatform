@@ -5,7 +5,7 @@ import org.springframework.http.codec.multipart.FilePart;
 import reactor.core.publisher.Mono;
 import ru.rtstudy.educplatform.minioservice.dto.UploadResponse;
 
-public interface MinioService {
+public interface S3Service {
 
     Mono<UploadResponse> uploadFile(Mono<FilePart> filePart);
 

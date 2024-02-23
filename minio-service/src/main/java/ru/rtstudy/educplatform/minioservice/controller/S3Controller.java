@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-import ru.rtstudy.educplatform.minioservice.responsebuilder.MinioResponseBuilder;
+import ru.rtstudy.educplatform.minioservice.responsebuilder.S3ResponseBuilder;
 import ru.rtstudy.educplatform.minioservice.dto.UploadResponse;
 
 
@@ -24,9 +24,9 @@ import ru.rtstudy.educplatform.minioservice.dto.UploadResponse;
 @RequiredArgsConstructor
 @Tag(name = "MinIO Controller", description = "MinIO Controller API")
 @RequestMapping("/object")
-public class MinioController {
+public class S3Controller {
 
-    private final MinioResponseBuilder responseBuilder;
+    private final S3ResponseBuilder responseBuilder;
 
     @Operation(summary = "Загрузка файла в MinIO путём создания его копии и сохранения её в хранилище MinIO")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
