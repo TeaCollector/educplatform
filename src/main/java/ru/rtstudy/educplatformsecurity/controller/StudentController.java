@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rtstudy.educplatformsecurity.responsebuilder.StudentResponseBuilder;
-import ru.rtstudy.educplatformsecurity.dto.ChangeStudentAnswerDto;
+import ru.rtstudy.educplatformsecurity.dto.request.ChangeStudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.request.StudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.response.AllStudentAnswers;
 

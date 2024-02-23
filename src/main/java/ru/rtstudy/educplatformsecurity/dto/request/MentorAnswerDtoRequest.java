@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Schema(description = "Mentor Review DTO")
 public record MentorAnswerDtoRequest(
+        @Schema(description = "Идентификатор оценки")
+        Long id,
         @Schema(description = "Оценка ментора к заданию пользователя", type = "integer", example = "3")
         Byte grade,
         @Schema(description = "Указатель на необходимость исправления своего ответа: true/false", example = "true")

@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version "$springbootVersion"
     id 'io.spring.dependency-management' version "$springDependencyManagmentVersion"
+    id 'org.springdoc.openapi-gradle-plugin' version "1.8.0"
 }
 
 group = 'ru.rt'
@@ -50,6 +51,8 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
     testImplementation 'io.rest-assured:rest-assured'
+
+
 
 }
 

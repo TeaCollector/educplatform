@@ -1,6 +1,6 @@
 package ru.rtstudy.educplatformsecurity.service;
 
-import ru.rtstudy.educplatformsecurity.dto.ChangeStudentAnswerDto;
+import ru.rtstudy.educplatformsecurity.dto.request.ChangeStudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.request.StudentAnswerDto;
 import ru.rtstudy.educplatformsecurity.dto.response.AllStudentAnswers;
 import ru.rtstudy.educplatformsecurity.dto.response.GradeDtoResponse;
