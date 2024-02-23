@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.rtstudy.educplatformsecurity.dto.response.CategoryDto;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.exception.entity.CategoryNotExistsException;
 import ru.rtstudy.educplatformsecurity.exception.entity.CourseNotFoundException;
@@ -13,7 +14,6 @@ import ru.rtstudy.educplatformsecurity.service.CategoryService;
 import ru.rtstudy.educplatformsecurity.util.Util;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +24,9 @@ public class CategoryServiceImpl implements CategoryService {
     private final Util util;
 
     @Override
-    public List<String> getAllCategories() {
+    public List<CategoryDto> getAllCategories() {
         log.info("{} trying to get category list.", util.findUserFromContext().getEmail());
-        return categoryRepository.findAll()
-                .stream()
-                .map(Category::getTitle)
-                .collect(Collectors.toList());
+        return categoryRepository.getAllCategories();
     }
 
     @Transactional

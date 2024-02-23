@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.rtstudy.educplatformsecurity.dto.response.CategoryDto;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.service.CategoryService;
 
@@ -16,7 +17,7 @@ public class CategoryResponseBuilder {
 
     private final CategoryService categoryService;
 
-    public ResponseEntity<List<String>> getAllCategories() {
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.getAllCategories());

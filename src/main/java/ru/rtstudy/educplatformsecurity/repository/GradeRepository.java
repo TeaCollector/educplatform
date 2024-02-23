@@ -23,7 +23,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     Optional<List<Grade>> findAllGradesByCourseId(Long courseId);
 
     @Query("""
-            select new GradeStudentDtoResponse(s.firstName, s.lastName, l.id, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
+            select new GradeStudentDtoResponse(s.firstName, s.lastName, g.id, l.title, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
             from Grade g
             join g.lesson l
             join g.student s
@@ -33,7 +33,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     Optional<List<GradeStudentDtoResponse>> findAllStudentsAnswersByLessonId(Long lessonId);
 
     @Query("""
-            select new GradeStudentDtoResponse(s.firstName, s.lastName, l.id, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
+            select new GradeStudentDtoResponse(s.firstName, s.lastName, g.id, l.title, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
             from Grade g
             join g.lesson l
             join g.student s
@@ -43,7 +43,8 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     Optional<List<GradeStudentDtoResponse>> findAllStudentsAnswersByCourseId(Long courseId);
 
     @Query("""
-            select new AllStudentAnswers(t.description,
+            select new AllStudentAnswers(g.id,
+             t.description,
              g.grade,
              g.rework,
              g.studentAnswer,
@@ -56,7 +57,8 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     Optional<List<AllStudentAnswers>> getAllStudentAnswer(Long id);
 
     @Query("""
-            select new AllStudentAnswers(t.description,
+            select new AllStudentAnswers(g.id,
+             t.description,
              g.grade,
              g.rework,
              g.studentAnswer,
@@ -81,7 +83,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     void addMentorReview(Long gradeId, Byte grade, Boolean rework, String mentorAnswer, User mentor);
 
     @Query("""
-            select new GradeDtoResponse(g.lesson.id, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
+            select new GradeDtoResponse(g.id, l.title, t.description, g.grade, g.rework, g.studentAnswer, g.mentorAnswer)
             from Grade g
             join g.lesson l
             join l.taskId t

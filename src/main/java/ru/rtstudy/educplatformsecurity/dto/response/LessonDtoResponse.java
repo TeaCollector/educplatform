@@ -11,7 +11,7 @@ import lombok.Builder;
 public record LessonDtoResponse(
 
         @Schema(description = "Идентификатор урока", example = "1")
-        Long lessonId,
+        Long id,
         @Schema(description = "Название урока", example = "Буферный кэш")
         String title,
         @Schema(description = "Название файла с материалам к уроку", example = "21c8bb28f626d28ffcf.mp4")
