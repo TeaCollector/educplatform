@@ -2,15 +2,14 @@ package ru.rtstudy.educplatformsecurity.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
-import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
-import ru.rtstudy.educplatformsecurity.responsebuilder.UserResponseBuilder;
 import ru.rtstudy.educplatformsecurity.dto.request.UserUpdateDto;
+import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
+import ru.rtstudy.educplatformsecurity.responsebuilder.UserResponseBuilder;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class UserController {
 
     @Operation(summary = "Изменить информацию о пользователе")
     @PutMapping
-    public ResponseEntity<UserUpdateDto> updateUser(@RequestBody UserUpdateDto userUpdateDto) {
+    public ResponseEntity<UserUpdateDto> updateUser(@Valid @RequestBody UserUpdateDto userUpdateDto) {
         return responseBuilder.updateUser(userUpdateDto);
     }
 

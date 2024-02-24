@@ -3,6 +3,7 @@ package ru.rtstudy.educplatformsecurity.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class CourseController {
     @PutMapping("{id}")
     public ResponseEntity<CourseDtoRequest> updateCourse(@PathVariable(name = "id")
                                                          @Parameter(name = "id", description = "Идентификатор курса") Long id,
-                                                         @RequestBody CourseDtoRequest courseDtoRequest) {
+                                                         @Valid @RequestBody CourseDtoRequest courseDtoRequest) {
         return responseBuilder.updateCourse(id, courseDtoRequest);
     }
 
@@ -49,7 +50,7 @@ public class CourseController {
     @Operation(summary = "Создать новый курс")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PostMapping
-    public ResponseEntity<CourseDtoRequest> createCourse(@RequestBody CourseDtoRequest courseDtoRequest) {
+    public ResponseEntity<CourseDtoRequest> createCourse(@Valid @RequestBody CourseDtoRequest courseDtoRequest) {
         return responseBuilder.createCourse(courseDtoRequest);
     }
 

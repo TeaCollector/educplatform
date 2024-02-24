@@ -3,6 +3,7 @@ package ru.rtstudy.educplatformsecurity.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class TaskController {
     @Operation(summary = "Создать новое задание")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PostMapping
-    public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
+    public ResponseEntity<TaskDto> createTask(@Valid @RequestBody TaskDto taskDto) {
         return responseBuilder.createTask(taskDto);
     }
 
@@ -38,7 +39,7 @@ public class TaskController {
     @PutMapping("{task_id}")
     public ResponseEntity<TaskDto> updateTask(@PathVariable(name = "task_id")
                                               @Parameter(name = "task_id", description = "Идентификатор задания") Long id,
-                                              @RequestBody TaskDto taskDto) {
+                                              @Valid @RequestBody TaskDto taskDto) {
         return responseBuilder.updateTask(id, taskDto);
     }
 

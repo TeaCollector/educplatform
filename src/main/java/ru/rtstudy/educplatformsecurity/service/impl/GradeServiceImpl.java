@@ -91,7 +91,7 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public ChangeStudentAnswerDto changeAnswer(Long id, ChangeStudentAnswerDto studentsAnswerDto) {
         User user = util.findUserFromContext();
-        log.info("{} change answer: {} for lesson id: {}.", user.getEmail(), studentsAnswerDto.studentAnswer(), id);
+        log.info("{} change answer: {} for grade id: {}.", user.getEmail(), studentsAnswerDto.studentAnswer(), id);
         gradeRepository.changeAnswer(id, studentsAnswerDto.studentAnswer(), user.getId());
         log.info("Answer: {} was successful changed by student: {} ", studentsAnswerDto.studentAnswer(), user.getEmail());
         return studentsAnswerDto;
