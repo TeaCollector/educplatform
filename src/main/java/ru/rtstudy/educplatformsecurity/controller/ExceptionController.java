@@ -1,8 +1,10 @@
 package ru.rtstudy.educplatformsecurity.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,7 +23,7 @@ import ru.rtstudy.educplatformsecurity.exception.student.UserNotMentorException;
 import ru.rtstudy.educplatformsecurity.exception.user.*;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.*;
 
 @Slf4j
 @RestControllerAdvice
@@ -97,6 +99,24 @@ public class ExceptionController {
                 .body(ErrorMessage.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())
                         .description(ex.getMessage())
+                        .currentTime(LocalDateTime.now())
+                        .endpoint(request.getDescription(false))
+                        .build());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorMessage> validationException(MethodArgumentNotValidException ex, WebRequest request) {
+
+        List<String> fieldErrors = ex.getBindingResult().getFieldErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .toList();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorMessage.builder()
+                        .statusCode(HttpStatus.BAD_REQUEST.value())
+                        .description(fieldErrors.toString())
                         .currentTime(LocalDateTime.now())
                         .endpoint(request.getDescription(false))
                         .build());

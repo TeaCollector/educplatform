@@ -1,6 +1,5 @@
 package ru.rtstudy.educplatformsecurity.repository;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -96,7 +95,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     @Query("""
             update Grade g
             set g.studentAnswer = :studentAnswer
-            where g.lesson.id = :id
+            where g.id = :id
             and g.student.id = :studentId
             """)
     void changeAnswer(Long id, String studentAnswer, Long studentId);

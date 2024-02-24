@@ -3,6 +3,7 @@ package ru.rtstudy.educplatformsecurity.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class StudentController {
 
     @Operation(summary = "Отправить ответ на указанной урок для проверки")
     @PostMapping
-    public ResponseEntity<StudentAnswerDto> sendAnswer(@RequestBody StudentAnswerDto studentAnswerDto) {
+    public ResponseEntity<StudentAnswerDto> sendAnswer(@Valid @RequestBody StudentAnswerDto studentAnswerDto) {
         return responseBuilder.sendAnswer(studentAnswerDto);
     }
 
@@ -60,7 +61,7 @@ public class StudentController {
     @PutMapping("lesson/{id}")
     public ResponseEntity<ChangeStudentAnswerDto> changeAnswer(@PathVariable(name = "id")
                                                                @Parameter(name = "id", description = "Идентификатор урока, к которому надо изменить ответ") Long id,
-                                                               @RequestBody ChangeStudentAnswerDto studentsAnswerDto) {
+                                                               @Valid @RequestBody ChangeStudentAnswerDto studentsAnswerDto) {
         return responseBuilder.changeAnswer(id, studentsAnswerDto);
     }
 
