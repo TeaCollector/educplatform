@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.TaskMapper;
+import ru.rtstudy.educplatformsecurity.dto.request.UpdateTaskDto;
 import ru.rtstudy.educplatformsecurity.dto.response.TaskDto;
 import ru.rtstudy.educplatformsecurity.model.Task;
 import ru.rtstudy.educplatformsecurity.service.TaskService;
@@ -29,8 +30,8 @@ public class TaskResponseBuilder {
                 .body(mapper.toDto(taskService.createTask(taskDto)));
     }
 
-    public ResponseEntity<TaskDto> updateTask(Long id, TaskDto taskDto) {
-        Task task = mapper.toEntity(taskDto);
+    public ResponseEntity<TaskDto> updateTask(Long id, UpdateTaskDto taskDto) {
+        Task task = Task.builder().description(taskDto.description()).build();
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body(mapper.toDto(taskService.updateTask(id, task)));

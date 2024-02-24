@@ -5,9 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.auth.AuthenticationService;
+import ru.rtstudy.educplatformsecurity.dto.request.JwtRefreshToken;
 import ru.rtstudy.educplatformsecurity.dto.request.SignInRequest;
 import ru.rtstudy.educplatformsecurity.dto.request.SignUpRequest;
-import ru.rtstudy.educplatformsecurity.dto.response.TokenDto;
+import ru.rtstudy.educplatformsecurity.dto.response.JwtTokenResponse;
 import ru.rtstudy.educplatformsecurity.dto.response.UserDtoResponse;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.service.LessonService;
@@ -27,7 +28,7 @@ public class AuthenticationResponseBuilder {
                 .body(authenticationService.signUp(signUpRequest));
     }
 
-    public ResponseEntity<TokenDto> signIn(SignInRequest signInRequest) {
+    public ResponseEntity<JwtTokenResponse> signIn(SignInRequest signInRequest) {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body(authenticationService.signIn(signInRequest));
@@ -48,5 +49,11 @@ public class AuthenticationResponseBuilder {
         } else {
             return false;
         }
+    }
+
+    public ResponseEntity<JwtTokenResponse> refreshToken(JwtRefreshToken jwtRefreshToken) {
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(authenticationService.refreshToken(jwtRefreshToken));
     }
 }
