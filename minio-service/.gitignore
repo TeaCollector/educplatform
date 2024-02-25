@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+deployment.yml
+service.yml
+

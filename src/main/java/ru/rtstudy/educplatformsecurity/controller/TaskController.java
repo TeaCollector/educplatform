@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.rtstudy.educplatformsecurity.dto.request.UpdateTaskDto;
 import ru.rtstudy.educplatformsecurity.responsebuilder.TaskResponseBuilder;
 import ru.rtstudy.educplatformsecurity.dto.response.TaskDto;
 
@@ -39,7 +40,7 @@ public class TaskController {
     @PutMapping("{task_id}")
     public ResponseEntity<TaskDto> updateTask(@PathVariable(name = "task_id")
                                               @Parameter(name = "task_id", description = "Идентификатор задания") Long id,
-                                              @Valid @RequestBody TaskDto taskDto) {
+                                              @Valid @RequestBody UpdateTaskDto taskDto) {
         return responseBuilder.updateTask(id, taskDto);
     }
 

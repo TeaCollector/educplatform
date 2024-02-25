@@ -29,7 +29,10 @@ spring:
     change-log: classpath:liquibase/db.changelog-master.yml
 
 jwt:
-  secretKey: gfjnkdjgf234234jn2340v8uUNdiFasd4vfeSDSkjvdfggdadg5t53461gradf
+  secret-key: gfjnkdjgf234234jn2340v8uUNdiFasd4vfeSDSkjvdfggdadg5t53461gradf
+  expiration: 86400000 # 1 day
+  refresh-token:
+    expiration: 604800000 # 1 week
 
 server:
   port: 8081
@@ -62,7 +65,10 @@ spring:
 
 
 jwt:
-  secretKey: gfjnkdjgf234234jn2340v8uUNdiFasd4vfeSDSkjvdfggdadg5t53461gradf
+  secret-key: gfjnkdjgf234234jn2340v8uUNdiFasd4vfeSDSkjvdfggdadg5t53461gradf
+  expiration: 86400000 # 1 day
+  refresh-token:
+    expiration: 604800000 # 1 week
 
 server:
-  port: 8080
+  port: 8081
