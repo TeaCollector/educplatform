@@ -1,13 +1,18 @@
 package ru.rtstudy.educplatformsecurity.dto.response;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Schema(description = "Grade DTO")
 @Builder(toBuilder = true)
 public record GradeDtoResponse(
-        @Schema(description = "Идентификатор урока, к которому выполнено задание", example = "1")
-        Long lessonId,
+        @Schema(description = "Идентификатор выполненного задания", example = "1")
+        Long id,
+        @Schema(description = "Название урока, к которому было выполнено задание", example = "Буферный кэш")
+        String lessonTitle,
         @Schema(description = "Задание к уроку", example = "Сколько уровней буферного кэша есть в PostgreSQL?")
         String description,
         @Schema(description = "Оценка ментора к заданию пользователя", type = "integer", example = "3")

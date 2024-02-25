@@ -7,7 +7,7 @@ import ru.rtstudy.educplatformsecurity.model.constant.CreateUpdateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Builder
+@Builder(toBuilder = true)
 @Entity(name = "Course")
 @Table(name = "courses")
 @Getter

@@ -3,6 +3,7 @@ package ru.rtstudy.educplatformsecurity.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,15 +49,15 @@ public class MentorController {
     @PutMapping("/grades/{grade_id}")
     public ResponseEntity<MentorAnswerDtoRequest> reviewStudentAnswer(@PathVariable(name = "grade_id")
                                                                       @Parameter(name = "grade_id", description = "Идентификатор ответа студента") Long id,
-                                                                      @RequestBody MentorAnswerDtoRequest mentorAnswerDtoRequest) {
+                                                                      @Valid @RequestBody MentorAnswerDtoRequest mentorAnswerDtoRequest) {
         return responseBuilder.reviewStudentAnswer(id, mentorAnswerDtoRequest);
     }
 
     @Operation(summary = "Изменить опубликованную оценку и комментарий ментора по идентификатору ответа")
-    @PatchMapping("/grades/{grade_id}")
+    @PutMapping("/grades/change/{grade_id}")
     public ResponseEntity<MentorAnswerDtoRequest> updateMentorAnswer(@PathVariable(name = "grade_id")
                                                                      @Parameter(name = "grade_id", description = "Идентификатор ответа студента") Long id,
-                                                                     @RequestBody MentorAnswerDtoRequest mentorAnswerDtoRequest) {
+                                                                     @Valid @RequestBody MentorAnswerDtoRequest mentorAnswerDtoRequest) {
         return responseBuilder.updateMentorAnswer(id, mentorAnswerDtoRequest);
     }
 

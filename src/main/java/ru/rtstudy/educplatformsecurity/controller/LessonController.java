@@ -3,6 +3,7 @@ package ru.rtstudy.educplatformsecurity.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class LessonController {
     @Operation(summary = "Создать новый урок")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PostMapping
-    public ResponseEntity<LessonDtoResponse> createLesson(@RequestBody LessonDtoRequest lessonDtoRequest) {
+    public ResponseEntity<LessonDtoResponse> createLesson(@Valid @RequestBody LessonDtoRequest lessonDtoRequest) {
         return responseBuilder.createLesson(lessonDtoRequest);
     }
 
@@ -39,7 +40,7 @@ public class LessonController {
     @PutMapping("{lesson_id}")
     public ResponseEntity<LessonDtoResponse> changeLesson(@PathVariable(name = "lesson_id")
                                                           @Parameter(name = "lesson_id", description = "Идентификатор урока") Long lessonId,
-                                                          @RequestBody LessonDtoRequest lessonDtoRequest) {
+                                                          @Valid @RequestBody LessonDtoRequest lessonDtoRequest) {
         return responseBuilder.updateLesson(lessonDtoRequest, lessonId);
     }
 

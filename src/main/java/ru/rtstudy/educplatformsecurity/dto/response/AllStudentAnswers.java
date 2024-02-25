@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Schema(description = "Grade For Student DTO")
 public record AllStudentAnswers(
+        @Schema(description = "Идентификатор выполненного задания", example = "1")
+        Long id,
         @Schema(description = "Задание к уроку", example = "Сколько уровней буферного кэша есть в PostgreSQL?")
         String task,
         @Schema(description = "Оценка ментора к заданию пользователя", type = "integer", example = "3")

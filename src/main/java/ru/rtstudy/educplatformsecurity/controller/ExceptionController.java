@@ -1,13 +1,16 @@
 package ru.rtstudy.educplatformsecurity.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import ru.rtstudy.educplatformsecurity.exception.ErrorMessage;
+import ru.rtstudy.educplatformsecurity.exception.ErrorResponseModel;
+import ru.rtstudy.educplatformsecurity.exception.ValidateErrorMessage;
 import ru.rtstudy.educplatformsecurity.exception.author.NotCourseAuthorException;
 import ru.rtstudy.educplatformsecurity.exception.author.NotEnoughScoreToAuthorException;
 import ru.rtstudy.educplatformsecurity.exception.entity.*;
@@ -20,10 +23,11 @@ import ru.rtstudy.educplatformsecurity.exception.student.ResolveAllTaskException
 import ru.rtstudy.educplatformsecurity.exception.student.UserNotMentorException;
 import ru.rtstudy.educplatformsecurity.exception.user.*;
 
+import javax.lang.model.type.ErrorType;
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
-@Slf4j
 @RestControllerAdvice
 public class ExceptionController {
 
@@ -33,12 +37,14 @@ public class ExceptionController {
             AnswersNotFoundException.class,
             TaskNotFoundException.class,
             UserNotFoundException.class,
-            UserAlreadyExistsException.class})
+            UserAlreadyExistsException.class,
+            UserNotRegisterException.class
+    })
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> resourceNotFoundException(RuntimeException ex, WebRequest request) {
-        log.error("EXCEPTION CATCHED: {}", ex.getMessage());
         return ResponseEntity
-                .ok(ErrorMessage.builder()
+                .status(HttpStatus.NOT_FOUND)
+                .body(ErrorMessage.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())
                         .description(ex.getMessage())
                         .currentTime(LocalDateTime.now())
@@ -53,8 +59,9 @@ public class ExceptionController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public ResponseEntity<ErrorMessage> resourceNotExistsException(RuntimeException ex, WebRequest request) {
         return ResponseEntity
-                .ok(ErrorMessage.builder()
-                        .statusCode(HttpStatus.NOT_FOUND.value())
+                .status(HttpStatus.NO_CONTENT)
+                .body(ErrorMessage.builder()
+                        .statusCode(HttpStatus.NO_CONTENT.value())
                         .description(ex.getMessage())
                         .currentTime(LocalDateTime.now())
                         .endpoint(request.getDescription(false))
@@ -64,12 +71,14 @@ public class ExceptionController {
     @ExceptionHandler(value = {
             NotEnoughScoreToMentorException.class,
             ResolveAllTaskException.class,
-            EnterOnCourseException.class
+            EnterOnCourseException.class,
+            UserNotEnterOnAnyCourseException.class
     })
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> studentsException(RuntimeException ex, WebRequest request) {
         return ResponseEntity
-                .ok(ErrorMessage.builder()
+                .status(HttpStatus.NOT_FOUND)
+                .body(ErrorMessage.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())
                         .description(ex.getMessage())
                         .currentTime(LocalDateTime.now())
@@ -89,11 +98,41 @@ public class ExceptionController {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> mentorsException(RuntimeException ex, WebRequest request) {
         return ResponseEntity
-                .ok(ErrorMessage.builder()
+                .status(HttpStatus.NOT_FOUND)
+                .body(ErrorMessage.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())
                         .description(ex.getMessage())
                         .currentTime(LocalDateTime.now())
                         .endpoint(request.getDescription(false))
                         .build());
+    }
+
+    @ExceptionHandler(value = {
+            MethodArgumentNotValidException.class
+    })
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponseModel> validationException(MethodArgumentNotValidException ex, WebRequest request) {
+        List<ValidateErrorMessage> errorModels = processErrors(ex);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponseModel
+                        .builder()
+                        .type("VALIDATION")
+                        .errorModels(errorModels)
+                        .build());
+    }
+
+    private List<ValidateErrorMessage> processErrors(MethodArgumentNotValidException e) {
+        List<ValidateErrorMessage> validationErrorModels = new ArrayList<>();
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+            ValidateErrorMessage validationErrorModel = ValidateErrorMessage
+                    .builder()
+                    .code(fieldError.getCode())
+                    .source(fieldError.getField())
+                    .detail(fieldError.getField() + " " + fieldError.getDefaultMessage())
+                    .build();
+            validationErrorModels.add(validationErrorModel);
+        }
+        return validationErrorModels;
     }
 }

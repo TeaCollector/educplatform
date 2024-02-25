@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: educplatform
+  labels:
+    app-label: educplatform
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app-label: educplatform
+  template:
+    metadata:
+      labels:
+        app-label: educplatform
+    spec:
+      containers:
+      - name: educplatform
+        image: cr.yandex/crpsdee4cj9f5r7k87ic/educplatform_education-platform:v1
+        env:
+        - name: PORT
+          value: "6432"
+        - name: HOST
+          value: "rc1a-7hralt7zq1xy378o.mdb.yandexcloud.net"
+        - name: USERNAME
+          value: "binary"
+        - name: PASSWORD
+          value: "binarypwd"      
+        - name: DATABASE
+          value: "binary"    

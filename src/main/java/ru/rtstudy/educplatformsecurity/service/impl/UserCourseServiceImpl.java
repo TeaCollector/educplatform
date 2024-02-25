@@ -2,11 +2,15 @@ package ru.rtstudy.educplatformsecurity.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.rtstudy.educplatformsecurity.dto.response.CourseShortDescriptionDto;
 import ru.rtstudy.educplatformsecurity.exception.student.AlreadyMentorException;
 import ru.rtstudy.educplatformsecurity.exception.entity.CourseNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.mentor.NotEnoughScoreToMentorException;
+import ru.rtstudy.educplatformsecurity.exception.user.UserNotEnterOnAnyCourseException;
+import ru.rtstudy.educplatformsecurity.model.Course;
 import ru.rtstudy.educplatformsecurity.model.Grade;
 import ru.rtstudy.educplatformsecurity.model.User;
 import ru.rtstudy.educplatformsecurity.model.UserCourse;
@@ -22,18 +26,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class UserCourseServiceImpl implements UserCourseService {
 
     private final UserCourseRepository userCourseRepository;
+
     private final CourseService courseService;
     private final GradeService gradeService;
     private final UserService userService;
+    private final Util util;
 
     private final int THRESHOLD_TO_BECOME_MENTOR = 8;
-    private final Util util;
 
     @Override
     public void enterOnCourse(Long id) {
@@ -84,5 +89,25 @@ public class UserCourseServiceImpl implements UserCourseService {
     @Override
     public void finishCourse(Long userId, Long courseId) {
         userCourseRepository.finishCourse(userId, courseId);
+    }
+
+    @Override
+    public List<CourseShortDescriptionDto> getAllStartedCourse(Long userId) {
+        return userCourseRepository
+                .getAllStartedCourse(userId)
+                .orElseThrow(() -> new UserNotEnterOnAnyCourseException("You are not enter on any course."));
+    }
+
+    @Override
+    public void makeCourseMentor(User user, Course course) {
+        UserCourse userCourse = UserCourse.builder()
+                .mentorCourse(true)
+                .beginCourse(LocalDateTime.now())
+                .finishCourse(LocalDateTime.now())
+                .endCourse(true)
+                .user(user)
+                .course(course)
+                .build();
+        userCourseRepository.save(userCourse);
     }
 }
