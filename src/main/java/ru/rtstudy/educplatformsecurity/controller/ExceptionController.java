@@ -14,6 +14,7 @@ import ru.rtstudy.educplatformsecurity.exception.ValidateErrorMessage;
 import ru.rtstudy.educplatformsecurity.exception.author.NotCourseAuthorException;
 import ru.rtstudy.educplatformsecurity.exception.author.NotEnoughScoreToAuthorException;
 import ru.rtstudy.educplatformsecurity.exception.entity.*;
+import ru.rtstudy.educplatformsecurity.exception.mentor.GradeWasNotReviewed;
 import ru.rtstudy.educplatformsecurity.exception.mentor.MentorAnswerAlreadyExistsException;
 import ru.rtstudy.educplatformsecurity.exception.mentor.NoCompletedTasksException;
 import ru.rtstudy.educplatformsecurity.exception.mentor.NotEnoughScoreToMentorException;
@@ -21,9 +22,10 @@ import ru.rtstudy.educplatformsecurity.exception.student.AlreadyMentorException;
 import ru.rtstudy.educplatformsecurity.exception.student.EnterOnCourseException;
 import ru.rtstudy.educplatformsecurity.exception.student.ResolveAllTaskException;
 import ru.rtstudy.educplatformsecurity.exception.student.UserNotMentorException;
-import ru.rtstudy.educplatformsecurity.exception.user.*;
+import ru.rtstudy.educplatformsecurity.exception.user.UserAlreadyExistsException;
+import ru.rtstudy.educplatformsecurity.exception.user.UserNotEnterOnAnyCourseException;
+import ru.rtstudy.educplatformsecurity.exception.user.UserNotRegisterException;
 
-import javax.lang.model.type.ErrorType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +95,8 @@ public class ExceptionController {
             NotEnoughScoreToAuthorException.class,
             GradeNotFoundException.class,
             NoCompletedTasksException.class,
-            NotCourseAuthorException.class
+            NotCourseAuthorException.class,
+            GradeWasNotReviewed.class
     })
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorMessage> mentorsException(RuntimeException ex, WebRequest request) {
@@ -111,7 +114,7 @@ public class ExceptionController {
             MethodArgumentNotValidException.class
     })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorResponseModel> validationException(MethodArgumentNotValidException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponseModel> validationException(MethodArgumentNotValidException ex) {
         List<ValidateErrorMessage> errorModels = processErrors(ex);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
