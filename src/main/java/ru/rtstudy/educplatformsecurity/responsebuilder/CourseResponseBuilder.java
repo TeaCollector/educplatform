@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.CourseMapper;
 import ru.rtstudy.educplatformsecurity.dto.request.CourseDtoRequest;
+import ru.rtstudy.educplatformsecurity.dto.response.CourseDtoResponse;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
 import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoShortDescription;
 import ru.rtstudy.educplatformsecurity.model.Course;
@@ -27,12 +28,11 @@ public class CourseResponseBuilder {
                 .body(courseService.findCourseById(id));
     }
 
-    public ResponseEntity<CourseDtoRequest> updateCourse(Long id, CourseDtoRequest courseDtoRequest) {
+    public ResponseEntity<CourseDtoResponse> updateCourse(Long id, CourseDtoRequest courseDtoRequest) {
         Course course = mapper.toEntity(courseDtoRequest);
-        CourseDtoRequest courseDto = mapper.toDto(courseService.updateCourse(course, id));
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(courseDto);
+                .body(mapper.toCourseDtoResponse(courseService.updateCourse(course, id)));
     }
 
     public ResponseEntity<List<LessonDtoShortDescription>> getAllLessonByCourseId(Long courseId) {
@@ -41,11 +41,11 @@ public class CourseResponseBuilder {
                 .body(courseService.getAllLessonByCourseId(courseId));
     }
 
-    public ResponseEntity<CourseDtoRequest> createCourse(CourseDtoRequest dtoRequest) {
+    public ResponseEntity<CourseDtoResponse> createCourse(CourseDtoRequest dtoRequest) {
         Course course = mapper.toEntity(dtoRequest);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(mapper.toDto(courseService.createCourse(course)));
+                .body(mapper.toCourseDtoResponse(courseService.createCourse(course)));
     }
 
     public ResponseEntity<HttpStatus> deleteCourse(Long id) {

@@ -34,7 +34,7 @@ public class AuthenticationResponseBuilder {
                 .body(authenticationService.signIn(signInRequest));
     }
 
-    public Boolean verificationRequest() {
+    public Boolean verificationAuthorRequest() {
         User user = util.findUserFromContext();
         return authenticationService.isAuthor(user.getId());
 

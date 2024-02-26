@@ -7,14 +7,9 @@ spring:
     activate:
       on-profile: local
 
-  minio:
-    url: https://storage.yandexcloud.net
-    access-key: YCAJEHbENc21rOfoFaIovtS5M
-    secret-key: YCNbwM49Sje3glE3NOjynywwRYF-aVEEzDTTpy7l
-    bucket: rtischool-store
-
 educplatform:
-  uri: http://158.160.143.166:8081/api/v1/auth/
+  uri: http://localhost:8081/api/v1/auth/
+
 server:
   port: 8082
 
@@ -23,7 +18,6 @@ cloud:
     credentials:
       access-key: YCAJEHbENc21rOfoFaIovtS5M
       secret-key: YCNbwM49Sje3glE3NOjynywwRYF-aVEEzDTTpy7l
-
 amazonS3:
   bucket-name: rtischool-store
 ---
@@ -31,12 +25,6 @@ spring:
   config:
     activate:
       on-profile: dev
-
-  minio:
-    url: play.min.io
-    access-key: Q3AM3UQ867SPQQA43P2F
-    secret-key: zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG
-    bucket: educplatform
 
 server:
   port: 8082

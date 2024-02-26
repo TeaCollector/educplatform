@@ -31,11 +31,15 @@ public class Lesson {
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task taskId;
 
     @Embedded
     private CreateUpdateTime time;
 
+    @PreRemove
+    private void preRemove() {
+        this.taskId = null;
+    }
 }

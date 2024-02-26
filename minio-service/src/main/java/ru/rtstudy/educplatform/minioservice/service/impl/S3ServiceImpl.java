@@ -1,10 +1,7 @@
 package ru.rtstudy.educplatform.minioservice.service.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import io.minio.GetObjectArgs;
 import io.minio.errors.MinioException;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +20,12 @@ import ru.rtstudy.educplatform.minioservice.service.S3Service;
 import ru.rtstudy.educplatform.minioservice.util.InputStreamCollector;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static ru.rtstudy.educplatform.minioservice.util.Util.createUUID;
 import static ru.rtstudy.educplatform.minioservice.util.Util.getMediaType;
 
-@Primary
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -92,4 +90,13 @@ public class S3ServiceImpl implements S3Service {
         return new GetObjectRequest(bucketName, fileName);
     }
 
+    @Override
+    public List<String> getAllObjects() {
+        List<String> objectList = new ArrayList<>();
+        List<S3ObjectSummary> objectName = amazonS3.listObjects(bucketName).getObjectSummaries();
+        for(S3ObjectSummary name: objectName) {
+            objectList.add(name.getKey());
+        }
+        return objectList;
+    }
 }

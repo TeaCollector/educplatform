@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
     @Query("""
-            select new LessonDtoResponse(l.id, l.title, l.fileName, l.description, l.course.title) 
+            select new LessonDtoResponse(l.id, l.title, l.fileName, l.description, l.course.id) 
             from Lesson l 
             where l.id = :id
             """)

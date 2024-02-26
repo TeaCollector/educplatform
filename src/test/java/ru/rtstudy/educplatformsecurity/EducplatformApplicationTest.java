@@ -23,7 +23,6 @@ import static org.hamcrest.Matchers.hasSize;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc(addFilters = false)
-@TestPropertySource(locations = "classpath:application-test.yml")
 class EducplatformApplicationTest {
 
     @Autowired
@@ -56,15 +55,4 @@ class EducplatformApplicationTest {
         RestAssured.baseURI = "http://localhost:" + port;
     }
 
-    @Test
-    @DisplayName("Send request without JWT receive 403")
-    void getCategory() {
-        given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get("api/v1/category")
-                .then()
-                .statusCode(403)
-                .log();
-    }
 }

@@ -57,5 +57,6 @@ public class Course {
     @PreRemove
     private void preRemove() {
         lessons.forEach(lesson -> lesson.setCourse(null));
+        coursesUser.forEach(userCourse -> userCourse.setCourse(null));
     }
 }

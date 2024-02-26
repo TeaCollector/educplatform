@@ -18,6 +18,8 @@ import reactor.core.publisher.Mono;
 import ru.rtstudy.educplatform.minioservice.responsebuilder.S3ResponseBuilder;
 import ru.rtstudy.educplatform.minioservice.dto.UploadResponse;
 
+import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -57,6 +59,11 @@ public class S3Controller {
                                                             @Parameter(description = "UUID файла")
                                                             @PathVariable(value = "file_name") String fileName) {
         return responseBuilder.download(token, fileName);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<String>> getAllObjects() {
+        return responseBuilder.getAllObjects();
     }
 
     @Operation(summary = "Удаление из хранилища MinIO по его UUID")
