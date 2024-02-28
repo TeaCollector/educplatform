@@ -25,4 +25,10 @@ public class Task {
 
     @Embedded
     private CreateUpdateTime time;
+
+    @PreRemove
+    private void preRemove() {
+
+    }
+
 }

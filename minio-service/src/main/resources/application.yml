@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: dev
 ---
 spring:
   config:
@@ -40,3 +40,5 @@ cloud:
 
 amazonS3:
   bucket-name: ${BUCKET_NAME}
+
+s3ServiceURI: http://158.160.149.227:8082/object/

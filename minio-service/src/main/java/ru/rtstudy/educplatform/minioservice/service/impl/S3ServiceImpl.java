@@ -35,6 +35,8 @@ public class S3ServiceImpl implements S3Service {
 
     @Value("${amazons3.bucket-name}")
     private String bucketName;
+    @Value("${s3ServiceURI}")
+    private String s3ServiceURI;
 
     @Override
     public Mono<UploadResponse> uploadFile(Mono<FilePart> filePart) {
@@ -71,13 +73,17 @@ public class S3ServiceImpl implements S3Service {
                         log.debug("File will upload to: {} bucket with name: {}.", bucketName, key);
                         amazonS3.putObject(putObjectRequest);
                         return UploadResponse.builder()
-                                .objectName(key)
+                                .objectName(createReference(key))
                                 .build();
                     } catch (Exception e) {
                         log.error("File wasn't upload: {}", file.filename(), new MinioException("File wasn't upload."));
                         throw new RuntimeException(e);
                     }
                 }).log();
+    }
+
+    private String createReference(String key) {
+        return s3ServiceURI + key;
     }
 
     @Override

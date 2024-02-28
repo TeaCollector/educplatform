@@ -40,6 +40,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             select new LessonDtoShortDescription(l.id, l.title, l.description)
             from Lesson l
             where l.course.id = :courseId
+            order by l.id asc
             """)
     Optional<List<LessonDtoShortDescription>> getAllLessonByCourseId(Long courseId);
 }

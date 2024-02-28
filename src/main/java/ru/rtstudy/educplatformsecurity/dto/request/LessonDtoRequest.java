@@ -20,7 +20,6 @@ public record LessonDtoRequest(
         @Schema(description = "Название файла с материалам к уроку", example = "lesson1.mp4")
         @NotBlank(message = "File name must be filled")
         @Size(max = 255, message = "File Name must be equal or under {max} symbols")
-        @Pattern(regexp = "^[A-Za-z0-9_/]+\\.[A-Za-z0-9_/]+$", message = "Incorrect file name input: ${validatedValue}")
         String fileName,
 
         @Schema(description = "Описание урока", example = "На этом уроке вы узнаете что такое буферный кэш, его особенности и как его можно настраивать.")

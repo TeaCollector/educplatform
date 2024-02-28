@@ -17,4 +17,14 @@ public interface LessonMapper extends Mappable<Lesson, LessonDtoResponse> {
                 .description(lesson.getDescription())
                 .build();
     }
+
+    default LessonDtoResponse toLessonDtoResponse(Lesson lesson) {
+        return LessonDtoResponse.builder()
+                .id(lesson.getId())
+                .courseId(lesson.getCourse().getId())
+                .referenceOnFile(lesson.getFileName())
+                .title(lesson.getTitle())
+                .description(lesson.getDescription())
+                .build();
+    }
 }

@@ -29,7 +29,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query("""
             select l.course.id
-            from Task t join Lesson l on t.id = l.id
+            from Task t join Lesson l on t.id = l.taskId.id
             where t.id = :taskId
             """)
     Long findCourseByTaskId(Long taskId);
@@ -38,7 +38,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query("""
             update Lesson l
             set l.taskId = null 
-            where l.id = :taskId
+            where l.taskId.id = :taskId
             """)
     void lessonSetToNull(Long taskId);
 }
