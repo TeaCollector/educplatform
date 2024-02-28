@@ -3,6 +3,7 @@ package ru.rtstudy.educplatformsecurity.config;
 import io.hypersistence.utils.hibernate.type.util.ClassImportIntegrator;
 import org.hibernate.integrator.spi.Integrator;
 import org.hibernate.jpa.boot.spi.IntegratorProvider;
+import ru.rtstudy.educplatformsecurity.dto.request.TaskDto;
 import ru.rtstudy.educplatformsecurity.dto.response.*;
 
 import java.util.List;

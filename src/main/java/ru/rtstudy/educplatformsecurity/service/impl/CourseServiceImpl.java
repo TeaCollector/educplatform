@@ -98,7 +98,7 @@ public class CourseServiceImpl implements CourseService {
                     log.error("Course: {} was not found.", courseId, new CourseNotFoundException("Course was not found."));
                     return new CourseNotFoundException("Course was not found.");
                 });
-
+        log.info("COURSE FOR UPDATE: {}", toUpdate.getId());
         if (isAuthor(courseId)) {
             toUpdate.setDuration(course.getDuration());
             toUpdate.setTitle(course.getTitle());
@@ -115,7 +115,7 @@ public class CourseServiceImpl implements CourseService {
             throw new NotCourseAuthorException("You are not course author.");
         }
         log.debug("Course was updated: {}", toUpdate);
-        return course;
+        return toUpdate;
     }
 
     @Override

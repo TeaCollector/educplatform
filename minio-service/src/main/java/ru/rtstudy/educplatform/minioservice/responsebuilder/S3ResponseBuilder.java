@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.rtstudy.educplatform.minioservice.dto.UploadResponse;
+import ru.rtstudy.educplatform.minioservice.exception.NotAuthenticatedException;
 import ru.rtstudy.educplatform.minioservice.exception.NotAuthorException;
 import ru.rtstudy.educplatform.minioservice.exception.NotSupportedExtension;
 import ru.rtstudy.educplatform.minioservice.service.S3Service;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,7 +29,7 @@ public class S3ResponseBuilder {
     private final WebClient webClient;
 
     public Mono<UploadResponse> upload(String token, Mono<FilePart> files) {
-        return authenticationRequest(token)
+        return authenticationAuthorRequest(token)
                 .flatMap(authRequest -> {
                     if (authRequest) {
                         return s3Service.uploadFile(files);
@@ -39,7 +41,7 @@ public class S3ResponseBuilder {
     }
 
     public Mono<UploadResponse> uploadStream(String token, FilePart files) {
-        return authenticationRequest(token)
+        return authenticationAuthorRequest(token)
                 .flatMap(authRequest -> {
                             if (authRequest) {
                                 return s3Service.putObject(files);
@@ -74,14 +76,24 @@ public class S3ResponseBuilder {
         } else {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
-                    .body(Mono.just(new ByteArrayResource(new byte[]{1, 0})));
+                    .body(Mono.error(new NotAuthenticatedException("You are not authenticated.")));
         }
     }
 
     private Mono<Boolean> authenticationRequest(String token) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/check")
+                        .path("/verify")
+                        .build())
+                .header(HttpHeaders.AUTHORIZATION, token)
+                .retrieve()
+                .bodyToMono(Boolean.class);
+    }
+
+    private Mono<Boolean> authenticationAuthorRequest(String token) {
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/author-verify")
                         .build())
                 .header(HttpHeaders.AUTHORIZATION, token)
                 .retrieve()
@@ -91,7 +103,7 @@ public class S3ResponseBuilder {
     private Mono<Boolean> authenticationRequestToDeleteFile(String token, String fileName) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/check-for-delete")
+                        .path("/verify-for-delete")
                         .queryParam("file-name", fileName)
                         .build())
                 .header(HttpHeaders.AUTHORIZATION, token)
@@ -118,5 +130,11 @@ public class S3ResponseBuilder {
             log.error("Not correct input: {}", fileName, new IllegalArgumentException("Not correct input."));
             throw new IllegalStateException("Not correct input.");
         }
+    }
+
+    public ResponseEntity<List<String>> getAllObjects() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(s3Service.getAllObjects());
     }
 }

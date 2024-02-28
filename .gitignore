@@ -38,3 +38,6 @@ out/
 
 deployment.yml
 service.yml
+!/.env
+!/deployment.yml
+!/service.yml

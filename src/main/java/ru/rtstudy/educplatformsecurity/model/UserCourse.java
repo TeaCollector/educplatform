@@ -40,4 +40,9 @@ public class UserCourse {
 
     @Column(name = "finish_course")
     private LocalDateTime finishCourse;
+
+    @PreRemove
+    private void preRemove() {
+        this.course = null;
+    }
 }

@@ -19,6 +19,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
             from Grade g
             join g.lesson l
             where l.course.id = :courseId
+            order by g.id asc
             """)
     Optional<List<Grade>> findAllGradesByCourseId(Long courseId);
 
@@ -29,6 +30,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
             join g.student s
             join l.taskId t
             where l.id = :lessonId
+            order by g.id
             """)
     Optional<List<GradeStudentDtoResponse>> findAllStudentsAnswersByLessonId(Long lessonId);
 
@@ -39,6 +41,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
             join g.student s
             join l.taskId t
             where l.course.id = :courseId
+            order by g.id
             """)
     Optional<List<GradeStudentDtoResponse>> findAllStudentsAnswersByCourseId(Long courseId);
 
@@ -53,6 +56,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
             join Lesson l on g.lesson.id = l.id
             join Task t on l.taskId.id = t.id
             where g.student.id = :id
+            order by g.id
             """)
     Optional<List<AllStudentAnswers>> getAllStudentAnswer(Long id);
 
@@ -68,6 +72,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
             join Task t on l.taskId.id = t.id
             where g.student.id = :userId
             and l.course.id = :courseId
+            order by g.id
             """)
     Optional<List<AllStudentAnswers>> findAllStudentsAnswerForCourse(Long courseId, Long userId);
 

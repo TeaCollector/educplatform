@@ -10,8 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.rtstudy.educplatformsecurity.dto.request.UpdateTaskDto;
+import ru.rtstudy.educplatformsecurity.dto.response.TaskDtoResponse;
 import ru.rtstudy.educplatformsecurity.responsebuilder.TaskResponseBuilder;
-import ru.rtstudy.educplatformsecurity.dto.response.TaskDto;
+import ru.rtstudy.educplatformsecurity.dto.request.TaskDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,14 +32,14 @@ public class TaskController {
     @Operation(summary = "Создать новое задание")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PostMapping
-    public ResponseEntity<TaskDto> createTask(@Valid @RequestBody TaskDto taskDto) {
+    public ResponseEntity<TaskDtoResponse> createTask(@Valid @RequestBody TaskDto taskDto) {
         return responseBuilder.createTask(taskDto);
     }
 
     @Operation(summary = "Изменить задание по его идентификатору")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PutMapping("{task_id}")
-    public ResponseEntity<TaskDto> updateTask(@PathVariable(name = "task_id")
+    public ResponseEntity<TaskDtoResponse> updateTask(@PathVariable(name = "task_id")
                                               @Parameter(name = "task_id", description = "Идентификатор задания") Long id,
                                               @Valid @RequestBody UpdateTaskDto taskDto) {
         return responseBuilder.updateTask(id, taskDto);

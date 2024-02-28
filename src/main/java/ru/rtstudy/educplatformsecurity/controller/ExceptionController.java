@@ -2,6 +2,7 @@ package ru.rtstudy.educplatformsecurity.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -111,7 +112,8 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(value = {
-            MethodArgumentNotValidException.class
+            MethodArgumentNotValidException.class,
+            HttpMessageNotReadableException.class
     })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponseModel> validationException(MethodArgumentNotValidException ex) {

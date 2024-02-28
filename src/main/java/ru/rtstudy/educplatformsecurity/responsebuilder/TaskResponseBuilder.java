@@ -6,7 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.rtstudy.educplatformsecurity.dto.mapper.impl.TaskMapper;
 import ru.rtstudy.educplatformsecurity.dto.request.UpdateTaskDto;
-import ru.rtstudy.educplatformsecurity.dto.response.TaskDto;
+import ru.rtstudy.educplatformsecurity.dto.request.TaskDto;
+import ru.rtstudy.educplatformsecurity.dto.response.TaskDtoResponse;
 import ru.rtstudy.educplatformsecurity.model.Task;
 import ru.rtstudy.educplatformsecurity.service.TaskService;
 
@@ -24,17 +25,19 @@ public class TaskResponseBuilder {
                 .body(taskService.getTask(id));
     }
 
-    public ResponseEntity<TaskDto> createTask(TaskDto taskDto) {
+    public ResponseEntity<TaskDtoResponse> createTask(TaskDto taskDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(mapper.toDto(taskService.createTask(taskDto)));
+                .body(mapper.toDtoResponse(taskService.createTask(taskDto)));
     }
 
-    public ResponseEntity<TaskDto> updateTask(Long id, UpdateTaskDto taskDto) {
-        Task task = Task.builder().description(taskDto.description()).build();
+    public ResponseEntity<TaskDtoResponse> updateTask(Long id, UpdateTaskDto taskDto) {
+        Task task = Task.builder()
+                .description(taskDto.description())
+                .build();
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(mapper.toDto(taskService.updateTask(id, task)));
+                .body(mapper.toDtoResponse(taskService.updateTask(id, task)));
     }
 
     public ResponseEntity<HttpStatus> deleteTask(Long taskId) {

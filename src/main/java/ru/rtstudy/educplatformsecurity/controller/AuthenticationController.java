@@ -45,14 +45,21 @@ public class AuthenticationController {
 
     @Hidden
     @Operation(summary = "Служебный метод для модуля MinIO")
-    @GetMapping("check")
+    @GetMapping("verify")
     public Boolean verification() {
-        return responseBuilder.verificationRequest();
+        return Boolean.TRUE;
     }
 
     @Hidden
     @Operation(summary = "Служебный метод для модуля MinIO")
-    @GetMapping("check-for-delete")
+    @GetMapping("author-verify")
+    public Boolean authorVerification() {
+        return responseBuilder.verificationAuthorRequest();
+    }
+
+    @Hidden
+    @Operation(summary = "Служебный метод для модуля MinIO")
+    @GetMapping("verify-for-delete")
     public Boolean deleteVerification(@RequestParam(value = "file-name") String fileName) {
         return responseBuilder.verificationToDelete(fileName);
     }

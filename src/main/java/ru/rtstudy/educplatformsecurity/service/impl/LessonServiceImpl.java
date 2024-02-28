@@ -6,14 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rtstudy.educplatformsecurity.dto.request.LessonDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.LessonDtoResponse;
-import ru.rtstudy.educplatformsecurity.exception.entity.CourseNotFoundException;
-import ru.rtstudy.educplatformsecurity.exception.student.EnterOnCourseException;
-import ru.rtstudy.educplatformsecurity.exception.entity.LessonNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.author.NotCourseAuthorException;
+import ru.rtstudy.educplatformsecurity.exception.entity.CourseNotFoundException;
+import ru.rtstudy.educplatformsecurity.exception.entity.LessonNotFoundException;
+import ru.rtstudy.educplatformsecurity.exception.student.EnterOnCourseException;
 import ru.rtstudy.educplatformsecurity.model.Course;
 import ru.rtstudy.educplatformsecurity.model.Lesson;
 import ru.rtstudy.educplatformsecurity.model.User;
-import ru.rtstudy.educplatformsecurity.repository.CourseRepository;
 import ru.rtstudy.educplatformsecurity.repository.LessonRepository;
 import ru.rtstudy.educplatformsecurity.service.CourseService;
 import ru.rtstudy.educplatformsecurity.service.LessonService;
@@ -28,6 +27,7 @@ import java.util.Optional;
 public class LessonServiceImpl implements LessonService {
 
     private final LessonRepository lessonRepository;
+
     private final CourseService courseService;
     private final Util util;
 
@@ -62,8 +62,8 @@ public class LessonServiceImpl implements LessonService {
             lesson.setTitle(lessonDtoRequest.title());
             lesson.setDescription(lessonDtoRequest.description());
             lesson.setFileName(lessonDtoRequest.fileName());
-            if (!lessonDtoRequest.courseName().equals(lesson.getCourse().getTitle())) {
-                Course course = courseService.findByTitle(lessonDtoRequest.courseName())
+            if (!lessonDtoRequest.courseId().equals(lesson.getCourse().getId())) {
+                Course course = courseService.findById(lessonDtoRequest.courseId())
                         .orElseThrow(() -> {
                             log.info("Course not found by title: {}", lessonDtoRequest.title());
                             return new CourseNotFoundException("Course not found.");
@@ -80,21 +80,27 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Lesson createLesson(LessonDtoRequest lessonDtoRequest) {
         log.info("{} create lesson: {}", util.findUserFromContext().getEmail(), lessonDtoRequest);
-        Course course = courseService.findByTitle(lessonDtoRequest.courseName())
+        Course course = courseService.findById(lessonDtoRequest.courseId())
                 .orElseThrow(() -> {
-                    log.error("Course not found by title: {}", lessonDtoRequest.courseName(), new CourseNotFoundException("Course not found."));
+                    log.error("Course not found by title: {}", lessonDtoRequest.courseId(), new CourseNotFoundException("Course not found."));
                     return new CourseNotFoundException("Course not found.");
                 });
 
-        Lesson lesson = Lesson.builder()
-                .title(lessonDtoRequest.title())
-                .description(lessonDtoRequest.description())
-                .fileName(lessonDtoRequest.fileName())
-                .course(course)
-                .build();
-        log.info("Lesson to create: {}", lesson);
-        lessonRepository.save(lesson);
-        return lesson;
+        boolean isAuthor = courseService.isAuthor(lessonDtoRequest.courseId());
+        if (isAuthor) {
+            Lesson lesson = Lesson.builder()
+                    .title(lessonDtoRequest.title())
+                    .description(lessonDtoRequest.description())
+                    .fileName(lessonDtoRequest.fileName())
+                    .course(course)
+                    .build();
+            log.info("Lesson to create: {}", lesson);
+            lessonRepository.save(lesson);
+            return lesson;
+        } else {
+            log.error("{} not course author: {}", util.findUserFromContext().getEmail(), lessonDtoRequest.title(), new NotCourseAuthorException("You are not course author."));
+            throw new NotCourseAuthorException("You are not course author.");
+        }
     }
 
     @Override

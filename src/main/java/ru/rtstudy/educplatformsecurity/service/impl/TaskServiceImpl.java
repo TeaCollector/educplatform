@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rtstudy.educplatformsecurity.dto.response.TaskDto;
+import ru.rtstudy.educplatformsecurity.dto.request.TaskDto;
 import ru.rtstudy.educplatformsecurity.exception.entity.LessonNotFoundException;
 import ru.rtstudy.educplatformsecurity.exception.author.NotCourseAuthorException;
 import ru.rtstudy.educplatformsecurity.exception.entity.TaskNotFoundException;
@@ -12,6 +12,7 @@ import ru.rtstudy.educplatformsecurity.model.Lesson;
 import ru.rtstudy.educplatformsecurity.model.Task;
 import ru.rtstudy.educplatformsecurity.repository.TaskRepository;
 import ru.rtstudy.educplatformsecurity.service.CourseService;
+import ru.rtstudy.educplatformsecurity.service.LessonService;
 import ru.rtstudy.educplatformsecurity.service.TaskService;
 import ru.rtstudy.educplatformsecurity.util.Util;
 
@@ -24,6 +25,7 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final CourseService courseService;
+    private final LessonService lessonService;
     private final Util util;
 
     @Override
@@ -43,14 +45,19 @@ public class TaskServiceImpl implements TaskService {
                 .description(taskDto.description())
                 .build();
 
-        task = taskRepository.save(task);
-        Lesson lesson = taskRepository.getLessonById(taskDto.id())
+        Lesson lesson = lessonService.findById(taskDto.lessonId())
                 .orElseThrow(() -> {
-                    log.error("Lesson by task id: {} was not found", new LessonNotFoundException("Lesson was not found."));
+                    log.error("Lesson was not found: {}", taskDto.lessonId());
                     return new LessonNotFoundException("Lesson was not found.");
                 });
-        lesson.setTaskId(task);
-        return task;
+        if (courseService.isAuthor(lesson.getCourse().getId())) {
+            task = taskRepository.save(task);
+            lesson.setTaskId(task);
+            return task;
+        } else {
+            log.error("{} is not course author", lesson.getCourse().getCourseAuthor().getId());
+            throw new NotCourseAuthorException("You are not course author");
+        }
     }
 
     @Override
@@ -62,8 +69,7 @@ public class TaskServiceImpl implements TaskService {
                     return new TaskNotFoundException("Task was not found");
                 });
         Long courseId = taskRepository.findCourseByTaskId(toUpdate.getId());
-        boolean isAuthor = courseService.isAuthor(courseId);
-        if (isAuthor) {
+        if (courseService.isAuthor(courseId)) {
             toUpdate.setDescription(task.getDescription());
         } else {
             log.error("{} is not course author.", util.findUserFromContext().getEmail());
@@ -80,9 +86,11 @@ public class TaskServiceImpl implements TaskService {
                     log.error("Task was not found: {}", taskId, new TaskNotFoundException("Task was not found"));
                     return new TaskNotFoundException("Task was not found");
                 });
+        log.info("TASK TO DELETE IS: {}, {}", taskToDelete.getId(), taskToDelete.getDescription());
         Long courseId = taskRepository.findCourseByTaskId(taskToDelete.getId());
         boolean isAuthor = courseService.isAuthor(courseId);
         if (isAuthor) {
+            taskRepository.lessonSetToNull(taskId);
             taskRepository.deleteById(taskId);
         } else {
             log.error("{} is not course author: {}", util.findUserFromContext().getEmail(), courseId, new NotCourseAuthorException("You are not course author."));

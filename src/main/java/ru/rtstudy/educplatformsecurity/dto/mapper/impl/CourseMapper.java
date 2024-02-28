@@ -3,6 +3,7 @@ package ru.rtstudy.educplatformsecurity.dto.mapper.impl;
 import org.mapstruct.Mapper;
 import ru.rtstudy.educplatformsecurity.dto.mapper.Mappable;
 import ru.rtstudy.educplatformsecurity.dto.request.CourseDtoRequest;
+import ru.rtstudy.educplatformsecurity.dto.response.CourseDtoResponse;
 import ru.rtstudy.educplatformsecurity.model.Category;
 import ru.rtstudy.educplatformsecurity.model.Course;
 import ru.rtstudy.educplatformsecurity.model.Difficult;
@@ -33,6 +34,17 @@ public interface CourseMapper extends Mappable<Course, CourseDtoRequest> {
 
     default CourseDtoRequest toDto(Course course) {
         return CourseDtoRequest.builder()
+                .difficult(course.getDifficult().getDifficultLevel().toString())
+                .category(course.getCategory().getTitle())
+                .title(course.getTitle())
+                .description(course.getDescription())
+                .duration(course.getDuration())
+                .build();
+    }
+
+    default CourseDtoResponse toCourseDtoResponse(Course course) {
+        return CourseDtoResponse.builder()
+                .courseId(course.getId())
                 .difficult(course.getDifficult().getDifficultLevel().toString())
                 .category(course.getCategory().getTitle())
                 .title(course.getTitle())

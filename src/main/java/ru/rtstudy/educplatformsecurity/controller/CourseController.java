@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.rtstudy.educplatformsecurity.dto.response.CourseDtoResponse;
 import ru.rtstudy.educplatformsecurity.responsebuilder.CourseResponseBuilder;
 import ru.rtstudy.educplatformsecurity.dto.request.CourseDtoRequest;
 import ru.rtstudy.educplatformsecurity.dto.response.CourseLongDescriptionDto;
@@ -34,7 +35,7 @@ public class CourseController {
     @Operation(summary = "Изменить информацию о курсе по его идентификатору")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PutMapping("{id}")
-    public ResponseEntity<CourseDtoRequest> updateCourse(@PathVariable(name = "id")
+    public ResponseEntity<CourseDtoResponse> updateCourse(@PathVariable(name = "id")
                                                          @Parameter(name = "id", description = "Идентификатор курса") Long id,
                                                          @Valid @RequestBody CourseDtoRequest courseDtoRequest) {
         return responseBuilder.updateCourse(id, courseDtoRequest);
@@ -50,7 +51,7 @@ public class CourseController {
     @Operation(summary = "Создать новый курс")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     @PostMapping
-    public ResponseEntity<CourseDtoRequest> createCourse(@Valid @RequestBody CourseDtoRequest courseDtoRequest) {
+    public ResponseEntity<CourseDtoResponse> createCourse(@Valid @RequestBody CourseDtoRequest courseDtoRequest) {
         return responseBuilder.createCourse(courseDtoRequest);
     }
 

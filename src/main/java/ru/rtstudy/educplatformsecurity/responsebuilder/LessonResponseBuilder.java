@@ -34,7 +34,7 @@ public class LessonResponseBuilder {
     public ResponseEntity<LessonDtoResponse> updateLesson(LessonDtoRequest lessonDtoRequest, Long lessonId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(mapper.toDto(lessonService.updateLesson(lessonDtoRequest, lessonId)));
+                .body(mapper.toLessonDtoResponse(lessonService.updateLesson(lessonDtoRequest, lessonId)));
     }
 
     public ResponseEntity<HttpStatus> deleteLesson(Long id) {

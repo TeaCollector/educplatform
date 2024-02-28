@@ -1,6 +1,6 @@
 package ru.rtstudy.educplatformsecurity.service;
 
-import ru.rtstudy.educplatformsecurity.dto.response.TaskDto;
+import ru.rtstudy.educplatformsecurity.dto.request.TaskDto;
 import ru.rtstudy.educplatformsecurity.model.Task;
 
 public interface TaskService {
